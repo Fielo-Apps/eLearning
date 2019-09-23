@@ -1,0 +1,16 @@
+<aura:component >
+    <aura:attribute type="sObject" name="record" />
+    <aura:attribute type="String" name="iconName" default="utility:chevronright"/>
+    <aura:attribute type="String" name="moduleName"/>
+    
+    <aura:registerEvent name="toggleModuleContent" type="c:ToggleModuleContent"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div class="fielo-module-header-container">
+        <div class="fielo-module__toggle-button-container">
+            <lightning:buttonIcon iconName="{!v.iconName}" variant="bare" onclick="{! c.toggleModuleContent }" />
+        </div>
+        <a class="module-name" href="javascript:void(0);" onclick="{!c.goToModuleDetail}" title="{!v.moduleName}" ><lightning:formattedRichText aura:id="moduleHeaderText"/></a>
+    </div>
+</aura:component>

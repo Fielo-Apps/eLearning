@@ -1,0 +1,42 @@
+.THIS .modal-close-btn{
+    border: none;
+    padding: 0;
+}
+.THIS .modal-close-btn .slds-button__icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.THIS .slds-tabs__nav-scroller{
+	background: #E6EEF1;    
+}
+
+.THIS .slds-tabs_default__nav .slds-tabs_default__item:first-child{
+    margin-left: auto;
+}
+
+.THIS .slds-tabs_default__nav .slds-tabs_default__item:last-child{
+    margin-right: auto;
+}
+
+.THIS .slds-tabs_default__link, .THIS .slds-active .slds-tabs_default__link{
+    color: #54698D;
+    font-weight: 500;
+	text-transform: capitalize;
+}
+
+.THIS .title{
+    color: #54698D;
+    text-align: left;
+    font-size: 26px;
+    padding-bottom: 10px;
+}
+
+.THIS .slds-tabs_default__content{
+    color: #54698D;
+    font-size: 14px;
+}
+
+.THIS .slds-section__title{
+    font-weight: 700;
+}

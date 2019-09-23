@@ -1,0 +1,109 @@
+<apex:component layout="none" controller="BackendHeaderRecordController">
+<!-- ATRIBUTOS DE DATOS -->
+  <apex:attribute name="record" type="SObject" description="" assignTo="{!cRecord}"/>
+  <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
+  <apex:attribute name="fieldset" type="String" default="" description="Fields for detail header" assignTo="{!cFieldset}" />
+<!-- ATRIBUTOS DE BOTONERAS -->
+  <apex:attribute name="buttons" type="String" default="" description="" />
+  <apex:attribute name="tools" type="String" default="" description="" />
+  <apex:attribute name="recordValue" type="String" description="override record Id" />
+  <apex:attribute name="parameters" type="String" default="" description=""  />
+<!-- ATRIBUTOS DE GENERALES -->
+  <apex:attribute name="firstHeading" type="String" default=">" description="Text of First heading line" />
+  <apex:attribute name="secondHeading" type="String" default="" description="Text of Second heading line" />
+  <apex:attribute name="icon" type="String" default="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#home" description="Icon from slds"/>
+  <apex:attribute name="truncate" type="Boolean" default="false" description="Truncate title" />
+  <apex:attribute name="iconSize" type="String" default="" description="Icon size" />
+  <apex:attribute name="iconColor" type="String" default="slds-icon-standard-dashboard" description="Icon background color" />
+  <apex:attribute name="prefix" type="String" default="" description="Package prefix" />
+<!-- ATRIBUTOS PROPIOS HEADER -->
+  <apex:attribute name="helpUrl" type="String" default="http://documentation.fielo.com/docs/introduction-2" description="Fielo help documentation" />
+  <apex:attribute name="listviewoptions" type="System.SelectOption[]" default="" description="Lista de Views para las Landings" />
+
+  <div class="slds-page-header fielosf-header" role="banner">
+    <div class="slds-grid">
+      <div class="slds-size--1-of-1 slds-medium-size--1-of-2 {!IF(truncate, 'slds-medium-size--1-of-2 slds-large-size--1-of-3', '')}">
+        <div class="slds-media">
+          <div class="slds-media__figure">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-icon {!iconSize} {!iconColor}">
+              <use xlink:href="{!icon}"></use>
+            </svg>
+          </div>
+          <div class="slds-media__body">
+            <p class="slds-text-heading--label">{!firstHeading}</p>
+            <div class="slds-grid">
+              <h1 class="slds-page-header__title slds-m-right--small {!IF(truncate, 'slds-truncate', '')} slds-align-middle fielosf-header__record-name" title="{!secondHeading}">{!secondHeading}</h1>
+              <apex:panelGroup layout="none" rendered="{! listviewoptions <> '' }">
+                <div class="slds-button slds-button--icon-bare slds-shrink-none slds-align-middle slds-m-left--x-small fielosf-menu fielosf-menu--is-view">
+                  <button class="slds-button fielosf-menu__open">
+                    <svg aria-hidden="true" class="slds-button__icon">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#down"></use>
+                    </svg>
+                    <span class="slds-assistive-text">{!$Label.viewall}</span>
+                  </button>
+                  <div class="slds-dropdown slds-dropdown--right fielosf-menu__items-container fielosf-header__views slds-hide">
+                    <ul class="dropdown__list" role="menu">
+                      <apex:repeat value="{!listviewoptions}" var="view">
+                        <li class="slds-dropdown__item">
+                          <apex:panelGroup layout="none" rendered="{!CONTAINS(view.value,'apex/')}">
+                            <a href="/{!view.value}" role="menuitemradio">
+                              <p class="slds-truncate">{!view.label}</p>
+                            </a>
+                          </apex:panelGroup>
+                          <apex:panelGroup layout="none" rendered="{!!CONTAINS(view.value,'apex/')}">
+                            <a href="/{!$ObjectType[sObjectName].keyPrefix}?fcf={!view.value}" role="menuitemradio">
+                              <p class="slds-truncate">{!view.label}</p>
+                            </a>
+                          </apex:panelGroup>
+                        </li>
+                      </apex:repeat>
+                    </ul>
+                  </div>
+                </div>
+              </apex:panelGroup>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 slds-align-middle slds-align--absolute-center">
+        <div>
+          <apex:componentBody />
+        </div>
+      </div>
+      <div class="slds-size--1-of-1 slds-large-size--1-of-3 slds-align-middle">
+        <!-- Feedback & Help -->
+        <div class="slds-button-group slds-float--right slds-m-left--small" role="group">
+          <a class="slds-button slds-button--icon-border fielosf-feedback__button" href="http://documentation.fielo.com/discuss" target="fielosf-support">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon"><use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#questions_and_answers"></use></svg>
+            <span class="slds-assistive-text">{!$Label.Feedback}</span>
+          </a>
+          <a class="slds-button slds-button--icon-more" href="{!helpUrl}" target="fielosf-help">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon"><use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#help"></use></svg>
+            <span class="slds-assistive-text">{!$Label.Help}</span>
+          </a>
+        </div>
+          <!-- Botoneras: Buttons & Tools -->
+          <c:Buttons buttons="{!buttons}" prefix="{!prefix}" tools="{!tools}" toolsHeader="{!$Label.tools}" recordId="{!IF(isBlank(recordValue), record.Id, recordValue)}" parameters="{!parameters}"/>
+      </div>
+    </div>
+    <apex:panelGroup layout="none" rendered="{! fieldset != ''}">
+      <ul class="slds-grid slds-page-header__detail-row">
+        <apex:repeat value="{!columns}" var="c">
+          <li class="slds-page-header__detail-block fielosf-field--is-{!c.Name}">
+            <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!c.Label}">{!c.Label}
+               <apex:panelGroup layout="none" rendered="{!c.type == 'date'}">
+                <button class="slds-button slds-button--icon" aria-haspopup="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--small">
+                    <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#monthlyview"></use>
+                  </svg>
+                </button>
+              </apex:panelGroup>
+            </p>
+            <!-- <c:OutputField title="{!cRecord[c.Name]}" type="{!c.Type}" href="/{!IF(LOWER(c.Type) = 'reference',IF(CONTAINS(c.Name,'__r'),cRecord[LEFT(c.Name, FIND('__r', c.Name)) + '_c'],IF(AND(NOT(CONTAINS(c.Name,'__r')),NOT(CONTAINS(c.Name,'__c'))),c.Name + 'id',c.Name)),'')}" content="{!cRecord[c.Name]}" /> -->
+            <c:OutputField title="{!cRecord[c.Name]}" type="{!c.Type}" href="/{!IF(LOWER(c.Type) = 'reference',IF(CONTAINS(c.Name,'__r'),cRecord[LEFT(c.Name, FIND('__r', c.Name)) + '_c'],IF(AND(NOT(CONTAINS(c.Name,'__c')),CONTAINS(c.Name,'.')),cRecord[LEFT(c.Name, FIND('.', c.Name)) + 'id'],cRecord[c.Name])),'')}" content="{!cRecord[c.Name]}" />
+          </li>
+        </apex:repeat>
+      </ul>
+    </apex:panelGroup>
+  </div>
+</apex:component>

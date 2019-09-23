@@ -1,0 +1,31 @@
+<apex:component layout="none" controller="BackendPaginatorController" >
+    <!-- Argumentos de componente -->
+    <apex:attribute name="show" type="Boolean" default="true" description="Show paginator" />
+    <apex:attribute name="dataBinding" type="String" description="" />
+    <apex:attribute name="cssClass" type="String"  description="" />
+
+    <!-- Argumentos de controlador -->
+    <apex:attribute name="dataController" type="String" description="Paginator controller" />
+    <apex:attribute name="dataControllerArguments" type="String" description="Specific arguments (separated by ,)of the dataController that will be sent before paginator arguments" />
+
+    <!-- Argumentos de paginador ordenados  segun el invoke -->
+    <apex:attribute name="dataPage" default="1" type="Integer" description="" />
+    <apex:attribute name="recordsPerPage" default="10" type="Integer" description="" />
+    <apex:attribute name="recordsInPage" default="10" type="Integer" description="" />
+    <apex:attribute name="dataOrderBy" type="String"  description="" />
+    <apex:attribute name="dataFilters" type="String" description="" assignTo="{!filter}" />
+    <apex:attribute name="whereClause" type="String" description="" default="" />
+
+    <div class="slds-button-group fielosf-paginator slds-align--absolute-center slds-m-top--large  {!cssClass} {!IF(show, '', 'slds-hide')}" role="group" data-binding="{!dataBinding}" data-controller="{!dataController}" data-controller-arguments="{!dataControllerArguments}" data-page="{!dataPage}" data-records-per-page="{!recordsPerPage}" data-records-in-page="{!recordsInPage}" data-order-by="{!dataOrderBy}" data-filters="{!cFilter}" data-where-clause="{!whereClause}" >
+      <button class="slds-button slds-button--neutral fielosf-button__previous">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--left">
+          <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#chevronleft"></use>
+        </svg>{!$Label.Previous}
+      </button>
+      <button class="slds-button slds-button--neutral fielosf-button__next">{!$Label.next}
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--right">
+          <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+        </svg>
+      </button>
+    </div>
+</apex:component>

@@ -1,0 +1,121 @@
+<apex:component layout="none" controller="ButtonsController">
+  <apex:attribute name="recordId" type="String" default="" description="" assignTo="{!cRecordId}" />
+  <apex:attribute name="objectRecord" type="Object" description=""/>
+  <apex:attribute name="buttons" type="String" default="" description=""  assignTo="{!cButtonsString}" />
+  <apex:attribute name="tools" type="String" default="" description="" assignTo="{!cToolsString}"  />
+  <apex:attribute name="toolsHeader" type="String" description=""/>
+  <apex:attribute name="prefix" type="String" default="" description="package prefix" />
+  <apex:attribute name="parameters" type="String" default="" description="Lista de parametros de forma { 'parameterName': 'parameterValue', ... }" assignTo="{!cParameters}"/>
+  <!--
+  TODO: Confirm, Unificar los <> tipos y poner icono como opcion
+          <apex:panelGroup rendered="{! b.Icon <> '' }">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="slds-button__icon" aria-hidden="true">
+              <use xlink:href="{!b.Icon}"></use>
+            </svg>
+            <span class="slds-assistive-text">{!b.Label}</span>
+          </apex:panelGroup>
+          <apex:panelGroup rendered="{! b.Icon = ''}">
+            {!b.Label}
+          </apex:panelGroup>
+  -->
+  <!-- BUTTONS -->
+
+  <div class="slds-button-group slds-float--right" role="group">
+    <apex:repeat value="{!cButtons}" var="b">
+      <apex:variable var="visvalue" value=" {! IF( b.VisField == null|| objectRecord == null, '', objectRecord[b.visField])}" /> 
+      <apex:panelGroup rendered="{! b.VisField == null || objectRecord == null || Trim(visvalue) == b.visValueTrim  }">
+        <apex:panelGroup rendered="{! b.Type == 'Modal' }">
+          <button data-aljs="modal" data-aljs-show="{!b.Action}" data-type="{!b.Type}" data-action="{!b.Action}" class="slds-button slds-button--neutral {!b.CssClass}" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">
+            <apex:panelGroup rendered="{! b.Icon = ''}">
+              {!b.Label}
+            </apex:panelGroup>
+            <apex:panelGroup rendered="{! b.Icon <> '' }">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="slds-button__icon" aria-hidden="true">
+                <use xlink:href="{!b.Icon}"></use>
+              </svg>
+              <span class="slds-assistive-text">{!b.Label}</span>
+            </apex:panelGroup>
+          </button>
+        </apex:panelGroup>
+        <apex:panelGroup rendered="{! b.Type == 'Link' }">
+          <a class="slds-button slds-button--neutral {!b.CssClass}" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}"  data-confirm="{!b.Confirm}" href="{!b.Url}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.Label}</a>
+        </apex:panelGroup>
+        <apex:panelGroup rendered="{! b.Type == 'Remote' || b.Type == 'RemoteList' }">
+          <apex:panelGroup rendered="{!NOT(b.Reflection)}">
+            <button class="slds-button slds-button--neutral {!b.CssClass}" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-action="{!b.Action}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.Label}</button>
+          </apex:panelGroup>
+          <apex:panelGroup rendered="{!b.Reflection}">
+            <button class="slds-button slds-button--neutral {!b.CssClass}" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-reflection="{!b.Action}" data-action="{!IF(prefix == '','',prefix + '.')}ButtonsController.executeAction" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.Label}</button>
+          </apex:panelGroup>
+        </apex:panelGroup>
+        <apex:panelGroup rendered="{! b.Type == 'Action' && recordId='' }">              
+          <a href="{! URLFOR($Action[b.ObjectName][b.Action], $ObjectType[b.ObjectName].keyPrefix + '000000000000') }{!IF( IsBlank(b.parameters),parametersString,b.parametersString) }" class="{!b.CssClass} slds-button--neutral slds-button" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}"><span class="slds-truncate">{!b.Label}</span></a>
+        </apex:panelGroup>
+        <apex:panelGroup rendered="{! b.Type == 'Action' && recordId != '' }">
+          <a href="{! URLFOR($Action[b.ObjectName][b.Action], recordId ) }{!IF( IsBlank(b.parameters),parametersString,b.parametersString) }" class="{!b.CssClass} slds-button--neutral slds-button" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}"><span class="slds-truncate">{!b.Label}</span></a>
+        </apex:panelGroup>
+      </apex:panelGroup>
+    </apex:repeat>
+    <!-- TOOLS BUTTON DROPDOWN -->
+    <apex:panelGroup layout="none" rendered="{! cToolsString <> '' }">
+
+      <apex:variable var="countTools" value="0" />
+
+      <apex:repeat value="{!cTools}" var="b">            
+        <apex:variable var="visvalue" value=" {! IF( b.VisField == null|| objectRecord == null, '', objectRecord[b.visField])}" /> 
+        <apex:panelGroup rendered="{! b.VisField == null || objectRecord == null || Trim(visvalue) == b.visValueTrim  }">
+          <apex:variable var="countTools" value="{!VALUE(countTools) + 1}" />
+        </apex:panelGroup>
+      </apex:repeat>
+
+      <apex:panelGroup layout="none" rendered="{!VALUE(countTools) > 0}">
+
+        <div class="slds-button--last fielosf-menu">
+          <button class="slds-button slds-button--icon-border-filled fielosf-menu__open">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+              <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#down"></use>
+            </svg>
+            <span class="slds-assistive-text">{!$Label.More}</span>
+          </button>
+          <div class="slds-dropdown slds-dropdown--right slds-nubbin--top-right slds-dropdown--menu slds-dropdown--small fielosf-menu__items-container slds-hide">
+            <apex:panelGroup layout="none" rendered="{!toolsHeader <> ''}">
+              <div class="slds-dropdown__header">
+                <span class="slds-text-heading--label">{!toolsHeader}</span>
+              </div>
+            </apex:panelGroup>
+                      
+            <ul class="slds-dropdown__list"  role="menu">
+              <apex:repeat value="{!cTools}" var="b">            
+                <li class="slds-dropdown__item">
+                  <apex:variable var="visvalue" value=" {! IF( b.VisField == null|| objectRecord == null, '', objectRecord[b.visField])}" /> 
+                  <apex:panelGroup rendered="{! b.VisField == null || objectRecord == null || Trim(visvalue) == b.visValueTrim  }">
+                    <apex:panelGroup rendered="{! b.Type == 'Modal' }">
+                      <a data-action="{!b.Type}" data-aljs="modal" data-aljs-show="{!b.Action}" class="{!b.CssClass} slds-button" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-type="{!b.Type}" data-confirm="{!b.Confirm}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.label}</a>
+                    </apex:panelGroup>
+                    <apex:panelGroup rendered="{! b.Type == 'Link' }">
+                      <a role="menuitem" href="{!b.Url}" class="{!b.CssClass} slds-button" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}"><span class="slds-truncate" >{!b.Label}</span></a>
+                    </apex:panelGroup>
+                    <apex:panelGroup rendered="{! b.Type == 'Remote' || b.Type == 'RemoteList' }">
+                      <apex:panelGroup rendered="{!NOT(b.Reflection)}">
+                        <a class="{!b.CssClass} slds-button"  data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-action="{!b.Action}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.Label}</a>
+                      </apex:panelGroup>
+                      <apex:panelGroup rendered="{!b.Reflection}">
+                        <a class="slds-button {!b.CssClass}" data-record-id="{!recordId}" data-parameters="{!IF( IsBlank(b.parameters), parametersForJSON, b.parametersForJSON)}" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-reflection="{!b.Action}" data-action="{!IF(prefix == '','',prefix + '.')}ButtonsController.executeAction" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}">{!b.Label}</a>
+                      </apex:panelGroup>
+                    </apex:panelGroup>
+                    <apex:panelGroup rendered="{! b.Type == 'Action' && recordId == '' }">              
+                      <a href="{! URLFOR($Action[b.ObjectName][b.Action], $ObjectType[b.ObjectName].keyPrefix + '000000000000' ) }{!IF( IsBlank(b.parameters),parametersString,b.parametersString) }" class="{!b.CssClass} slds-button" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}"><span class="slds-truncate">{!b.Label}</span></a>
+                    </apex:panelGroup>
+                    <apex:panelGroup rendered="{! b.Type == 'Action' && recordId != '' }">
+                      <a href="{! URLFOR($Action[b.ObjectName][b.Action], recordId ) }{!IF( IsBlank(b.parameters),parametersString,b.parametersString) }" class="{!b.CssClass} slds-button" data-confirm="{!b.Confirm}" data-type="{!b.Type}" data-vis-value="{!b.visValue}" data-vis-field="{!b.visField}"><span class="slds-truncate">{!b.Label}</span></a>
+                    </apex:panelGroup>
+                  </apex:panelGroup>
+                </li>
+              </apex:repeat>
+            </ul>
+          </div>
+        </div>
+      </apex:panelGroup>
+    </apex:panelGroup>
+  </div>
+</apex:component>

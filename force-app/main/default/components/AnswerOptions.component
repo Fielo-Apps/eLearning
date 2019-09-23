@@ -1,0 +1,86 @@
+<apex:component controller="AnswerOptionsController" layout="none">
+	<!-- controller="ItemsController" -->
+	<apex:attribute name="formId" type="String" default="formModal" description="" />
+	<apex:attribute name="fieldset" type="String" default="" description="" assignTo="{!cFieldset}"/>
+	<apex:attribute name="buttons" type="String" default="" description="" />
+	<apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
+	<div class="fielosf-recent-reorder fielosf-answer-options" data-order-by='FieloELR__Order__c'>
+		<!--- ITEMS TABLE -->
+	  	<fieldset class="slds-form--compound" >
+			<!-- <legend class="slds-form-element__label slds-text-title--caps">Items</legend> -->
+			<article class="slds-card slds-m-around--medium">
+			    <div class="slds-card__header slds-grid">
+			      <header class="slds-media slds-media--center slds-has-flexi-truncate">
+	        		<div class="slds-media__body slds-truncate">
+			        <h2>
+			        	<span class="slds-text-heading--small">Answer Options</span>
+			        </h2>
+			        </div>
+			      </header>
+			      <div class="slds-no-flex">
+			      	<c:Buttons buttons="{!buttons}" tools="" parameters="" />
+			      </div>
+			    </div>
+			    <div class="slds-card__body">
+	          <table class="slds-table slds-table--bordered slds-no-row-hover slds-table--cell-buffer ">
+		          <thead>
+		            <tr class="slds-text-title--caps">
+		              <apex:repeat value="{!sections}" var="s">
+		              	<th scope="col" style="width: 10px;">
+		              	</th>
+		              	<apex:repeat value="{!s.rows}" var="r">
+			              	<apex:repeat value="{!r}" var="f">
+				              <th scope="col">
+				              	<div class="slds-truncate" title="{!$ObjectType[sObjectName].Fields[f.Name].label}">{!$ObjectType[sObjectName].Fields[f.Name].label}</div>
+				              </th>
+				            </apex:repeat>
+				        </apex:repeat>
+		              </apex:repeat>
+		              <th class="slds-cell-shrink" scope="col"></th>
+		            </tr>
+		          </thead>
+		          <!-- enables reorder -->
+		          <tbody class="fielosf-answer-options__container fielosf-recent-records__container">
+		           	<tr class="slds-hint-parent fielosf-recent-records__model fielosf-recent-records__row fielosf-answer-options__item">
+	                <apex:repeat value="{!sections}" var="s">
+	                	<td scope="row" style="width: 10px;">
+	                	</td>
+	                  <apex:repeat value="{!s.rows}" var="r">
+				          <apex:repeat value="{!r}" var="f">
+		                    <td scope="row" class="{!f.ClassName}">
+								<apex:panelGroup rendered="{!f.Name = 'FieloELR__Order__c'}">
+									<c:OutputField cssClass="slds-truncate" type="{!f.type}" field="{!f.Name}"/>
+								</apex:panelGroup>                    
+		                    	<apex:panelGroup rendered="{!f.Name != 'FieloELR__Order__c'}">
+			                      <c:InputField onchange="f.onchange" 
+			                        value="{!f.Value}"
+			                        type="{!f.Type}"
+			                        showLabel="false"
+			                        toggle="true"
+			                        fieldname="{!f.Name}"
+			                        formid="{!formId}"
+			                        describe="{!$ObjectType[sObjectName].Fields[f.Name]}"
+			                        mode="new"
+			                        sObjectName="{!sObjectName}"
+			                        />
+			                    </apex:panelGroup>
+		                    </td>
+		                  </apex:repeat>  
+	                  </apex:repeat>
+	                </apex:repeat>
+		    			<td role="gridcell" class="slds-cell-shrink" data-label="Actions">
+			            	<div class="slds-button slds-button--icon-x-small slds-button--delete" aria-haspopup="true"  title="Remove">
+		                    	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--hint">
+		                      		<use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/action-sprite/svg/symbols.svg#remove"></use>
+		                    	</svg>
+		                    <span class="slds-assistive-text">Remove</span>
+			              </div>
+		  				</td>
+		          	</tr>
+		          </tbody>
+	        	</table>
+		      </div>
+		    </article>
+		</fieldset>
+	</div>
+</apex:component>

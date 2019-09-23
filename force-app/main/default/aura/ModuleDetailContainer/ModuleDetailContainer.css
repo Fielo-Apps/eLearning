@@ -1,0 +1,55 @@
+.THIS {
+    padding-left: 0px;
+    color: #54698D;
+    max-width: 753px;
+}
+
+.THIS.fielo-module-detail-container .slds-card__header{
+    padding-left: 0px;
+}
+
+.THIS .fielo-module-card{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-color: #F4F6F9;
+    border-width: 3px;
+    padding-left: 0px;
+}
+
+.THIS .fielo-module-title{
+    padding-left: 0px;
+    font-size: 20px;
+}
+
+.THIS .fielo-breadcrumb__current{
+    padding-left: 0.5rem;
+}
+
+.THIS .fielo-module-content{
+    padding-top: 15px;
+}
+
+.THIS .slds-text-heading_medium{
+    font-size: 18px;
+}
+
+.THIS .fielo-quiz-container .slds-card__header{
+    padding-left: unset;
+}
+
+.THIS .fielo-section__field{
+    margin-left: 5px;
+}
+.THIS .fielo-section__field-value, .THIS .slds-form-element__label {
+    font-size: 0.8rem;
+    
+}
+
+.THIS .slds-rich-text-editor__output span {
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    width: 75%;
+    display: inline-block;
+}

@@ -1,0 +1,108 @@
+<apex:component controller="FormController">
+    <!-- Generales del Form -->
+    <apex:attribute name="formId" type="String" default="form" description="" assignTo="{!cFormId}"/>
+    <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+    <apex:attribute name="className" description="Inject a css class to the form container" type="String" />
+    <!-- Controladores -->
+    <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
+    <apex:attribute name="saveController" description="controller with save remote action" type="String" default="FormController.save" />
+    <apex:attribute name="retrieveController" description="controller with retrieve remote action" type="String" default="FormController.retrieve" />
+    <apex:attribute name="secondaryParameters" description="Parameters to be passed after sobject. Separated by comma" type="String" default="" />
+
+    <!-- Sections y Elementos -->
+    <apex:attribute name="mode" description="new, update, view" type="String" default="update"/>
+    <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
+    <apex:attribute name="fieldset" type="String" default="" description="Form Fields" assignTo="{!cFieldset}" />
+    <apex:attribute name="record" type="SObject" description="" assignTo="{!recordObject}"/>
+    <apex:attribute name="redirect" description="Redirects after save" type="Boolean" default="true" />
+    <apex:attribute name="saveConfirm" description="Confirmation before save" type="String" default="false" />
+    <apex:attribute name="saveConfirmMessage" description="Confirmation message before save" type="String" default="false" />
+    <apex:attribute name="renderButtons" description="Shows save and cancel buttons" type="Boolean" default="true" />
+    
+    <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" data-on-show="FieloForm_retrieve" data-save-controller="{!IF(namespace == '','',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(namespace == '','',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header slds-text-heading--medium">
+                <button class="slds-button slds-modal__close slds-button--icon-inverse" data-aljs-dismiss="modal" title="{!$Label.Close}">
+                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    </svg>
+                    <span class="slds-assistive-text">{!$Label.Close}</span>
+                </button>
+                <h2 id="{!formId}headerModal" class="slds-text-heading--medium">{!heading}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+            <!-- FORM ELEMENTS -->
+
+            <div id="{!formId}-Id" data-field-name="Id" class="slds-form-element slds-hide" data-type="hidden" >
+                <input id="{!formId}-Id-input" type="hidden" name="{!formId}-Id" value="" data-sobject-type="{!sObjectName}" />
+            </div>
+                <apex:repeat value="{!sections}" var="s">
+                    <fieldset class="slds-form--compound {!s.CssClass}">
+                        <div class="slds-panel__section">
+                            <apex:panelGroup layout="none" rendered="{! !IsBlank(s.Name) }">
+                                <legend class="slds-form-element__label slds-text-title--caps">{!s.Name}</legend>
+                            </apex:panelGroup>
+                            <div class="slds-form-element__group">
+                                <apex:repeat value="{!s.Rows}" var="r">
+                                    <div class="slds-form-element__row">
+                                        <apex:repeat value="{!r}" var="d">
+                                            <apex:panelGroup layout="none" rendered="{! d.Type == 'hidden'}" >
+                                                <div id="{!formId}-{!d.Name}" data-field-name="{!d.Name}" class="slds-form-element slds-hide" data-type="hidden" >
+                                                    <input id="{!formId}-{!d.Name}-input" name="{!formId}-{!d.Name}" class="slds-input" value="{!IF(ISBLANK(recordObject),d.Value,recordObject[d.Name])}" type="hidden" />
+                                                </div>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'input'}" >
+                                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>                                            
+                                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'checkbox'}" >
+                                                <c:Checkbox toggle="true" formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF(ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none" rendered="{! d.Type == 'picklist'}" >
+                                                <c:Picklist formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" controllerField="{!mapPicklistController[d.Name]}" picklistEntries="{!mapPicklistOptions[d.Name]}" validFor="{!mapPicklistValidFor[d.Name]}" onchange="{!d.onchange}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'multiselect'}" >
+                                                <c:MultiSelect formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" controllerField="{!mapPicklistController[d.Name]}" validFor="{!mapPicklistValidFor[d.Name]}" options="{!mapOptionsString[d.Name]}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'radio'}" >
+                                                <c:Radio formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" picklistEntries="{!mapPicklistOptions[d.Name]}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none" rendered="{! d.Type == 'lookup'}" >
+                                                <c:Lookup formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" sObjectName="{!$ObjectType[sObjectName].Fields[d.Name].ReferenceTo[0]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" whereCondition="{!d.WhereCondition}" metaField="{!d.MetaField}" fieldLabel="{!d.Label}" labelField="{!d.SearchField}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none" rendered="{! d.Type == 'photo'}" >
+                                                <!-- <c:photoupload myObject="{!recordObject}" fieldName="d.Name" recordName="Name" /> -->
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none"  rendered="{! d.Type == 'richtext'}" >
+                                                <c:RichText formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
+                                            </apex:panelGroup>
+                                            <apex:panelGroup layout="none" rendered="{! d.Type == 'model'}" >
+                                                <c:Model fieldName="modelId" formid="{!formId}" modelType="{!d.Label}" />
+                                            </apex:panelGroup>
+                                        </apex:repeat>
+                                    </div>
+                                </apex:repeat>
+                            </div>
+                        </div>
+                    </fieldset>
+                </apex:repeat>
+            </div>
+            <div class="slds-modal__footer">
+                <a data-aljs-dismiss="modal" class="slds-button slds-button--neutral slds-form__cancel">{!IF(renderButtons,$Label.Cancel,$Label.Close)}</a>
+                <apex:panelGroup layout="none"  rendered="{!renderButtons}" >
+                    <a class="slds-button slds-button--brand slds-form__save" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}">{!$Label.fieloelr__save}</a>
+                </apex:panelGroup>
+            </div>
+        </div>
+        <script>
+          if(typeof BackEndJSSettings == 'undefined') {
+            var BackEndJSSettings = {};
+          }
+
+          if(typeof BackEndJSSettings.LABELS == 'undefined') {
+            BackEndJSSettings.LABELS = {};
+          }
+ 
+          BackEndJSSettings.LABELS.ErrorReviewErrorsForm = '{!$Label.fieloelr__errorreviewerrorsform}';
+        </script>
+    </div>
+</apex:component>

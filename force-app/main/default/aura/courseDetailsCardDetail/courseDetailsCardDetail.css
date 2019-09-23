@@ -1,0 +1,13 @@
+.THIS .del-box-ex {
+    height: 9rem;
+    display:inline-flex;
+}
+
+.THIS .del-img-bg{
+    background: lightblue;
+    height: 100%;
+}
+.THIS .media_description{
+    height: 60%;
+    
+}

@@ -1,0 +1,45 @@
+<apex:component allowDML="true" controller="PhotoUploadController" layout="none"  >
+<!-- Generales del Form -->
+<!-- ATRIBUTOS GENERALES -->
+  <apex:attribute type="String" name="formId" default="formUpload" description="" />
+  <apex:attribute type="String" name="fieldName" default="" description="" assignTo="{!fieldNameObject}"/>
+  <apex:attribute type="SObject" name="record" description="" required="true" assignTo="{!recordObject}" />
+  <apex:attribute type="String" name="instance" description="" default=""/>
+  <apex:attribute type="String" name="reload" description="" default="false"/>
+  <apex:attribute type="String" name="folderName" description="Name of the Folder where the Document will be saved" default="Rewards" assignTo="{!folderUniqueName}"  />
+  <apex:attribute type="String" name="sObjectName" default="" description="" />
+
+  <apex:attribute type="String" name="externalURLName" description="" default="" assignTo="{!externalURLNameObject}"/>
+    <div class="slds-card slds-media__body slds-p-bottom--x-large" style="display: flex">
+      <div class="fielosf-photo-upload" style="margin:auto" data-form-id="{!formId}" data-field-name="{!fieldName}" data-record="{!record}" data-document-id="{!record[fieldName]}" data-folder-name="{!folderName}" data-sobject-name="{!sObjectName}" data-external-url-name="{!externalURLName}" data-folder-id="{!folderId}" data-record-name="{!record['Name']}" data-instance="{!instance}" data-reload="{!reload}">
+        <div class="slds-button-group slds-p-top--x-large slds-m-bottom--none" style="display:table; margin:auto auto 20px auto"  role="group">
+          <button class="slds-button slds-button--neutral slds-button--upload slds-hide">{!$Label.PhotoUpload}</button>
+          <button class="slds-button slds-button--neutral slds-button--url slds-hide">{!$Label.ExternalURL}</button>
+          <button class="slds-button slds-button--neutral slds-button--document slds-hide">{!$Label.ExistingDocument}</button>
+          <button class="slds-button slds-button--neutral slds-button--preview slds-hide">{!$Label.Preview}</button>
+          <button class="slds-button slds-button--neutral slds-button--cancel slds-hide">{!$Label.Cancel}</button>
+          <button class="slds-button slds-button--neutral slds-button--save slds-hide slds-button--brand">{!$Label.Save}</button>
+          <button class="slds-button slds-button--neutral slds-button--replace slds-hide">{!$Label.Replace}</button>            
+          <button class="slds-button slds-button--neutral slds-button--edit slds-hide">{!$Label.edit}</button>
+          <button class="slds-button slds-button--neutral slds-button--delete slds-hide slds-button--destructive">{!$Label.Delete}</button>
+        </div>
+        <div class="slds-form-element" >
+          <div class="slds-form-element__control ">
+            <input type="file" accept="image/*" class="slds-hide slds-input fielosf-input-file slds-p-top--large" />
+            <c:Picklist showLabel="false" formid="{!formId}" fieldName="existingDocument"  mode="new" picklistEntries="{!existingDocuments}" required="false" className="fielosf-document-picklist slds-p-top--large" />
+          </div>
+        </div>
+        <div class="slds-form-element" >
+          <div class="slds-form-element__control ">
+            <img style="max-width:100%; max-height:500px; margin:auto" class="fielosf-cropper slds-p-top--large" />
+            <img style="max-width:100%; max-height:500px; margin:auto" class="fielosf-recordImg slds-p-top--large slds-hide"  src="{!IF(ISBLANK(record[fieldName]),record[externalURLName], encImage)}" />
+            <div style="text-align:left" class="fielosf-external-link-label slds-m-horizontal--medium slds-m-bottom--none slds-text-title--caps slds-hide" >
+              {!$Label.ExternalURLPhotoUpload}
+            </div>
+            <div style="text-align:left" class="fielosf-external-link slds-m-horizontal--medium slds-m-top--none" data-value='{!record[externalURLName]}'></div>
+            <input class="slds-input fielosf-external-url slds-hide slds-m-top--large" placeholder="{!$Label.ImageURL}" />
+          </div>
+        </div>
+      </div>
+    </div>
+</apex:component>

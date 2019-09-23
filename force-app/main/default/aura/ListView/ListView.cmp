@@ -1,0 +1,131 @@
+<aura:component controller="ListViewController" >
+    
+    <aura:attribute type="sObject[]" name="fieldset" default="[]" />
+    <aura:attribute type="sObject[]" name="buttons" default="[]" />
+    <aura:attribute type="sObject[]" name="renderFieldset" default="[]" />
+    <aura:attribute type="String" name="objectType" />
+    <aura:attribute type="String" name="columns" />
+    <aura:attribute type="sObject[]" name="records" default="[]" />
+    <aura:attribute type="sObject[]" name="renderRecords" default="[]" />
+    <aura:attribute type="String" name="layout" default="table" description="table, grid" />
+    <aura:attribute type="String" name="layoutType" default="card" description="card, none" />    
+    <aura:attribute type="String" name="whereCondition" default="" />    
+    <aura:attribute type="String" name="title" default="" />    
+    <aura:attribute type="Boolean" name="showTitle" default="false" />         
+    <aura:attribute type="Boolean" name="showItems" default="false" />        
+    <aura:attribute type="Boolean" name="showToggleBtn" default="false" />        
+    
+    <aura:attribute type="Boolean" name="showQty" default="false" />
+    
+    <aura:registerEvent name="toggleSpinnerEvent" type="c:ToggleSpinnerEvent"/>
+    
+    <aura:attribute type="sObject" name="labelsMap" />
+    
+    <aura:attribute type="String" name="objectAPIName" />
+    
+    <aura:attribute type="Boolean" name="noRecords" default="false" />
+    
+    <aura:handler name="change" value="{!v.records}" action="{!c.updateRecords}"/>
+    
+    <!-- RECORD DETAIL -->    
+    <aura:attribute type="sObject" name="recordDetail" />
+    <aura:attribute type="String" name="recordDetailConfig" />    
+    <aura:attribute type="Boolean" name="showRecord" default="false" />        
+    <aura:handler name="change" value="{!v.recordDetail}" action="{!c.showRecordDetail}"/>
+    
+    <!-- RECORD DETAIL -->
+    
+    <!-- PAGINATOR -->
+    <aura:attribute name="quantity" type="Integer" />        
+    <aura:attribute name="lastPage" type="Integer" default="false" />
+    <aura:attribute name="paging" type="Boolean" />
+    <!-- PAGINATOR -->
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>          
+    
+    
+    <aura:if isTrue="{!v.showItems}">
+        <aura:if isTrue="{!or(!v.showRecord, and(v.showRecord, or(!v.recordDetailConfig.type, v.recordDetailConfig.type == 'modal')))}">
+            <aura:if isTrue="{!v.showTitle}">
+                <div class="slds-m-top--small title-container">
+                    <h3 class="slds-section-title--divider">{!v.title} <aura:if isTrue="{!v.showQty}"> ({!v.renderRecords.length})</aura:if></h3>    
+                    <aura:if isTrue="{!v.showToggleBtn}">
+                        <lightning:button class="layout-btn" iconName="{!v.layout == 'table' || v.layout == 'Table'? 'utility:apps' : 'utility:list'}" label="" name="changeView" onclick="{!c.toggleLayout}" variant="neutral" />
+                    </aura:if>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.layoutType == 'none'}">
+                <aura:if isTrue="{!or(v.layout == 'table', v.layout == 'Table')}">
+                    <aura:if isTrue="{!v.layoutType == 'none'}">
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-no-row-hover slds-table_striped">
+                            <thead>
+                                <aura:iteration items="{!v.renderFieldset}" var="field">
+                                    <th scope="col" class="header-labels">
+                                        <div class="slds-truncate" title="">
+                                            <aura:if isTrue="{!field.showLabel}">
+                                                {!field.label.labelValue}               
+                                            </aura:if>                    
+                                        </div>
+                                    </th>
+                                </aura:iteration>                                 
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.renderRecords}" var="record">
+                                    <c:ListViewItem layout="table" record="{!record}" fieldset="{!v.fieldset}"  />
+                                </aura:iteration>                        
+                            </tbody>
+                        </table>
+                    </aura:if>            
+                </aura:if>
+                <aura:if isTrue="{!or(v.layout == 'grid', v.layout == 'Grid')}">
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded">                        
+                        <aura:iteration items="{!v.renderRecords}" var="record">
+                            <c:ListViewItem columns="{!v.columns}" layout="grid" record="{!record}" fieldset="{!v.fieldset}"  />
+                        </aura:iteration>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!or(v.layout == 'accordion', v.layout == 'Accordion')}">                        
+                    <lightning:accordion aura:id="accordion">
+                        <aura:iteration items="{!v.renderRecords}" var="record">
+                            <c:ListViewItem columns="{!v.columns}" layout="accordion" record="{!record}" fieldset="{!v.fieldset}"  />
+                        </aura:iteration>                    
+                    </lightning:accordion>
+                </aura:if>
+            </aura:if>        
+            <aura:if isTrue="{!v.layoutType == 'card'}">
+                <aura:if isTrue="{!or(v.layout == 'grid', v.layout == 'Grid')}">
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                        <aura:iteration items="{!v.renderRecords}" var="record">
+                            <c:CardItem buttons="{!v.buttons}" columns="{!v.columns}" layout="{!v.layout}" record="{!record}" fieldset="{!v.fieldset}"  />
+                        </aura:iteration>                
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!or(v.layout == 'table', v.layout == 'Table')}">
+                    <aura:iteration items="{!v.renderRecords}" var="record">
+                        <c:CardItem buttons="{!v.buttons}" columns="{!v.columns}" layout="{!v.layout}" record="{!record}" fieldset="{!v.fieldset}"  />
+                    </aura:iteration>                
+                </aura:if>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.paging}">
+                <c:Paginator quantity="{!v.quantity}" lastPage="{!v.lastPage}"/>
+            </aura:if>
+        </aura:if>        
+    </aura:if>                        
+    
+    <aura:if isTrue="{!v.noRecords}">            
+        <div class="noRecords" >                
+            {!$Label.c.NoRecordsToShow}
+        </div>                                    
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.showRecord}">
+        <aura:if isTrue="{!v.recordDetailConfig.type == 'newPage'}">
+            <a onclick="{!c.back}">{!v.objectAPIName}</a> > {!v.recordDetail.Name}
+        </aura:if>
+        <c:RecordDetail recordDetailDismiss="{!c.dismissDetail}" labels="{!v.labelsMap}" record="{!v.recordDetail}" config="{!v.recordDetailConfig}" type="{!v.recordDetailConfig.type}" fieldset="{!v.fieldset}"/>
+    </aura:if>
+    
+    
+</aura:component>

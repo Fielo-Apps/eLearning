@@ -1,0 +1,59 @@
+<apex:component layout="none" > 
+      
+<!-- ATRIBUTOS GENERALES -->
+    <apex:attribute name="record" type="sObject" default="" description="Record" />
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+    <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+    <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+    <apex:attribute name="value" description="Value of the fields" type="String" />
+    <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+    <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+    <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+    <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+    <apex:attribute name="sObjectType" description="sObjectType" type="String" default="" />
+    <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
+
+
+    <apex:panelGroup layout="none" rendered="{! mode == 'hidden' }">
+        <div id="{!formId}-{!describe.Name}" data-field-name="{!IF ( ISBLANK(describe.Name), fieldName, describe.Name )}" class="slds-form-element slds-hide {!className}" data-type="hidden" data-component-id="{!describe.label}" data-on-change="{!onchange}" data-form-id="{!formId}">
+            <input  id="{!formId}-{!describe.Name}-input" name="{!formId}-{!describe.Name}" class="slds-input" type="hidden" data-sobject-type="{!sObjectType}" />
+        </div>
+    </apex:panelGroup>
+    <apex:panelGroup layout="none" rendered="{! mode != 'hidden' }">
+        <apex:variable var="fieldNameData" value="{!IF(ISBLANK(fieldName),SUBSTITUTE( describe.Name, '_', ''),fieldName)}" />
+        <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+            <div id="{!formId}-{!fieldNameData }" data-field-name="{!IF ( ISBLank(describe.Name), fieldNameData, describe.Name )}" class="slds-form-element {!className}" data-component-id="{!describe.label}" data-type="richtext" data-on-change="{!onchange}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+                <apex:panelGroup layout="none" rendered="{!showLabel}">
+                    <label class="slds-form-element__label" for="{!formId}-{!fieldNameData}-input"><apex:panelGroup layout="none" rendered="{! IF( ISBLANK(required), !describe.Nillable, IF(required == 'true', true, false) ) }"><abbr class="slds-required" title="required">*</abbr></apex:panelGroup>{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</label>
+                    <apex:panelGroup layout="none" rendered="{! !ISBLANK(describe.inlineHelpText)}">
+                        <div class="slds-form-element__icon">
+                            <a href="javascript:void(0);">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+                                <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+                              </svg>
+                              <span class="slds-assistive-text">{!$Label.Help}</span>
+                            </a>
+                            <div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" style="position:absolute;top:0px;left:15px;">
+                              <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+                            </div>
+                        </div>
+                    </apex:panelGroup>
+                </apex:panelGroup>
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">                                                                                             
+                                    <textarea id="{!formId}-{!fieldNameData}-input" name="{!formId}-{!describe.Name}" class="slds-input" value="{!value}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"> </textarea>
+                </div>
+                <div class="slds-form-element__help slds-hide"></div>
+            </div>
+        </apex:panelGroup>
+
+        <apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+            <div class="slds-form-element {!className}" data-type="text" data-field-name="{!IF ( ISBLank(describe.Name), fieldNameData, describe.Name )}" id="{!formId}-{!fieldNameData }" data-value="{!value}" >
+                <span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+                <div class="slds-form-element__control slds-has-divider--bottom">
+                <c:OutputField title="{!value}" type="richtext" record="{!record}" field="{!fieldNameData}" cssClass="slds-form-element__static"/>
+                </div>
+            </div>
+        </apex:panelGroup>
+    </apex:panelGroup>
+</apex:component>

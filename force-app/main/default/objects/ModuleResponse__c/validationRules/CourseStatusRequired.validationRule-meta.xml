@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseStatusRequired</fullName>
+    <active>false</active>
+    <description>The lookup to Course Status must be required.</description>
+    <errorConditionFormula>ISBLANK( CourseStatus__c )</errorConditionFormula>
+    <errorDisplayField>CourseStatus__c</errorDisplayField>
+    <errorMessage>Course Status is required.</errorMessage>
+</ValidationRule>

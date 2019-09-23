@@ -1,0 +1,28 @@
+<apex:component controller="FormController" layout="none">
+    <apex:attribute name="sObjectName" type="String" default="" description="" />
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="record" type="SObject" description="" />
+    <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+    <apex:attribute name="fieldset" type="String" default="" description="Form Fields" />
+    <apex:attribute name="mode" description="inline, view" default="view" type="String" />
+    <apex:attribute name="className" description="Inject a css class to the form container" type="String" />
+    <apex:attribute name="prefix" type="String" default="" description="Package prefix" />
+<!-- ATRIBUTOS DE BOTONERAS -->
+  <apex:attribute name="buttons" type="String" default="" description="" />
+  <apex:attribute name="tools" type="String" default="" description="" />
+  <apex:attribute name="recordValue" type="String" default="" description="override record Id" />
+<div id="{!formId}" class="slds-panel slds-grid slds-grid--vertical slds-nowrap {!className}" >
+  <div class="slds-form--stacked slds-grow slds-scrollable--y" data-object-name="{!sObjectName}" data-record-id="{!record.Id}" data-fields="{!fields}">
+    <apex:panelGroup layout="none" rendered="{! buttons <> ''}">
+      <div class="slds-panel__section slds-has-divider--bottom">
+        <!-- Botoneras: Buttons & Tools -->
+        <c:Buttons prefix="{!prefix}" buttons="{!buttons}" tools="{!tools}" toolsHeader="{!$Label.tools}" recordId="{!IF(isBlank(recordValue), record.Id, recordValue)}"/>
+      </div>
+  </apex:panelGroup>
+  <!-- FORM ELEMENTS -->
+    <div class="slds-modal__content slds-p-horizontal--medium">
+      <c:Sections record="{!record}" formId="{!formId}" sObjectName="{!sObjectName}" fieldset="{!fieldset}" mode="{!mode}" />
+    </div>
+  </div>
+</div>
+</apex:component>

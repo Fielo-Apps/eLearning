@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseMandatory</fullName>
+    <active>true</active>
+    <description>The course field is mandatory.</description>
+    <errorConditionFormula>ISBLANK( Course__c )</errorConditionFormula>
+    <errorDisplayField>Course__c</errorDisplayField>
+    <errorMessage>The course is mandatory.</errorMessage>
+</ValidationRule>

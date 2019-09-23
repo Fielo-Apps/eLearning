@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CorrectWeightWhenWeightedQuestions</fullName>
+    <active>true</active>
+    <description>When Module uses Weighted Questions, the field Correct Weight cannot be null.</description>
+    <errorConditionFormula>AND( ISNULL( CorrectWeight__c ) , Module__r.WeightedQuestions__c)</errorConditionFormula>
+    <errorDisplayField>CorrectWeight__c</errorDisplayField>
+    <errorMessage>A value for correct weight must be specified when the corresponding module uses weighted questions.</errorMessage>
+</ValidationRule>

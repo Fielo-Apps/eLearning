@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseStatusMustBeActive</fullName>
+    <active>false</active>
+    <errorConditionFormula>NOT(ISPICKVAL(Course__r.Status__c,&quot;Active&quot;))</errorConditionFormula>
+    <errorDisplayField>Course__c</errorDisplayField>
+    <errorMessage>Course Status must be related to a Course with the Status Active</errorMessage>
+</ValidationRule>

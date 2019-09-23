@@ -1,0 +1,143 @@
+<apex:component controller="RecentRecordsController" layout="none" >
+  <apex:attribute name="title" description="Title" type="String" />
+<!-- ATRIBUTOS DE DATOS -->
+  <apex:attribute name="nameField" description="Campo que actua como Name" default="Name" assignTo="{!cNameField}" type="String" />
+  <apex:attribute name="sObjectName" description="This is the object value for the component." assignTo="{!csObjectName}" type="String" required="true" />
+  <apex:attribute name="fieldset" description="lista de campos" assignTo="{!cFieldset}" type="String" />
+
+  <apex:attribute name="showBorder" description="Table bottom border" type="Boolean" default="true" />
+  <apex:attribute name="showCheckboxes" description="Enables checkboxes for each row" type="Boolean" default="false" />
+  <apex:attribute name="paginatorCssClass" description="Css classes for paginator" type="String" />
+  <apex:attribute name="recentId" type="String" default="" description="Recent Records Id" />
+  <!-- Parámetros de paginador -->
+  <!-- Argumentos de componente -->
+  <apex:attribute name="show" type="Boolean" default="true" description="Show paginator" />
+  <apex:attribute name="dataBinding" type="String" description="" />
+
+  <!-- Argumentos de controlador -->
+  <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
+
+  <apex:attribute name="dataController" default="RecentRecordsController.getRecords" type="String" description="Paginator controller" />
+  <apex:attribute name="async" type="Boolean" description="" default="false" assignTo="{!cAsync}"/>
+
+  <!-- Argumentos de paginador ordenados  segun el invoke -->
+  <apex:attribute name="recordsPerPage" default="10" type="Integer" description="" assignTo="{!cRecordsPerPage}"/>
+  <apex:attribute name="dataOrderBy" type="String"  description="" assignTo="{!orderBy}"/>
+  <apex:attribute name="dataFilters" type="String" description="" assignTo="{!cDataFilters}" />
+
+  <!--TABLA DE REGISTROS -->
+  <div class="fielosf-recent-records" data-fields="{!fieldset}" data-async="{!IF(async,'true','false')}" id="{!recentId}">
+    <table class="fielosf-recent-records__data slds-table slds-table--bordered  slds-max-medium-table--stacked-horizontal slds-m-top--medium slds-no-row-hover slds-table--cell-buffer
+    {!IF(showBorder, 'slds-table--bordered-without-top', '')}">
+      <thead class="fielosf-recent-records__header">
+        <tr class="slds-text-heading--label fielosf-recent-records__row">
+          <apex:panelGroup rendered="{!showCheckboxes}" layout="none">
+            <th scope="col" style="width:2rem;">
+              <div class="slds-th__action slds-th__action--form">
+                <c:Checkbox fieldName="selectAll" className="fielosf-recent-records-checkboxall" />
+                <!--<label class="slds-checkbox">
+                  <input type="checkbox" name="options" tabindex="-1" class="fielosf-recent-records-checkboxall"/>
+                  <span class="slds-checkbox--faux"></span>
+                  <span class="slds-assistive-text">{!$Label.SelectAll}</span>
+                </label>-->
+              </div>
+            </th>
+          </apex:panelGroup>
+          <th scope="col"  class="fielosf--col-model">
+            <c:OutputField content="{!$Label.Name}" cssClass="slds-truncate"/>
+          </th>
+          <apex:repeat value="{!fields}" var="f" >
+            <th scope="col">
+              <c:OutputField content="{!f.label}" type="string" cssClass="slds-truncate"/>
+            </th>
+          </apex:repeat>
+          </tr>
+      </thead>
+      <tbody class="fielosf-recent-records__container">
+      <apex:panelGroup rendered="{! !async}" layout="none">
+        <apex:repeat value="{!recentRecords}" var="r">
+        <tr class="slds-hint-parent fielosf-recent-records__model fielosf-recent-records__row" data-record-id="{!r['id']}">
+          <apex:panelGroup rendered="{!showCheckboxes}" layout="none">
+            <th scope="col" style="width:2rem;">
+              <div class="slds-th__action slds-th__action--form">
+                <c:Checkbox fieldName="{!r['id']}" className="fielosf-recent-records-checkbox" />
+                <!--<label class="slds-checkbox">
+                  <input type="checkbox" tabindex="-1" class="fielosf-recent-records-checkbox" value=""/>
+                  <span class="slds-checkbox--faux"></span>
+                  <span class="slds-assistive-text"><SELECT></SELECT></span>
+                </label>-->
+              </div>
+            </th>
+          </apex:panelGroup>
+          <th role="row" >
+            <c:OutputField content="{!r[nameField]}" href="/{!r['id']}" type="link" cssClass="slds-truncate" field="{!nameField}"/>
+          </th>
+          <apex:repeat value="{!fields}" var="f" >
+          <td  class="fielosf--col-model">
+          <c:OutputField field="{!f.Name}" title="{!r[f.Name]}" type="{!f.Type}" href="/{!IF(LOWER(f.Type) = 'reference',IF(CONTAINS(f.Name,'__r'),r[LEFT(f.Name, FIND('__r', f.Name)) + '_c'],IF(AND(NOT(CONTAINS(f.Name,'__c')),CONTAINS(f.Name,'.')),r[LEFT(f.Name, FIND('.', f.Name)) + 'id'],r[f.Name])),'')}" content="{!r[f.Name]}" cssClass="slds-truncate"/>
+          </td>
+          </apex:repeat>
+        </tr>
+        </apex:repeat>
+        <apex:panelGroup rendered="{! OR(ISNULL(recentRecords), recentRecords.size = 0)}" layout="none">
+          <tr class="slds-hint-parent slds-hide fielosf-recent-records__model" data-record-id="r['id']">
+            <apex:panelGroup rendered="{!showCheckboxes}" layout="none">
+              <th scope="col" style="width:2rem;">
+                <div class="slds-th__action slds-th__action--form">
+                  <c:Checkbox className="fielosf-recent-records-checkbox" />
+                  <!--<label class="slds-checkbox">
+                    <input type="checkbox" tabindex="-1" class="fielosf-recent-records-checkbox" value=""/>
+                    <span class="slds-checkbox--faux"></span>
+                    <span class="slds-assistive-text"><SELECT></SELECT></span>
+                  </label>-->
+                </div>
+              </th>
+            </apex:panelGroup>  
+            <th role="row">
+              <c:OutputField cssClass="slds-truncate" type="link" field="{!nameField}"/>
+            </th>
+            <apex:repeat value="{!fields}" var="f" >
+            <td class="fielosf--col-model">
+              <c:OutputField cssClass="slds-truncate" type="{!f.type}" field="{!f.Name}"/>
+            </td>
+            </apex:repeat>
+          </tr>
+        </apex:panelGroup>
+      </apex:panelGroup>
+      <apex:panelGroup rendered="{! async}" layout="none">
+        <tr class="slds-hint-parent slds-hide fielosf-recent-records__model" data-record-id="">
+          <apex:panelGroup rendered="{!showCheckboxes}" layout="none">
+            <th scope="col" style="width:2rem;">
+              <div class="slds-th__action slds-th__action--form">
+                <label class="slds-checkbox">
+                  <input type="checkbox" tabindex="-1" class="fielosf-recent-records-checkbox" value=""/>
+                  <span class="slds-checkbox--faux"></span>
+                  <span class="slds-assistive-text"><SELECT></SELECT></span>
+                </label>
+              </div>
+            </th>
+          </apex:panelGroup>
+          <th role="row">
+            <c:OutputField field="{!nameField}" type="link" cssClass="slds-truncate"/>
+          </th>
+          <apex:repeat value="{!fields}" var="f" >
+          <td >
+            <c:OutputField field="{!f.Name}" type="{!f.type}" cssClass="slds-truncate"/>
+          </td>
+          </apex:repeat>
+        </tr>
+      </apex:panelGroup>
+      </tbody>
+    </table>
+    <c:BackendPaginator show="{!show}"
+      dataBinding="{!dataBinding}"
+      dataController="{!IF(namespace == '','',namespace + '.')}{!dataController}"
+      dataControllerArguments="{!sObjectName}|{!fieldsetString}"
+      recordsPerPage="{!recordsPerPage}"
+      dataOrderBy="{!dataOrderBy}"
+      dataFilters="{!dataFilters}"
+      recordsInPage="{!recordsInPage}"
+      cssClass="{!paginatorCssClass}"
+      />
+  </div>
+</apex:component>

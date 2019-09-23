@@ -1,0 +1,70 @@
+<aura:component controller="QuizController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute type="String" name="recordId"/>
+    <aura:attribute type="String" name="overrideId"/>
+    <aura:attribute type="String" name="mode"/>    
+    <aura:attribute type="String[]" name="submittedQuestions"/>
+    <aura:attribute type="String[]" name="correctQuestions"/>
+    <aura:attribute type="String[]" name="incorrectQuestions"/>
+    <aura:attribute type="String[]" name="noMoreAttemptsQuestions"/>
+    <aura:attribute type="Integer" name="currentQuestionIndex"/>
+    <aura:attribute type="Question__c[]" name="questions"/>
+    <aura:attribute type="Question__c" name="currentQuestion"/>
+    <aura:attribute type="Module__c" name="module"/>
+    <aura:attribute type="Object" name="moduleWrapper"/>
+    <aura:attribute type="Object" name="moduleResponseWrapper"/>
+    <aura:attribute type="Boolean" name="showQuestionContent" default="true"/>
+    <aura:attribute type="Boolean" name="showActions" default="true"/>
+    <aura:attribute type="Boolean" name="hideQuiz" default="false"/>
+    <aura:attribute type="Boolean" name="showQuestionNumber"/>
+    
+    <!-- Design Attributes -->
+    <aura:attribute type="String" name="submitMode"/>
+    <aura:attribute type="String" name="presentationMode" default="" access="global"/>
+    <aura:attribute type="String" name="feedbackMode"/>
+    <aura:attribute type="Boolean" name="showQuestionName" access="global"/>
+    <!-- Design Attributes -->
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:method name="toggleQuestionsContent" action="{!c.toggleQuestionsContent}"/>
+    
+    <div class="fielo-module-quiz">
+        <aura:if isTrue="{! v.hideQuiz == false }">
+            <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                <lightning:layoutItem>
+                    <h3 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_medium"><b>{!v.mode == 'view' ? $Label.c.ViewResultsBelow : $Label.c.AnswerTheQuestions}</b></h3>
+                </lightning:layoutItem>
+                <lightning:layoutItem>
+                    <lightning:button label="{!v.showQuestionContent ? $Label.c.CollapseAll : $Label.c.ExpandAll}" variant="neutral" onclick="{!c.toggleQuestionsContent}"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            <lightning:card title="" class="fielo-questions-container">
+                <aura:if isTrue="{! and(v.module.FieloELR__QuestionDisplayMode__c == 'All at once', v.questions.length > 0) }">
+                    <aura:iteration var="question" items="{!v.questions}" indexVar="questionNumber">
+                        <div class="fielo-question-separator">
+                            <hr/>
+                        </div>
+                        <c:QuestionCardItem aura:id="question-card" question="{!question}" showQuestionName="{!v.showQuestionName}" questionNumber="{!questionNumber + 1}"/>
+                    </aura:iteration>
+                </aura:if>
+                <aura:if isTrue="{! and(v.showQuestionNumber == true, v.module.FieloELR__QuestionDisplayMode__c == 'One by one', v.currentQuestion.Id != null, v.currentQuestion.Id != '') }">
+                    <c:QuestionCardItem aura:id="unique-question-card" question="{!v.currentQuestion}" showQuestionName="{!v.showQuestionName}" questionNumber="{!v.currentQuestionIndex + 1}"  />
+                </aura:if>
+                <aura:set attribute="footer">
+                    <div class="slds-p-top--small">
+                        <aura:if isTrue="{!v.showActions}">
+                            <aura:if isTrue="{!v.module.FieloELR__QuestionDisplayMode__c == 'One by one'}">
+                                <lightning:button variant="brand" onclick="{!c.callSubmitQuestion}" label="{!$Label.c.SubmitResponse}" />
+                            </aura:if>
+                            <aura:if isTrue="{!v.module.FieloELR__QuestionDisplayMode__c == 'All at once'}">
+                                <lightning:button variant="brand" onclick="{!c.callSubmitFullModule}" label="{!$Label.c.SubmitResponse}" />
+                            </aura:if>
+                        </aura:if>
+                    </div>
+                </aura:set>
+            </lightning:card>
+        </aura:if>
+    </div>
+    <c:Spinner />
+</aura:component>

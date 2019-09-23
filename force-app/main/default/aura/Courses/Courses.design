@@ -1,0 +1,24 @@
+<design:component label="Fielo - Courses" >
+    <design:attribute label="Title" name="titleValue" description="Enter the title to be displayed at the top of the component." default="Courses" />
+
+    <design:attribute label="Enable Paging" name="paging" description="Check this box to allow courses to be displayed in pages." default="true" />
+
+    <design:attribute label="# of Courses per Page" name="quantity" description="If paging is enabled, enter the maximum number of courses you want to be displayed on a single page." default="5" />
+    
+    <design:attribute label="Course Filter Fields" name="courseFilterFields" description="Enter the API names of the fields you want members to be able to filter courses by." default='FieloELR__Status__c,FieloELR__StartDate__c,FieloELR__EndDate__c'/>
+    
+    <design:attribute label="Course Filter Ranged Fields" name="courseRangedFilterFields" description="Enter the API names of any filter fields that need to be shown as a range." default='FieloELR__StartDate__c,FieloELR__EndDate__c'/>
+
+    <design:attribute label="Course Fields" name="detailFields" description="Enter the API names of the fields you want to include in the course list, separated by commas." 
+                      default='FieloELR__Course__c.FieloELR__Modules__r,FieloELR__CourseStatus__c.FieloELR__Transactions__r,FieloELR__CourseStatus__c.FieloELR__Trackers__r,FieloELR__CourseStatus__c.FieloELR__Progress__c'/>
+    
+    <design:attribute label="Sort By Fields" name="sortByFields" description="Enter the API names of the fields you want members to be able to sort by, separated by commas." default="FieloELR__StartDate__c,FieloELR__EndDate__c"/>
+
+    <design:attribute label="# of Days to Show Courses as New" name="daysToBeConsideredNew" description="Enter the number of days after start date that you want courses to be shown as new. This will display a &quot;New&quot; badge next to the course period. If left blank, no courses will be shown as new." 
+                      default='30' />
+	
+    <design:attribute label="# of Days to Warn Course Ending Soon" name="daysToBeConsideredWarning" description="Enter the number of days before end date that you want to start warning members that a course is closing soon. During this period, &quot;__ days left&quot; text will be displayed in yellow." 
+                      default='15' />
+    
+    <design:attribute label="Points Fields" name="pointFields" description="Enter the API name of the field from transaction to be used for the calculation of the points earned field" default="FieloPLT__Points__c" />
+</design:component>

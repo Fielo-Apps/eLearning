@@ -1,0 +1,60 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" access="global" controller="CourseDetailsController">
+    
+    <aura:attribute type="sObject" name="course" />
+    <aura:attribute type="Object[]" name="courseStatus" />
+    <aura:attribute type="FieloPLT__Member__c" name="member" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="FieloPLT:UpdateMemberEvent" action="{!c.updateMember}" />
+    
+    <!-- DESIGN ATTRIBUTES BEGINS -->
+    <aura:attribute access="global" type="String" name="pointFields" default="FieloPLT__Points__c"/>
+    <aura:attribute access="global" type="String" name="detailFields" default="FieloELR__Course__c.FieloELR__Modules__r,FieloELR__CourseStatus__c.FieloELR__Transactions__r,FieloELR__CourseStatus__c.FieloELR__Trackers__r,FieloELR__CourseStatus__c.FieloELR__Progress__c"/>
+    <aura:attribute access="global" type="Integer" name="daysToBeConsideredNew" default="10" />
+    <aura:attribute access="global" type="Integer" name="daysToBeConsideredWarning" default="20" />
+    <!-- DESIGN ATTRIBUTES ENDS -->
+    
+    <!--Course Card Configs -->
+    <aura:attribute type="Id" name="recordId" />
+    <aura:attribute type="Object" name="compConfig" />
+    <aura:attribute type="Object" name="courseFieldsMeta" />
+    <aura:attribute type="Object" name="courseStatusFieldsMeta" />
+    <aura:attribute type="Object" name="coursePoints" />
+    <aura:attribute type="Object[]" name="moduleResponses" />
+    <aura:attribute type="String[]" name="allowedForDependencyCourses" />
+    <aura:attribute type="String" name="classNameCard" />
+    <aura:attribute type="String" name="columns" default="1" />
+    <aura:attribute type="String" name="courseDetailFields"/>
+    <aura:attribute type="String" name="courseStatusDetailFields"/>
+    <aura:attribute type="sObject[]" name="buttons" />
+    <aura:attribute type="sObject[]" name="fieldset" />
+    <aura:attribute type="sObject[]" name="layout" default="table" description="table, grid" />
+    
+    <div class="fielo-course-detail">
+        <lightning:breadcrumbs >
+            <lightning:breadcrumb label="{!$Label.c.Courses}" onclick="{!c.backToCourses}" />
+            <li class="slds-breadcrumb__item slds-text-title_caps fielo-breadcrumb__current">
+                {!v.course.Name}
+            </li>
+        </lightning:breadcrumbs>
+        
+        <div>
+            <h1 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_medium"><b>{!v.course.Name}</b></h1>
+        </div>
+        <lightning:layout class="course-card-layout">
+            <lightning:layoutItem padding="around-small" class="fielo-course-card">
+                
+                <aura:if isTrue="{!v.course != null}">
+                    <div class="fielo-card-container">
+                        <c:CardItem type="landing"
+                                    record="{!v.course}"
+                                    layout="table"
+                                    fieldset="{!v.fieldset}"
+                                    buttons="{!v.buttons}"
+                                    columns="{!v.columns}"/>
+                    </div>
+                </aura:if>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

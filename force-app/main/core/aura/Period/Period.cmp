@@ -1,0 +1,51 @@
+<aura:component >
+    <aura:attribute name="record" type="sObject"/>
+    <aura:attribute name="config" type="String"/>
+    
+    <aura:attribute name="startDate" type="String" />    
+    <aura:attribute name="endDate" type="String" />
+    <aura:attribute name="days" type="String" />
+    <aura:attribute name="daysColor" type="String" />
+    <aura:attribute name="color" type="String" />
+    <aura:attribute name="disabled" type="Boolean" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:if isTrue="{!or(v.startDate, v.endDate)}">
+        <div class="periodContainer">
+            <div class="startDateContainer">
+                <div class="text">
+                    {!v.startDate}
+                </div>            
+            </div>        
+            <aura:if isTrue="{!and(v.endDate.length > 0, v.endDate != v.startDate)}">
+                <div class="endDateContainer">
+                    <div class="text">
+                        {!v.endDate}
+                    </div>            
+                </div>         
+            </aura:if>        
+            <div class="{!v.disabled ? 'dots grey' : 'dots'}">
+                <div class="dotContainer">
+                    <span class="dot">
+                        <span class="smallDot">
+                        </span>
+                    </span>                
+                </div>            
+                <aura:if isTrue="{!or(and(v.endDate.length > 0, v.endDate != v.startDate), !v.endDate)}">
+                    <div class="line"></div>
+                </aura:if>
+                <aura:if isTrue="{!and(v.endDate.length > 0, v.endDate != v.startDate)}">
+                    <div class="dotContainer">
+                        <span class="dot">
+                            <span class="smallDot">
+                            </span>
+                        </span>                
+                    </div>
+                </aura:if>
+                <div class="{!v.daysColor + ' days'}"> 
+                    {!v.days}
+                </div>
+            </div>
+        </div>  
+    </aura:if>
+</aura:component>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoQuestionPoolIfWeightedQuestions</fullName>
+    <active>true</active>
+    <description>The Module cannot have a value for Question Pool and use Weighted Questions.</description>
+    <errorConditionFormula>AND( NOT(ISBLANK(QuestionPool__c)) , WeightedQuestions__c)</errorConditionFormula>
+    <errorMessage>The Module cannot use a Question Pool together with Weighted Questions.</errorMessage>
+</ValidationRule>

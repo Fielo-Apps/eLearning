@@ -1,0 +1,5 @@
+<design:component label="Fielo - Course Detail">
+	<design:attribute label="Course Detail Fields" name="detailFields" description="Enter the API names of the fields you want to be displayed in course detail views, separated by commas." default="FieloELR__Course__c.FieloELR__Modules__r,FieloELR__CourseStatus__c.FieloELR__Transactions__r,FieloELR__CourseStatus__c.FieloELR__Trackers__r,FieloELR__CourseStatus__c.FieloELR__Progress__c"/>
+    
+    <design:attribute label="Points Fields" name="pointFields" description="Enter the API name of the field from transaction to be used for the calculation of the points earned field" default="FieloPLT__Points__c" />
+</design:component>

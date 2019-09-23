@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseStatusCannotBeModified</fullName>
+    <active>true</active>
+    <description>Lookup to Course Status can&#39;t be modified.</description>
+    <errorConditionFormula>ISCHANGED( CourseStatus__c )</errorConditionFormula>
+    <errorDisplayField>CourseStatus__c</errorDisplayField>
+    <errorMessage>Course Status can&#39;t be modified.</errorMessage>
+</ValidationRule>

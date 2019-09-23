@@ -1,0 +1,6 @@
+<aura:component >
+	<aura:attribute name="record" type="sObject" />
+	<aura:attribute name="icon" type="String" />
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>            
+    <lightning:icon iconName="{!v.icon}" size="small" />        
+</aura:component>

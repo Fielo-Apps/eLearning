@@ -1,0 +1,11 @@
+<apex:page showHeader="true" sidebar="true" controller="JSONImportController" >
+	<apex:form >         
+        <apex:pageBlock title="{!$Label.FieloPLT__Import}" >
+	        <apex:pageMessages />	                	
+            <div>
+                <apex:inputFile value="{!inputFile.body}" fileName="{!inputFile.Name}" size="10" />
+                <apex:commandButton value="{!$Label.FieloPLT__Import}" action="{!importFile}"/>
+            </div>	        
+        </apex:pageBlock>        
+    </apex:form>
+</apex:page>

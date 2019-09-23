@@ -1,0 +1,45 @@
+<apex:component layout="none">
+	<apex:attribute name="formId" type="String" default="" description="form id" />
+	<apex:attribute name="field" type="String" default="" description="name of the field" />
+	<apex:attribute name="type" type="String" default="" description="Data type" />
+	<apex:attribute name="fieldname" type="String" default="" description="field name" />
+	<apex:attribute name="value" type="String" default="" description="field value" />
+	<apex:attribute name="cssClass" type="String" default="" description="extra classes" />
+	<apex:attribute name="href" type="String" default="#" description="href value" />
+	<apex:attribute name="title" type="String" default="" description="title value" />
+	<apex:attribute name="content" type="String" default="" description="Data content" />
+	<apex:attribute name="onchange" type="String" default="" description="onchange method" />
+	<apex:attribute name="describe" type="String" default="" description="field describe" />
+	<apex:attribute name="sObjectName" type="String" default="" description="object name" />
+	<apex:attribute name="mode" type="String" description="new, update, view" />
+	<apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+	<apex:attribute name="toggle" type="Boolean" default="true" description="" />
+	<apex:attribute name="picklistOptions" type="Object[]" description="picklist options" />
+
+	<apex:panelGroup layout="none" rendered="{! type == 'hidden'}" >
+	  <div class="slds-form-element slds-hide" data-component-id="{!fieldname}" >
+	    <input type="hidden" name="{!fieldname}" value="{!value}" />
+	  </div>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none"  rendered="{! type == 'input'}" >
+	    <c:Input showLabel="{!showLabel}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" mode="{!mode}" value="{!value}"/>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none"  rendered="{! type == 'checkbox'}" >
+	    <c:Checkbox showLabel="{!showLabel}" toggle="{!toggle}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" mode="{!mode}" value="{!value}"/>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none"  rendered="{! type == 'picklist'}" >
+	    <c:Picklist showLabel="{!showLabel}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" mode="{!mode}" value="{!value}" picklistEntries="{!picklistOptions}"/>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none"  rendered="{! type == 'multipicklist'}" >
+	    <c:MultiSelect showLabel="{!showLabel}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" mode="{!mode}" value="{!value}" picklistEntries="{!picklistOptions}"/>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none"  rendered="{! type == 'radio'}" >
+	    <c:Radio showLabel="{!showLabel}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" mode="{!mode}" value="{!value}" picklistEntries="{!picklistOptions}"/>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none" rendered="{! type == 'lookup'}" >
+	    <c:Lookup showLabel="{!showLabel}" formid="{!formId}" describe="{!$ObjectType[sObjectName].Fields[fieldname]}" sObjectName="{!$ObjectType[sObjectName].Fields[fieldname].ReferenceTo[0]}" mode="{!mode}" value="{!value}" />
+	</apex:panelGroup>
+	<apex:panelGroup layout="none" rendered="{! type == 'photo'}" >
+	<!--<c:photoupload myObject="{!cRecord}" fieldName="name" recordName="Name" />-->
+	</apex:panelGroup>
+</apex:component>

@@ -1,0 +1,61 @@
+<apex:component layout="none" controller="PicklistController">
+  <!-- ATRIBUTOS GENERALES -->
+  <apex:attribute name="formId" type="String" default="form" description="" />
+  <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+  <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+  <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+  <apex:attribute name="value" description="Value of the fields" type="String" />
+  <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+  <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+  <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+  <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+  <!-- ATRIBUTOS LISTAS -->
+  <apex:attribute name="options" description="JSON with the Options" type="String" assignTo="{!cOptions}" />
+  <apex:attribute name="picklistEntries" description="List with the Options" type="Object[]" />
+  <!-- ATRIBUTOS DEPENDENCIAS -->
+  <apex:attribute name="controller" description="Field" type="String"  />
+  <apex:attribute name="optionsGetter" description="Javascript method responsable of handle return the options when the controller field change" type="String"  />
+  <apex:attribute name="validFor" default="" description="JSON with the ValidFor Dependency" type="String" />
+  <!-- ATRIBUTOS PARTICULARES DEL CHECKBOXES -->
+
+  <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+    <fieldset id="{!formId}-{! IF ( ISBLANK(fieldName), SUBSTITUTE( describe.Name, '_', ''), fieldName) }" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" class="slds-form-element {!className}" data-component-id="{!describe.label}" data-type="checkboxes" data-config="" data-controller-element="{! IF( ISBLANK(controller), '', formId + '-' + controller ) }" data-valid-for="{!validFor}" data-options-getter="{!optionsGetter}" data-on-change="{!onchange}" data-options="{!optionsString}" data-selected="{!value}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }">
+      <legend class="slds-form-element__legend slds-form-element__label">
+        <apex:panelGroup layout="none" rendered="{!showLabel}">
+          <span class="slds-form-element__label">{!describe.label}</span>
+        </apex:panelGroup>
+        <apex:panelGroup layout="none" rendered="{! showLabel && !ISBLANK(describe.inlineHelpText)}">
+          <div class="slds-form-element__icon">
+            <a href="javascript:void(0);">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+                  <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+                </svg>
+              <span class="slds-assistive-text">{!$Label.Help}</span>
+            </a>
+            <div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" style="position:absolute;top:0px;left:15px;">
+              <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+            </div>
+          </div>
+        </apex:panelGroup>
+      </legend>
+      <div class="slds-form-element__control">
+        <apex:repeat value="{!IF(options!='', optionsList,picklistEntries)}" var="p" >
+          <label class="slds-checkbox" for="{!formId}-{!fieldName}-{!p['Id']}" data-value="{!p['Id']}">
+            <input name="{!formId}-{!describe.name}" type="checkbox" id="{!formId}-{!fieldName}-{! Substitute( p['Id'],  ' ', '-')}" value="{!p['Id']}" />
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-form-element__label">{!p['Label']}</span>
+          </label>
+        </apex:repeat>
+      </div>
+      <div class="slds-form-element__help slds-hide"></div>
+    </fieldset>
+  </apex:panelGroup>
+  <apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+    <div class="slds-form-element {!className}" data-type="text" data-value="{!value}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" id="{!formId}-{!fieldName }">
+      <span class="slds-form-element__label">{!describe.label}</span>
+      <div class="slds-form-element__control slds-has-divider--bottom">
+        <span class="slds-form-element__static">{!value}</span>
+      </div>
+    </div>
+  </apex:panelGroup>
+</apex:component>

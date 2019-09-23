@@ -1,0 +1,33 @@
+.THIS .fielo-section-layout {
+    color: #FFFFFF;
+    height: 50px;
+}
+
+.THIS .fielo-section--scheduled {
+    background-color: #FFB75D;
+}
+
+.THIS .fielo-section--active {
+    background-color: #1589EE;
+}
+
+.THIS .fielo-section__field {
+    text-align: left;
+    padding-left: 8px;
+}
+    
+
+.THIS .slds-form-element__label{
+    color: #FFFFFF;
+}
+
+.THIS .slds-form-element__label{
+    width: 100%;
+    height: 100%;
+}
+
+.THIS .fielo-section__field-value{
+    width: 100%;
+    height: 100%;
+    text-align: left;
+}

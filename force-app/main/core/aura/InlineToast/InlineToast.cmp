@@ -1,0 +1,20 @@
+<aura:component>
+  <aura:attribute name="visible" default="false" type="Boolean" access="private" />
+  <aura:attribute name="config" type="Object" />
+
+  <aura:method name="showToast" action="{!c.showToast}" description="Show the inline toast">
+    <aura:attribute name="newConfig" type="Object" />
+  </aura:method>
+
+  <aura:if isTrue="{!v.visible}">
+    <div class="{!v.config.themeClass}" role="alert">
+      <span class="slds-assistive-text"></span>
+      <span class="{!v.config.iconClass}" title="Description of icon when needed">
+        <lightning:icon iconName="{!v.config.icon}" size="small" alternativeText="" variant="inverse" />
+      </span>
+      <div class="slds-notify__content">
+        <h2 class="slds-text-heading_small ">{!v.config.title}</h2>
+      </div>
+    </div>
+  </aura:if>
+</aura:component>

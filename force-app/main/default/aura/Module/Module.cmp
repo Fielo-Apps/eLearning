@@ -1,0 +1,21 @@
+<aura:component controller="ModuleController">
+    <aura:attribute type="Module__c" name="module" />
+    <aura:attribute type="Question__c[]" name="questions" />
+    <aura:attribute type="Boolean" name="showQuestions" default="false" />        
+    <aura:attribute type="sObject" name="content" />
+    <aura:attribute type="sObject" name="moduleContent" />
+    <aura:attribute type="String" name="contentType" />
+    <aura:attribute type="String" name="contentFieldName" />
+    <aura:attribute type="Boolean" name="showContent" default="false" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>    
+    <aura:if isTrue="{!v.showContent}">        
+        <div class="slds-text-align_center">
+            <c:OutputField record="{!v.content}" type="{!v.contentType}" fieldName="{!v.contentFieldName}" />
+        </div>        
+        <h3 class="slds-section-title--divider">Questions</h3>
+    </aura:if>
+    <c:Quiz questions="{!v.questions}" module="{!v.module.module}" moduleWrapper="{!v.module}"  />
+    
+    
+</aura:component>

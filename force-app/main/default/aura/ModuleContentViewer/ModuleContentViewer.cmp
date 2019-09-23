@@ -1,0 +1,42 @@
+<aura:component >
+    <aura:attribute type="String" name="mediaType"/>
+    <aura:attribute type="String" name="type"/>
+    <aura:attribute type="String" name="url"/>
+    <aura:attribute type="String" name="fileExtension"/>
+    <aura:attribute type="Object" name="config"/>
+    <aura:attribute type="Boolean" name="disableControls" default="true"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div class="fielo-module-content-viewer">
+        <aura:if isTrue="{!v.type == 'pdf'}">
+            <c:PDFViewer urlToFile="{!v.url}" />
+        </aura:if>
+        <aura:if isTrue="{! or(v.type == 'mp3', v.type == 'wav', v.type == 'audio ogg')}">
+            <lightning:layout class="fielo-module-audio" horizontalAlign="center" verticalAlign="center">
+                <lightning:layoutItem>
+            		<audio controls="true">
+		                <source src="{!v.url}" type="{! 'audio/' + (v.type == 'mp3' ? 'mpeg' : v.type) }"/>
+		            </audio>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </aura:if>
+        <aura:if isTrue="{! or(v.type == 'mp4', v.type == 'video ogg', v.type == 'webm')}">
+            <video width="754" height="428" controls="true">
+                <source src="{!v.url}" type="{!'video/' + v.type}"/>
+            </video>
+        </aura:if>
+        <aura:if isTrue="{!v.type == 'image'}">
+            <img class="fielo-module-image" src="{!v.url}" />
+        </aura:if>
+        <aura:if isTrue="{!v.type == 'youtube video'}">
+            <iframe width="100%" height="428px" src="{!v.url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"/>
+        </aura:if>
+        <aura:if isTrue="{!v.type == 'vimeo'}">
+            <iframe width="100%" height="428px" src="{!v.url}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"/>
+        </aura:if>
+        <aura:if isTrue="{!v.type == 'carousel'}">
+            <c:ModuleImagesCarousel urls="{!v.url}" />
+        </aura:if>
+    </div>
+</aura:component>

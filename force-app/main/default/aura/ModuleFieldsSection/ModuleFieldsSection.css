@@ -1,0 +1,42 @@
+.THIS {
+    padding-top: 0px;
+}
+.THIS .fielo-section-layout {
+    height: 50px;
+}
+
+.THIS .fielo-section__field {
+    text-align: left;
+    padding-left: 5px;
+    display: inline-grid
+}
+
+.THIS .fielo-section__field:first-child {
+    padding-left: 0px;
+}
+
+.THIS .fielo-section__field-value{
+    font-size: 0.75rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+.THIS .slds-form-element__label {
+    color: unset;
+}
+
+.THIS .fielo-module-status--passed {
+    color: #4BCA81;
+}
+
+.THIS .fielo-module-status--notpassed {
+    color: #C23934;
+}
+
+.THIS .fielo-dependency-helptext{
+    vertical-align: text-top;
+}
+
+.THIS .fielo-dependency-helptext .slds-button__icon{
+    color: #54698d;
+}

@@ -1,0 +1,17 @@
+<aura:component>
+    <aura:attribute type="String" name="name"/>
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="Boolean" name="doneAdjust"/>
+    
+	<aura:handler event="aura:doneRendering" action="{!c.doInit}" /> 
+    
+    <div aura:id="description-container" class="fielo-course-content">
+        <aura:if isTrue="{!v.record.FieloELR__Description__c != null}">
+            {!v.record.FieloELR__Description__c}
+            <aura:set attribute="else">
+                &nbsp;
+            </aura:set>
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,74 @@
+<aura:component controller="ModuleActionsController">
+    <aura:attribute type="Object" name="moduleWrapper"/>
+    <aura:attribute type="Object" name="courseWrapper"/>
+    <aura:attribute type="sObject" name="course"/>
+    <aura:attribute type="sObject" name="courseStatus"/>
+    <aura:attribute type="sObject" name="nextModule"/>
+    <aura:attribute type="FieloPLT__Member__c" name="member"/>
+    <aura:attribute type="String" name="location" default="header"/>
+    <aura:attribute type="String" name="passedClassName"/>
+    <aura:attribute type="String[]" name="actions"/>
+    <aura:attribute type="Boolean" name="showStatus" default="true"/>
+    <aura:attribute type="Boolean" name="showTakeButton" default="false"/>
+    <aura:attribute type="Boolean" name="showRetakeButton" default="true"/>
+    <aura:attribute type="Boolean" name="showViewResultsButton" default="true"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div class="fielo-module-actions-container" data-module-id="{!v.moduleWrapper.module.Id}" data-member-id="{!v.member.Id}" data-location="{!v.location}" data-course-id="{!v.course.Id}">
+        <aura:iteration items="{!v.actions}" var="action">
+            <aura:if isTrue="{!v.location == 'header'}">
+                <aura:if isTrue="{!action == 'passed'}">
+                    <aura:if isTrue="{!v.showStatus}">
+                        <div class="fielo-module-status fielo-module-status--passed">
+                            {!$Label.c.Passed}
+                        </div>
+                    </aura:if>
+                    <aura:set attribute="else">
+                        <aura:if isTrue="{!action == 'take'}">
+                            <lightning:button label="{!$Label.c.TakeQuiz}" variant="brand" onclick="{!c.callTakeModule}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!action == 'take-readonly'}">
+                            <lightning:button label="{!$Label.c.TakeQuiz}" variant="brand" disabled="true"/>
+                        </aura:if>
+                        <aura:if isTrue="{!action == 'notpassed'}">
+                            <aura:if isTrue="{!v.showStatus}">
+                                <div class="fielo-module-status fielo-module-status--notpassed">
+                                    {!$Label.c.NotPassed}
+                                </div>
+                            </aura:if>
+                        </aura:if>
+                    </aura:set>
+                </aura:if>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!action == 'take'}">
+                        <aura:if isTrue="{!v.showTakeButton}">
+                            <lightning:button label="{!$Label.c.TakeQuiz}" variant="brand" onclick="{!c.callTakeModule}"/>
+                        </aura:if>
+                    </aura:if>
+                    <aura:if isTrue="{!action == 'view'}">
+                        <aura:if isTrue="{!v.showViewResultsButton}">
+                            <lightning:button label="{!$Label.c.ViewResults}" variant="base" onclick="{!c.callViewResults}"/>
+                        </aura:if>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!action == 'retake'}">
+                        <aura:if isTrue="{!v.showRetakeButton}">
+                            <lightning:button label="{!$Label.c.RetakeQuiz}" variant="brand" onclick="{!c.callTakeModule}"/>
+                        </aura:if>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!action == 'retake-readonly'}">
+                        <lightning:button label="{!$Label.c.RetakeQuiz}" variant="brand" disabled="true"/>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!action == 'view-nextmodule'}">
+                        <aura:if isTrue="{!v.nextModule != null}">
+                            <lightning:button label="{! $Label.c.ViewModule + ' ' + v.nextModule.FieloELR__Order__c}" name="{!v.config.label_viewModule  + ' ' + v.nextModule.FieloELR__Order__c}" onclick="{!c.callViewModule}" variant="brand" />
+                        </aura:if>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </aura:iteration>
+    </div>
+</aura:component>

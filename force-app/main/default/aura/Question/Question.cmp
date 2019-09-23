@@ -1,0 +1,88 @@
+<aura:component >
+    <aura:attribute type="Id" name="moduleId"/>
+    <aura:attribute type="Question__c" name="question"/>
+    <aura:attribute type="sObject[]" name="options"/>
+    <aura:attribute type="sObject[]" name="answers"/>
+    <aura:attribute type="sObject[]" name="matchingTextList"/>
+    <aura:attribute type="sObject" name="matchingOptions"/>
+    <aura:attribute type="String" name="title"/>
+    <aura:attribute type="String" name="type"/> 
+    <aura:attribute type="String" name="shortAnswer"/>
+    <aura:attribute type="String" name="mode" default="edit"/>
+    <aura:attribute type="String" name="className" default=""/>
+    <aura:attribute type="String" name="isCorrect" default=""/>
+    <aura:attribute type="String" name="icon"/>
+    <aura:attribute type="String" name="status"/>
+    <aura:attribute type="String" name="statusClass"/>
+    <aura:attribute type="String[]" name="matchingAnswer"/>
+    <aura:attribute type="String" name="textValue"/>
+    <aura:attribute type="Boolean" name="renderQuestion" default="false"/>
+    <aura:attribute type="Boolean" name="showContent" default="true"/>
+    
+    <aura:method name="getAnswers" action="{!c.getAnswers}"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div class="{!v.className + ' question ' + ( or(v.mode == 'view', v.status == 'passed', v.status == 'attemptLimit') ? ' disabled' : '')}" data-mode="{!v.mode}" data-status="{!v.status}" data-status-class="{!( or(v.mode == 'view', v.status == 'passed', v.status == 'attemptLimit') ? ' disabled' : '')}">
+        <aura:if isTrue="{!v.renderQuestion}">
+            <div>
+                <div class="slds-text-heading_small slds-text-align_left" style="display:inline-block"><lightning:formattedRichText value="{!v.title}"></lightning:formattedRichText></div>
+            </div>
+            <div class="{!v.showContent == true ? '' : 'fielo-question-content--hidden'}">
+                <aura:if isTrue="{!v.type == 'Single Choice'}" >        
+                    <div class="fielo-answer-option-container">
+                        <aura:iteration items="{!v.options}" var="option">
+                            <lightning:input aura:id="fielo-answer-option" type="radio" label="{!option.FieloELR__AnswerOptionText__c}" value="{!option.Id}" name="{!v.question.Id}" onclick="{!c.uncheckOthers}" disabled="{!or(v.mode == 'view', v.status == 'attemptLimit',v.status == 'passed')}"/>
+                        </aura:iteration>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.type == 'Multiple Choice'}" >
+                    <div class="fielo-answer-option-container">
+                        <aura:iteration items="{!v.options}" var="option">
+                            <lightning:input aura:id="fielo-answer-option" class="{!or(v.mode == 'view', v.status == 'attemptLimit',v.status == 'passed') ? 'fielo-disabled-checkbox' : ''}" type="checkbox" label="{!option.FieloELR__AnswerOptionText__c}"  value="{!option.Id}" name="{!v.question.Id}"/>
+                        </aura:iteration>        
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.type == 'Short Answer'}" >        
+                    <lightning:input aura:id="fielo-answer-option" value="{!v.shortAnswer}" disabled="{!or(v.mode == 'view', v.status == 'attemptLimit',v.status == 'passed')}"/>
+                </aura:if>
+                <aura:if isTrue="{!v.type == 'Statement'}" >
+                    <div class="fielo-answer-option-container">
+                        <aura:iteration items="{!v.options}" var="option">
+                            <lightning:input aura:id="fielo-answer-option" type="radio" label="{!option.FieloELR__AnswerOptionText__c}" value="{!option.Id}" name="{!v.question.Id}" onclick="{!c.uncheckOthers}" disabled="{!or(v.mode == 'view', v.status == 'attemptLimit',v.status == 'passed')}"/>
+                        </aura:iteration>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.type == 'Matching Options'}" >
+                    <table class="fielo-question--matching-options">
+                        <tbody>
+                            <aura:iteration items="{!v.options}" var="option" indexVar="index">
+                                <aura:if isTrue="{! option.FieloELR__IsCorrect__c == true}">
+                                    <tr aura:id="fielo-answer-option" name="{!option.Id}">
+                                        <td>
+                                            <div class="slds-truncate" title="{!option.FieloELR__AnswerOptionText__c}">{!option.FieloELR__AnswerOptionText__c}</div>
+                                        </td>
+                                        <td  class="fielo-matching-text-container">
+                                            <lightning:select aura:id="fielo-matching-text" class="fielo-matching-text" name="{!option.Id}" disabled="{!or(v.mode == 'view', v.status == 'attemptLimit',v.status == 'passed')}">
+                                                <option value="">{!$Label.c.SelectAnOption}</option>
+                                                <aura:iteration items="{!v.matchingTextList}" var="matchingOption">
+                                                    <option value="{!matchingOption}">{!matchingOption}</option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </td>
+                                        <!-- HIDDEN -->
+                                        <td  class="fielo-answer-option-id-container">
+                                            <lightning:input aura:id="fielo-answer-option-id" label="Id" value="{!option.Id}"/>
+                                        </td>
+                                    </tr>
+                                </aura:if>
+                            </aura:iteration>
+                        </tbody>
+                    </table>            
+                </aura:if>
+            </div>
+        </aura:if>
+    </div>
+    
+    
+</aura:component>

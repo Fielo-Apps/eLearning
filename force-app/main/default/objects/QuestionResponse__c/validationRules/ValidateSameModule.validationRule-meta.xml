@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateSameModule</fullName>
+    <active>true</active>
+    <errorConditionFormula>Question__r.Module__c !=  ModuleResponse__r.Module__c</errorConditionFormula>
+    <errorMessage>The related question doesn&#39;t belong to this module.</errorMessage>
+</ValidationRule>

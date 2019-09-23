@@ -1,0 +1,17 @@
+.THIS.responseMessage {    
+    padding: 20px 0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.THIS.responseMessage[data-is-approved="true"]{
+    color: #3c763d;
+    background: #f1f9ee;
+    border-color: #d6e9c6;
+}
+
+.THIS.responseMessage[data-is-approved="false"]{
+    color: #a94442;
+    background-color: #fbefef;
+    border-color: #ebccd1;
+}

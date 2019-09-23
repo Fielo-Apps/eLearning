@@ -1,0 +1,133 @@
+<aura:component controller="CoursesController" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute type="sObject" name="moduleContent" />
+    
+    <aura:attribute name="configDefault" type="String" default='{"fieldset":[{"apiName":"Name","type":"subcomponent","subcomponent":"FieloELR:ShowRecord","label":{"type":"default"},"showLabel":true},{"apiName":"FieloELR__Description__c","type":"output","label":{"type":"default"},"showLabel":true},{"apiName":"JoinCourse","type":"subcomponent","subcomponent":"FieloELR:JoinCourse","label":{"type":"text","value":"Join Course"},"showLabel":false}],"quantity":6,"Course":{"fieldset":[{"apiName":"Name","type":"output","label":{"type":"default"},"showLabel":true},{"apiName":"FieloELR__Description__c","type":"output","label":{"type":"default"},"showLabel":true},{"apiName":"FieloELR__ApprovalGrade__c","type":"output","label":{"type":"default"},"showLabel":true},{"apiName":"TakeModule","type":"subcomponent","subcomponent":"FieloELR:TakeModule","label":{"type":"text","value":""},"showLabel":false}],"moduleResponse":[{"apiName":"FieloELR__NumberOfAttempt__c","label":{"type":"default"},"type":"output","showLabel":true}]}}'/>
+    <aura:attribute type="String" name="layout"/>
+    <aura:attribute type="Integer" name="columns"/>
+    
+    <!-- DESIGN ATTRIBUTES -->
+    <aura:attribute type="String" name="titleValue" access="global"/>
+    <aura:attribute type="String" name="courseFilterFields" access="global" default="FieloELR__Status__c,FieloELR__StartDate__c,FieloELR__EndDate__c"/>
+    <aura:attribute type="String" name="courseRangedFilterFields" access="global" default="FieloELR__StartDate__c,FieloELR__EndDate__c"/>
+    <aura:attribute type="String" name="detailFields" access="global" default="FieloELR__Course__c.FieloELR__Modules__r,FieloELR__CourseStatus__c.FieloELR__Transactions__r,FieloELR__CourseStatus__c.FieloELR__Trackers__r,FieloELR__CourseStatus__c.FieloELR__Progress__c"/>
+    <aura:attribute type="String" name="sortByFields" access="global" default="FieloELR__StartDate__c,FieloELR__EndDate__c"/>
+    <aura:attribute type="String" name="pointFields" access="global" default="FieloPLT__Points__c"/>
+    <aura:attribute type="Integer" name="daysToBeConsideredNew" default="10" access="global"/>
+    <aura:attribute type="Integer" name="daysToBeConsideredWarning" default="20" access="global"/>
+    <!-- DESIGN ATTRIBUTES -->
+    
+    <aura:attribute type="String" name="fields" default="Name,FieloELR__Description__c"/>
+    <aura:attribute type="String" name="courseColumns"/>
+    <aura:attribute type="String" name="courseDetailFields"/>
+    <aura:attribute type="String" name="courseStatusDetailFields"/>
+    <aura:attribute type="String" name="courseLayout" />
+    <aura:attribute type="String" name="sortByOptions"/>
+    <aura:attribute type="Boolean" name="showCoursesList" default="false" />
+    <aura:attribute type="Boolean" name="showCourse" default="false" />
+    <aura:attribute type="Boolean" name="showPointsEarned" default="true" />
+    <aura:attribute type="Boolean" name="showFilter" default="true" />
+    <aura:attribute type="Boolean" name="showBody" default="true" />
+    <aura:attribute type="Boolean" name="spinnerIsRunning" default="false" />
+    
+    <aura:attribute type="Course__c[]" name="coursesList" />
+    <aura:attribute type="Object[]" name="coursesWrappers" />
+    <aura:attribute type="String[]" name="allowedForDependencyCourses" />
+    <aura:attribute type="sObject[]" name="courseStatus" />
+    <aura:attribute type="sObject[]" name="courseFieldset" />
+    <aura:attribute type="sObject[]" name="filterFieldSet" />
+    <aura:attribute type="sObject[]" name="courseDetailFieldMeta" />
+    <aura:attribute type="sObject[]" name="fieldset" />
+    <aura:attribute type="sObject[]" name="buttons" />
+    <aura:attribute type="Object" name="courseFieldsMeta" />
+    <aura:attribute type="Object" name="courseStatusFieldsMeta" />
+    <aura:attribute type="Object" name="compConfig" />
+    <aura:attribute type="Object" name="coursePoints" />
+    
+    <!-- MODULE RESPONSE -->
+    <aura:attribute type="sObject[]" name="moduleResponseFieldset" />
+    <aura:attribute type="String" name="moduleResponseFields"/>
+    <!-- MODULE RESPONSE -->
+    
+    <aura:attribute type="String" name="title" default="" />    
+    <aura:attribute type="String" name="whereClause" default="" />
+    <aura:attribute type="String" name="dynamicFilterString" default="" />
+    <aura:attribute type="String" name="sortByClause" default="" />
+    <aura:attribute type="String" name="courseTitle" default="" />
+    <aura:attribute type="String" name="activeViewName" default="myCourses" />
+    
+    <aura:attribute type="FieloPLT__Member__c" name="member" />
+    
+    <aura:handler event="FieloPLT:UpdateMemberEvent" action="{!c.updateMember}"/>
+    
+    <aura:handler name="courseViewSelected" event="c:CourseViewSelected" action="{!c.handleCourseViewSelected}"/>
+    <aura:handler name="filterRecords" event="c:FilterRecords" action="{!c.handleFilterRecords}"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <!-- PAGINADOR -->
+    <aura:attribute name="paging" type="Boolean" access="global"  />
+    <aura:attribute name="quantity" type="Integer" access="global" />    
+    <aura:handler name="paging" event="c:PaginatorEvent" action="{!c.paginator}" default="false"/>        
+    <!-- PAGINADOR -->
+    
+    <!-- ERROR -->
+    <aura:attribute name="showError" type="Boolean" />
+    <aura:attribute name="error" type="String" />
+    <!-- ERROR -->   
+    
+    <aura:if isTrue="{!v.showBody}">
+        <div class="{!'fielo-courses-list' + className}">
+            <h3 class="slds-text-heading_large slds-p-top_medium slds-p-bottom_medium"><b>{!v.title}</b></h3>
+            <div class="fielo-course-tab-selector">
+                <div class="slds-grid">
+                    <div class="slds-col">
+                    </div>
+                    <c:CourseViewSelector />
+                    <div class="slds-col">
+                    </div>
+                </div>
+            </div>
+            <aura:if isTrue="{!v.activeViewName == 'availableCourses'}">
+                <h3 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_medium"><b>{!$Label.c.AvailableCourses}</b></h3>
+                <aura:set attribute="else">
+                    <h3 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_medium"><b>{!$Label.c.MyCourses}</b></h3>
+                </aura:set>
+            </aura:if>
+            
+            <div class="fielo-courses-filter-container slds-p-top_small slds-p-bottom_small">
+                <aura:if isTrue="{!and(v.showFilter, v.filterFieldSet.length > 0)}">
+                    <c:Filter fieldset="{!v.filterFieldSet}"
+                              filterFields="{!v.courseFilterFields}"
+                              rangedFields="{!v.courseRangedFilterFields}"
+                              showSortBy="true"
+                              sortByOptions="{!v.sortByOptions}" />
+                </aura:if>
+            </div>
+            
+            <aura:if isTrue="{!v.showCoursesList}">
+                <aura:if isTrue="{!v.coursesList != null }">
+                    <aura:if isTrue="{!v.fieldset != null}">
+                        <c:ListView showToggleBtn="true"
+                                    showTitle="true"
+                                    layoutType="card"
+                                    objectAPIName="FieloELR__Course__c"
+                                    paging="{!v.paging}"
+                                    quantity="{!v.quantity}"
+                                    records="{!v.coursesList}"
+                                    columns="{!v.columns}"
+                                    layout="grid"
+                                    fieldset="{!v.fieldset}"
+                                    title="&nbsp;"
+                                    buttons="{!v.buttons}"/>
+                    </aura:if>
+                </aura:if>
+            </aura:if>
+        </div>
+        
+        <aura:if isTrue="{!v.showError}">
+            <c:Error error="{!v.error}" />
+        </aura:if>
+    </aura:if>
+    
+    <c:Spinner />
+</aura:component>

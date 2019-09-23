@@ -1,0 +1,34 @@
+<apex:component layout="none">
+  <apex:attribute name="ns" description="namespace of package" type="String" default="" />
+  <apex:attribute name="offset" description="offset hours" type="Long" default="" />
+	<script>
+	  // Seteo la variable para los recursos CSS
+	  if(typeof BackEndJSSettings == 'undefined') {
+      var BackEndJSSettings = {};
+    }
+
+    BackEndJSSettings.OFFSET = {!offset};
+    BackEndJSSettings.DATE_FORMAT = UserContext.dateFormat;
+    BackEndJSSettings.DATETIME_FORMAT = UserContext.dateTimeFormat;
+
+
+    if(typeof BackEndJSSettings.RESOURCE == 'undefined') {
+      BackEndJSSettings.RESOURCE = {};
+    }
+
+    BackEndJSSettings.RESOURCE.NAMESPACE = "{!IF(ISBLANK(ns),'',ns + '.')}";
+    BackEndJSSettings.RESOURCE.BACKEND = '{!URLFOR($Resource.FieloSalesforce_Backend)}';
+
+    if(typeof BackEndJSSettings.LABELS == 'undefined') {
+    	BackEndJSSettings.LABELS = {};
+    }
+
+  	BackEndJSSettings.LABELS.Close = '{!JSENCODE($Label.Close)}';
+  	BackEndJSSettings.LABELS.ReviewFollowingErrors = '{!JSENCODE($Label.ReviewFollowingErrors)}';
+  	BackEndJSSettings.LABELS.Areyousure = '{!JSENCODE($Label.Areyousure)}';
+  	BackEndJSSettings.LABELS.CompleteRequiredFields = '{!JSENCODE($Label.CompleteRequiredFields)}';
+    BackEndJSSettings.LABELS.NoRecordsToShow = '{!JSENCODE($Label.NoRecordsToShow)}';
+  	BackEndJSSettings.LABELS.Loading = '{!JSENCODE($Label.Loading)}';
+    BackEndJSSettings.LABELS.ExternalURLPhotoUpload = '{!$Label.ExternalURLPhotoUpload}';
+	</script>
+</apex:component>

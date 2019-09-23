@@ -1,0 +1,47 @@
+<aura:component>
+    <aura:attribute type="String" name="name"/>
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="Object" name="fieldMeta"/>
+    <aura:attribute type="Object" name="csFieldMeta"/>
+    <aura:attribute type="sObject" name="courseStatus"/>
+    <aura:attribute type="String" name="activeViewName"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="String" name="className"/>
+    <aura:attribute type="Integer" name="coursePoint"/>
+    <aura:attribute type="Object[]" name="fields"/>
+    <aura:attribute type="Object" name="fieldMap"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.fields != null}">
+        <div class="fielo-section slds-p-top_medium">
+            <lightning:layout class="{! 'fielo-section-layout' + v.className}" verticalAlign="start" horizontalAlign="start">
+                <aura:iteration items="{!v.fields}" var="field">
+                    <lightning:layoutItem class="fielo-section__field">
+                        <label class="slds-form-element__label">{!field.label}</label>
+                        <aura:if isTrue="{!field.name == 'FieloELR__Progress__c'}">
+                            <aura:if isTrue="{!field.value >= 100}">
+                                <span class="fielo-section__field-value">
+                                    {!field.value + '%'}<lightning:buttonIcon iconName="utility:success" variant="bare" class="not-active"/>
+                                </span>
+                                <aura:set attribute="else">
+                                    <lightning:layout class="fielo-section__field-value" horizontalAlign="start" verticalAlign="center">
+                                        <lightning:layoutItem class="slds-size_1-of-2">
+                                            <lightning:progressBar class="fielo-progress-bar" value="{!field.value}" size="large" title="{!field.value + '%'}"/>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem class="slds-size_1-of-2 fielo-progress-value">
+                                            {!field.value + '%'}
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </aura:set>
+                            </aura:if>								
+                            <aura:set attribute="else">
+                                <span class="fielo-section__field-value">{!field.value}</span>
+                            </aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+        </div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,41 @@
+.THIS img{
+    max-width: 180px;
+}
+
+.THIS.noRecords, .THIS .noRecords{
+    text-align: center;
+    padding: 20px 0;
+}
+
+.THIS .slds-section-title--divider{
+    background: none;
+    text-transform: none;
+    font-size: 20px;
+}
+
+.THIS.title-container{
+    position: relative;
+}
+
+.THIS .layout-btn{
+    position: absolute;
+    right: 10px;
+    top: 7px;
+}
+
+.THIS .layout-btn .slds-button__icon{
+    margin-right: 0;
+}
+
+.THIS .slds-accordion__summary-heading{
+    font-weight: 700;
+}
+
+.THIS.slds-table{
+    border: 1px solid rgb(212, 212, 212);
+}
+
+.THIS.slds-table .header-labels{
+    font-size: 15px;
+    color: #54698d;
+}

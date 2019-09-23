@@ -1,0 +1,7 @@
+<design:component label="Fielo - Quizzes">
+    
+    <design:attribute label="Question Display Mode" name="presentationMode" datasource="All at once,One By One" default="One By One"/>
+    
+    <design:attribute label="Show Question Name" name="showQuestionName" description="Check this box to display the name of the question next to the question number. (Don't worry, question text is always displayed.)" default="false"/>
+    
+</design:component>

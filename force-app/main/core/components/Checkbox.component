@@ -1,0 +1,82 @@
+<apex:component layout="none" controller="PicklistController">
+<!-- ATRIBUTOS GENERALES -->
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+    <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+    <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+    <apex:attribute name="value" description="Value of the fields" type="String" />
+    <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+    <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+    <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+    <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+    <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
+<!-- ATRIBUTOS PARTICULARES DEL CHECKBOX -->        
+    <apex:attribute name="toggle" description="" type="Boolean" />
+    <apex:attribute name="labelOn" description="" type="String" />
+    <apex:attribute name="labelOff" description="" type="String" />
+	<apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+		<apex:variable var="fieldNameData" value="{!IF(ISBLANK(fieldName),SUBSTITUTE( describe.Name, '_', ''),fieldName)}"/>
+		<div id="{!formId}-{! IF ( ISBLANK(fieldNameData), SUBSTITUTE( describe.Name, '_', ''), fieldNameData) }" data-field-name="{!IF ( ISBLANK(describe.Name), fieldNameData, describe.Name )}" class="slds-form-element {!className}" data-component-id="{!describe.label}" data-type="checkbox" data-on-change="{!onchange}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+			  <div class="slds-form-element__control">
+		    	<apex:panelGroup layout="none" rendered="{! toggle }">
+						<label class="slds-checkbox--toggle slds-grid" >
+							<span class="slds-form-element__label slds-m-bottom--none">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}
+							<apex:panelGroup layout="none" rendered="{! showLabel && !ISBLANK(describe.inlineHelpText)}">
+								<div class="slds-form-element__icon">
+									<a href="javascript:void(0);">
+								      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+								        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+								      </svg>
+									  <span class="slds-assistive-text">{!$Label.Help}</span>
+									</a>
+									<div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" style="position:absolute;top:0px;left:15px;">
+									  <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+									</div>
+								</div>
+							</apex:panelGroup>
+							</span>
+						<input id="{!formId}-{!fieldNameData}-input" type="checkbox" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"/>
+						    <span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">
+							  <span class="slds-checkbox--faux"></span>
+						      <span class="slds-checkbox--on">{!labelOn}</span>
+						      <span class="slds-checkbox--off">{!labelOff}</span>
+						    </span>							
+						</label>
+
+		    	</apex:panelGroup>
+		    	<apex:panelGroup layout="none" rendered="{! !toggle }">
+				    <span class="slds-checkbox">
+						<input id="{!formId}-{!fieldNameData}-input" type="checkbox" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"/>
+						<label class="slds-checkbox__label" for="{!formId}-{!fieldNameData}-input">
+							<span class="slds-checkbox--faux"></span>
+							<apex:panelGroup layout="none" rendered="{!showLabel}">
+									<span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+							</apex:panelGroup>
+						</label>
+						<apex:panelGroup layout="none" rendered="{! showLabel && !ISBLANK(describe.inlineHelpText)}">
+							<div class="slds-form-element__icon">
+								<a href="javascript:void(0);">
+							      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+							        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+							      </svg>
+								  <span class="slds-assistive-text">{!$Label.Help}</span>
+								</a>
+								<div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" style="position:absolute;top:0px;left:15px;">
+								  <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+								</div>
+							</div>
+						</apex:panelGroup>
+					</span>
+			    </apex:panelGroup>
+			</div>
+		</div>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+		<div class="slds-form-element {!className}" data-type="text" data-value="{!value}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" id="{!formId}-{!fieldName }" >
+			<span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+			<div class="slds-form-element__control slds-has-divider--bottom">
+				<span class="slds-form-element__static fielosf-output" data-name="{!describe.Name}" data-type="boolean">{!value}</span>
+			</div>
+		</div>
+	</apex:panelGroup>
+</apex:component>

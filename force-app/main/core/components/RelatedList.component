@@ -1,0 +1,279 @@
+<apex:component layout="none" controller="RelatedListController">
+  <!-- ATRIBUTOS DE DATOS -->
+  <apex:attribute name="nameField" description="Campo que actua como Name" default="" assignTo="{!cNameField}" type="String"/>
+  <apex:attribute name="fieldset" type="String" default="" description="Fields for the card" assignTo="{!cFieldset}"/>
+  <apex:attribute name="recordsPerPage" type="Integer" description="number of items" default="5" assignTo="{!cRecordsPerPage}"/>
+  <apex:attribute name="recordsInPage" type="Integer" description="number of items" assignTo="{!cRecordsInPage}"/>
+  <apex:attribute name="dataFilters" type="String" description="" assignTo="{!cDataFilters}" />
+  <apex:attribute name="records" type="SObject[]" description="" assignTo="{!cRecords}"/>
+  <apex:attribute name="objects" type="Object[]" description="" assignTo="{!cObjects}"/>
+  <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}"/>
+  <apex:attribute name="dataOrderBy" type="String"  description="" assignTo="{!orderBy}"/>
+  <apex:attribute name="relatedId" type="String" default="" description="Related List Id"/>
+  <!-- ATRIBUTOS DE BOTONERAS -->
+  <apex:attribute name="buttons" type="String" default="" description=""/>
+  <apex:attribute name="tools" type="String" default="" description=""/>
+  <apex:attribute name="actions" type="String" default="" description="" assignTo="{!cActions}"/>
+  <apex:attribute name="parameters" type="String" default="" description=""/>
+  <apex:attribute name="actionStyle" type="String" default="Auto" description="Auto,Tools,Buttons"/>
+  <!-- ATRIBUTOS DE GENERALES -->
+  <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+  <apex:attribute name="icon" type="String" default="" description="Icon from slds"/>
+  <apex:attribute name="iconColor" type="String" default="slds-icon-standard-dashboard" description="Icon background color" />
+  <apex:attribute name="iconSize" type="String" default="slds-icon--small" description="Icon size" />
+  <!-- Argumentos de controlador -->
+  <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
+
+  <apex:attribute name="dataController" default="RelatedListController.getRecords" type="String" description="Paginator controller" />
+  <apex:attribute name="async" type="Boolean" description="" default="false" assignTo="{!cAsync}"/>
+  <!-- ATRIBUTOS PROPIOS RELATED -->
+  <apex:attribute name="mode" type="String" description="table or tiles" default="table"/>
+  <apex:attribute name="showHeader" type="Boolean" description="header en la table" default="true"/>
+  <apex:attribute name="badges" type="String" default="" description="Badges for the header" assignTo="{!cBadges}" />
+  <!-- ATRIBUTOS PAGINADOR -->
+  <apex:attribute name="showPaginator" type="Boolean" description="paginador" default="true"/>
+
+  <apex:variable var="icon" value="{!IF(icon=='',URLFOR($Resource.FieloSalesforce_Backend)+'/lightning/icons/standard-sprite/svg/symbols.svg#home',icon)}" />
+
+  <apex:panelGroup rendered="{! sObjectName == '' || $ObjectType[sObjectName].Accessible}">
+    <div class="fielosf-related-records" data-fields="{!fieldset}" data-async="{!IF(async,'true','false')}" id="{!relatedId}" >
+      <!-- MODO TABLE -->
+      <apex:panelGroup rendered="{!mode=='table'}">
+        <article class="slds-card slds-m-around--medium">
+          <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+              <div class="slds-media__figure">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-icon {!iconSize} {!iconColor}">
+                  <use xlink:href="{!icon}"></use>
+                </svg>
+              </div>
+              <div class="slds-media__body slds-truncate">
+                <h2>
+                <span class="slds-text-heading--small">{!IF(heading != '',heading, IF(sObjectName != '',$ObjectType[sObjectName].labelPlural,''))}</span>
+                <!-- (<span class="fielosf-related-records__size">{! cRecords.size }</span>) -->
+                <apex:repeat value="{!cBadgesList}" var="b">
+                  <span class="slds-badge">{!b}</span>
+                </apex:repeat>
+                </h2>
+              </div>
+            </header>
+            <div class="slds-no-flex">
+              <apex:panelGroup layout="none" rendered="{!(buttons != null && buttons != '') || (tools != null && tools != '')}">
+                <!-- Botoneras: Buttons & Tools -->
+                <c:Buttons prefix="{!namespace}" buttons="{!buttons}" tools="{!tools}" parameters="{!parameters}" />
+              </apex:panelGroup>
+            </div>
+          </div>
+          <div class="slds-card__body">
+            <table class="slds-table slds-table--bordered slds-no-row-hover slds-table--cell-buffer fielosf-related-records__data">
+              <apex:panelGroup layout="none" rendered="{!showHeader}">
+                <thead>
+                  <tr class="slds-text-title--caps">
+                    <th scope="col">
+                      <!-- TODO: {!$ObjectType[sObjectName].fields[nameField].label} -->
+                      <c:OutputField type="string" cssClass="slds-truncate" content="{!IF(AND(sObjectName != null,nameField != null,!CONTAINS(nameField,'.')),$ObjectType[sObjectName].fields[nameField].label,IF(nameFieldLabel != '',nameFieldLabel,$Label.Name))}"/>
+                    </th>
+                    <apex:repeat value="{!columns}" var="c">
+                      <apex:panelGroup layout="none" rendered="{!c.Name != nameField}">
+                        <th scope="col">
+                          <c:OutputField type="string" cssClass="slds-truncate" content="{!c.label}"/>
+                        </th>
+                      </apex:panelGroup>
+                    </apex:repeat>
+                    <th class="slds-cell-shrink" scope="col"></th>
+                  </tr>
+                </thead>
+              </apex:panelGroup>
+              <tbody class="fielosf-related-records__container">
+                <apex:panelGroup rendered="{! !async}" layout="none">
+                  <apex:panelGroup rendered="{! noRecords }" layout="none">
+                    <tr class="slds-hint-parent slds-hide fielosf-related-records__model fielosf-realted-records__record">
+                      <apex:variable var="actualNameField" value="Name" />
+                      <apex:variable var="actualNameField" value="{!nameField}" rendered="{!nameField != ''}"/>
+                      <th data-name="{!actualNameField}" data-label="{!actualNameField}" scope="row">
+                        <c:OutputField type="link" cssClass="slds-truncate" field="{!actualNameField}"/>
+                      </th>
+                      <apex:repeat value="{!columns}" var="c" >
+                        <apex:panelGroup layout="none" rendered="{!c.Name != nameField}">
+                          <td data-name="{!c.Name}" data-label="{!c.Label}">
+                            <c:OutputField field="{!c.Name}" type="{!c.type}" cssClass="slds-truncate" />
+                          </td>
+                        </apex:panelGroup>
+                      </apex:repeat>
+                      <td role="gridcell" class="slds-cell-shrink" data-name="actions"  data-label="actions">
+                        <apex:panelGroup layout="none" rendered="{!actions != null && actions != ''}">
+                          <!-- Botoneras:Actions -->
+                          <span class=" slds-truncate" data-field="actions" data-type="action" >
+                            <apex:panelGroup layout="none" rendered="{! actionStyle == 'Buttons' || (isSingleAction && actionStyle == 'Auto')}">
+                              <c:Buttons prefix="{!namespace}" buttons="{!actions}" recordId="" />
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" rendered="{! actionStyle == 'Tools' || (!isSingleAction && actionStyle == 'Auto')}">
+                              <c:Buttons prefix="{!namespace}" tools="{!actions}" recordId="" />
+                            </apex:panelGroup>
+                          </span>
+                        </apex:panelGroup>
+                      </td>
+                    </tr>
+                  </apex:panelGroup>
+                  <apex:panelGroup rendered="{! !noRecords}">
+                    <apex:repeat value="{!cRecordObjects}"  var="r" >
+                      <tr class="slds-hint-parent fielosf-related-records__model fielosf-related-records__record">
+                          <apex:panelGroup layout="none" rendered="{!nameField == ''}">
+                            <apex:variable var="actualNameField" value="Name" />
+                            <th data-name="{!actualNameField}" data-label="{!actualNameField}" scope="row">
+                              <apex:panelGroup layout="none" rendered="{!objects == null}">
+                                <c:OutputField field="{!actualNameField}" title="{!r[actualNameField]}" type="{! IF( cRecordObjects == null || IsBlank(r['id']), '', 'link')}" href="{! IF( cRecordObjects == null || objects != null || IsBlank(r['id']) || Right(sObjectName, 9) == '__History', '#', URLFOR( $Action[sObjectName].View, r['id'], [retURL=$CurrentPage.url] ) ) }" cssClass="slds-truncate" content="{!r[actualNameField]}"/>
+                              </apex:panelGroup>
+                              <apex:panelGroup layout="none" rendered="{!objects != null}">
+                                <c:OutputField field="{!actualNameField}" title="{!r[actualNameField]}" type="" href="{! IF( cRecordObjects == null || objects != null || IsBlank(r['id']) || Right(sObjectName, 9) == '__History', '#', URLFOR( $Action[sObjectName].View, r['id'], [retURL=$CurrentPage.url] ) ) }" cssClass="slds-truncate" content="{!r[actualNameField]}"/>
+                              </apex:panelGroup>
+                            </th>
+                          </apex:panelGroup>
+                          <apex:panelGroup layout="none" rendered="{!nameField != ''}">
+                            <apex:variable var="actualNameField" value="{!nameField}" />
+                            <th data-name="{!actualNameField}" data-label="{!actualNameField}" scope="row">
+                              <apex:panelGroup layout="none" rendered="{!objects != null && LEN(r['recordId']) != 0}">
+                                <c:OutputField field="{!actualNameField}" title="{!r[actualNameField]}" type="link" href="{! URLFOR( r['sfPage'], r['recordId'], [retURL=$CurrentPage.url] )  }" cssClass="slds-truncate" content="{!r[actualNameField]}"/>
+                              </apex:panelGroup>
+                              <apex:panelGroup layout="none" rendered="{!objects != null && LEN(r['recordId']) == 0}">
+                                <c:OutputField field="{!actualNameField}" title="{!r[actualNameField]}" type="" cssClass="slds-truncate" content="{!r[actualNameField]}"/>
+                              </apex:panelGroup>
+                              <apex:panelGroup layout="none" rendered="{!objects == null}">
+                                <c:OutputField field="{!actualNameField}" title="{!r[actualNameField]}" type="{! IF( cRecordObjects == null || IsBlank(r['id']), '', 'link')}" href="{! IF( cRecordObjects == null || objects != null || IsBlank(r['id']) || Right(sObjectName, 9) == '__History', '#', URLFOR( $Action[sObjectName].View, r['id'], [retURL=$CurrentPage.url] ) ) }" cssClass="slds-truncate" content="{!r[actualNameField]}"/>
+                              </apex:panelGroup>
+                            </th>
+                          </apex:panelGroup>
+                        <apex:repeat value="{!columns}" var="c">
+                          <apex:panelGroup layout="none" rendered="{!c.Name != nameField}">
+                            <td data-name="{!c.Name}" data-label="{!c.Label}">
+                              <c:OutputField field="{!c.Name}" title="{!r[c.Name]}" type="{!c.Type}" href="/{!IF(LOWER(c.Type) = 'reference',IF(CONTAINS(c.Name,'__r'),r[LEFT(c.Name, FIND('__r', c.Name)) + '_c'],IF(AND(NOT(CONTAINS(c.Name,'__c')),CONTAINS(c.Name,'.')),r[LEFT(c.Name, FIND('.', c.Name)) + 'id'],r[c.Name])),'')}" content="{!r[c.Name]}" cssClass="slds-truncate"/>
+                            </td>
+                          </apex:panelGroup>
+                        </apex:repeat>
+                        <td role="gridcell" class="slds-cell-shrink" data-name="Actions"  data-label="Actions">
+                          <apex:panelGroup layout="none" rendered="{!actions != null && actions != ''}">
+                            <!-- Botoneras:Actions -->
+                            <span class="slds-truncate" data-field="actions" data-type="action" >
+                              <apex:panelGroup layout="none" rendered="{! actionStyle == 'Buttons' || (isSingleAction && actionStyle == 'Auto')}">
+                                <c:Buttons prefix="{!namespace}" buttons="{!actions}" objectRecord="{!r}" recordId="{!r['id']}" />
+                              </apex:panelGroup>
+                              <apex:panelGroup layout="none" rendered="{! actionStyle == 'Tools' || (!isSingleAction && actionStyle == 'Auto')}">
+                                <c:Buttons prefix="{!namespace}" tools="{!actions}" objectRecord="{!r}" recordId="{!r['id']}" />
+                              </apex:panelGroup>
+                            </span>
+                          </apex:panelGroup>
+                        </td>
+                      </tr>
+                    </apex:repeat>
+                  </apex:panelGroup>
+                </apex:panelGroup>
+                <apex:panelGroup rendered="{! async}" layout="none">
+                  <tr class="slds-hint-parent fielosf-related-records__model fielosf-related-records__record">
+                    <apex:variable var="actualNameField" value="Name" />
+                    <apex:variable var="actualNameField" value="{!nameField}" rendered="{!nameField != ''}"/>
+                    <th data-name="{!actualNameField}" data-label="{!actualNameField}" scope="row">
+                      <c:OutputField type="link" cssClass="slds-truncate" field="{!actualNameField}"/>
+                    </th>
+                    <apex:repeat value="{!columns}" var="f" >
+                      <apex:panelGroup layout="none" rendered="{!f.Name != nameField}">
+                        <td data-name="{!f.Name}" data-label="{!f.Label}">
+                          <c:OutputField field="{!f.Name}" type="{!f.type}" cssClass="slds-truncate"/>
+                        </td>
+                      </apex:panelGroup>
+                    </apex:repeat>
+                    <td role="gridcell" class="slds-cell-shrink" data-name="Actions"  data-label="Actions">
+                      <!-- Botoneras:Actions -->
+                      <span class="slds-truncate" data-field="actions" data-type="action" >
+                        <apex:panelGroup layout="none" rendered="{! actionStyle == 'Buttons' || (isSingleAction && actionStyle == 'Auto')}">
+                          <c:Buttons buttons="{!actions}"   prefix="{!namespace}" />
+                        </apex:panelGroup>
+                        <apex:panelGroup layout="none" rendered="{! actionStyle == 'Tools' || (!isSingleAction && actionStyle == 'Auto')}">
+                          <c:Buttons tools="{!actions}"   prefix="{!namespace}" />
+                        </apex:panelGroup>
+                      </span>
+                    </td>
+                  </tr>
+                </apex:panelGroup>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </apex:panelGroup>
+      <!-- MODO TILES -->
+      <apex:panelGroup rendered="{!mode=='tiles'}">
+        <article class="slds-card slds-m-around--medium">
+          <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+              <div class="slds-media__figure">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-icon {!iconSize} {!iconColor}">
+                  <use xlink:href="{!icon}"></use>
+                </svg>
+              </div>
+              <div class="slds-media__body slds-truncate">
+                <h2>
+                <span class="slds-text-heading--small">{!IF(heading != '',heading, IF(sObjectName != '',$ObjectType[sObjectName].labelPlural,''))}</span>
+                <!-- (<span class="fielosf-related-records__size">{! cRecords.size }</span>) -->
+                <apex:repeat value="{!cBadgesList}" var="b">
+                  <span class="slds-badge">{!b}</span>
+                </apex:repeat>
+                </h2>
+              </div>
+            </header>
+            <div class="slds-no-flex">
+              <!-- Botoneras: Buttons & Tools -->
+              <c:Buttons prefix="{!namespace}" buttons="{!buttons}" tools="{!tools}" parameters="{!parameters}"/>
+            </div>
+          </div>
+          <div class="slds-card__body">
+            <apex:panelGroup rendered="{! !noRecords}">
+              <div class="slds-card__body--inner slds-grid slds-wrap slds-grid--pull-padded fielosf-related-records__container">
+                <apex:repeat value="{!cRecordObjects}"  var="r" >
+                  <div class="slds-tile slds-media slds-card__tile slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-3 slds-hint-parent fielosf-related-records__model">
+                    <div class="slds-media__body">
+                      <div class="slds-grid slds-grid--align-spread slds-has-flexi-truncate">
+                        <h3 class="slds-truncate" title="{!r[nameField]}">
+                        <c:OutputField field="{!nameField}" title="{!r[nameField]}"  type="link" href="{! IF( cRecordObjects == null || objects != null || IsBlank(r['id']) || Right(sObjectName, 9) == '__History', '#', URLFOR( $Action[sObjectName].View, r['id'], [retURL=$CurrentPage.url] ) ) }" cssClass="slds-truncate" content="{!r[nameField]}" />
+                        </h3>
+                        <div class="slds-shrink-none">
+                          <!-- Botoneras:Actions -->
+                          <span class="fielosf-output slds-truncate" data-field="actions" data-type="action" >
+                            <c:Buttons prefix="{!namespace}" tools="{!actions}" objectRecord="{!r}" recordId="{!r['id']}" />
+                          </span>
+                        </div>
+                      </div>
+                      <div class="slds-tile__detail slds-text-body--small">
+                        <dl class="slds-dl--horizontal">
+                          <apex:repeat value="{!columns}" var="c">
+                            <dt class="slds-dl--horizontal__label">
+                            <c:OutputField title="{!c.Label}" cssClass="slds-truncate" content="{!c.Label}"/>
+                            </dt>
+                            <dd class="slds-dl--horizontal__detail slds-tile__meta">
+                            <c:OutputField title="{! r[c.Name] }" cssClass="slds-truncate" content="{! r[c.Name] }"/>
+                            </dd>
+                          </apex:repeat>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </apex:repeat>
+              </div>
+            </apex:panelGroup>
+          </div>
+          <apex:panelGroup rendered="{! viewAll }">
+            <div class="slds-card__foot">
+              {! $Label.ViewAll}
+            </div>
+          </apex:panelGroup>
+        </article>
+      </apex:panelGroup>
+      <c:BackendPaginator show="{!showPaginator}"
+        dataController="{!IF(namespace == '','',namespace + '.')}{!dataController}"
+        dataControllerArguments="{!sObjectName}|{!fieldsetString}"
+        recordsPerPage="{!recordsPerPage}"
+        dataFilters="{!dataFilters}"
+        recordsInPage="{!cRecordObjectsInPage}"
+        dataOrderBy="{!dataOrderBy}"
+        /><!-- qantRecords="{!qtyRecords}" -->
+    </div>
+  </apex:panelGroup>
+</apex:component>

@@ -1,0 +1,39 @@
+<aura:component>
+    <aura:attribute type="Boolean" name="useDefaultUX" default="true"/>
+    <aura:attribute type="sObject" name="module"/>
+    <aura:attribute type="Object" name="moduleWrapper"/>
+    <aura:attribute type="Object" name="coursePoints"/>
+    <aura:attribute type="Integer" name="modulePoints"/>
+    <aura:attribute type="sObject" name="moduleResponse"/>
+    <aura:attribute type="sObject" name="approvedModuleResponse"/>
+    <aura:attribute type="sObject" name="lastModuleResponse"/>
+    <aura:attribute type="sObject" name="firstApproveModuleResponse"/>
+    <aura:attribute type="String" name="className"/>
+    <aura:attribute type="String" name="pointFields"/>
+    <aura:attribute type="Object[]" name="fieldsMeta"/>
+    <aura:attribute type="Object" name="fieldsMetaMap"/>
+    <aura:attribute type="Object" name="MRfieldsMeta"/>
+    <aura:attribute type="Object[]" name="fieldValues"/>
+    <aura:attribute type="String" name="modulefields_passed"/>
+    <aura:attribute type="String" name="modulefields_notpassed"/>
+    <aura:attribute type="String" name="modulefields_nottaken"/>
+    
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler name="change" value="{!v.fieldsMeta}" action="{!c.setFieldValues}"/>
+    
+    <aura:if isTrue="{!v.fieldValues != null}">
+        <div class="fielo-section slds-p-top_medium">
+            <lightning:layout class="{! 'fielo-section-layout ' + v.className}" verticalAlign="start" horizontalAlign="start">
+                <aura:iteration items="{!v.fieldValues}" var="field">
+                    <lightning:layoutItem class="fielo-section__field">
+                        <label class="slds-form-element__label">{!field.label}</label>
+                        <span class="{! 'fielo-section__field-value ' + field.className}">{!field.value}&nbsp;
+                            <aura:if isTrue="{!field.hasDependency}"><lightning:helptext class="fielo-dependency-helptext" content="{!field.dependencyText}"/></aura:if>
+                        </span>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+        </div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PenaltyPerAttemptRange</fullName>
+    <active>true</active>
+    <description>Penalty per attempt must have a value  between 0 and 100.</description>
+    <errorConditionFormula>OR( PenaltyPerAttempt__c &lt;0, PenaltyPerAttempt__c &gt; 1)</errorConditionFormula>
+    <errorMessage>The penalty per attempt must have a value  between 0 and 100.</errorMessage>
+</ValidationRule>

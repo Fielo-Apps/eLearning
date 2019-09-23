@@ -1,0 +1,3 @@
+<apex:page controller="JSONExportController" contentType="{!contentType}" showheader="false" sidebar="false" expires="1">
+{!body}    
+</apex:page>

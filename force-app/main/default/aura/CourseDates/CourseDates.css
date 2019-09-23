@@ -1,0 +1,13 @@
+.THIS {
+    width: 140px;
+    text-align: center;
+}
+
+.THIS .slds-progress{
+    max-width: 100%;
+    position: relative;
+}
+
+.THIS .hide-progress-marker{
+    display: none;
+}

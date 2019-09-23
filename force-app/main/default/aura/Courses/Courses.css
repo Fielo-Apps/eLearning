@@ -1,0 +1,282 @@
+.THIS.fielo-courses-list{
+    color: #54698D;
+    max-width: 753px;
+}
+
+.THIS .fielo-course-tab-selector{
+    background-color: #E6EEF1;
+}
+
+
+.THIS .fielo-course-tab-selector .slds-grid .slds-tabs_default{
+    display: inline-flex;
+    width: max-content;
+    background-color: #E6EEF1;
+}
+
+.THIS .fielo-course-tab-selector .slds-grid .slds-tabs_default__nav{
+    display: inline-flex;
+    background-color: #E6EEF1;
+}
+
+
+.THIS .slds-tabs_default__item.slds-is-active::after{
+    background-color: #0070D2;
+}
+
+.THIS .slds-tabs_default__item::after{
+    background-color: #E6EEF1;
+}
+
+.THIS .slds-tabs_default__item {
+    text-transform: none !important;
+    color: #54698D;
+    font: Salesforce Sans;
+}
+
+.THIS .slds-card .slds-card__header h2{
+    text-align: center;
+    font-weight: bold;
+}
+
+.THIS .FieloELRListView .grid {
+    width: 360px;
+}
+
+.THIS .FieloELRListView .grid-item {
+    height: 605px;
+}
+
+.THIS .FieloELRListView .grid .slds-card__header {
+    padding: 28px 20px;
+    border-bottom: none;
+}
+
+.THIS .FieloELRListView .table .slds-card__header {
+	padding: 30px 20px;
+}
+
+.THIS .slds-card .slds-text-heading_small .record-name{
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+}
+
+.THIS .FieloELRListView .table div[data-field-name="FieloELR__Description__c"] {
+    position: absolute;
+    top: 94px;
+    left: 358.2px;
+    width: 50%;
+}
+
+.THIS .FieloELRListView .table div[data-field-name="FieloELR__StartDate__c"] {
+    position: absolute;
+    top: 198px;
+    left: 358.2px;
+    width: 50%;
+    margin-top: 7px;
+}
+
+.THIS .FieloELRListView .table .slds-card__header h2 {
+    text-align: left;
+}
+
+
+.THIS .FieloELRListView .slds-grid .slds-p-around_small {
+    padding: 0px;
+}
+
+
+.THIS .FieloELRListView .table .FieloELRFieldsSection {
+    padding-top: 0px;
+}
+
+.THIS .FieloELRListView .slds-text-heading_small {
+    font-size: 18px;
+}
+
+.THIS .FieloELRListView .grid .slds-grid div:first-child .subcomponent {
+    padding: 0px;   
+}
+
+.THIS .grid .slds-card__body {
+    height: 420px;
+    width: 100%
+}
+
+.THIS .table .slds-card__body {
+    height: 251;
+    width: 100%
+}
+
+.THIS .slds-card__footer {
+    max-height: 92.5px;
+    width: 100%;
+}
+
+.THIS .slds-card__body .fielo-layout__item {
+    width: 100%;
+}
+
+
+/* Product Design Driven Modifications */ 
+
+.THIS .FieloELRCardItem .slds-card {
+    border-radius: 0.5rem;
+}
+
+.THIS  .FieloELRCourseDescription{
+    letter-spacing: -1px;
+    margin: 10px 18px 5px;
+    padding: 0;
+}
+
+.THIS .FieloELRCourseDatesContainer{
+    margin-bottom: 15px;
+}
+
+.THIS .grid .slds-card__footer{
+    margin-top: 30px;
+}
+
+.THIS .landing .slds-card__footer{
+    border-radius: 0.5rem;
+}
+
+
+.THIS .FieloELRCourseDates .slds-progress__marker{
+    pointer-events:none;
+}
+
+.THIS .fielo-date-value-output{
+    font-size: 12px;
+}
+
+.THIS .fielo-dates-daycounter {
+    padding-top: 3px;
+    font-size: 15px;
+}
+
+.THIS .fielo-course-action .slds-button{
+    margin-left: 25px;
+}
+
+.THIS .fielo-output{
+    margin-left: 0;
+}
+
+.THIS .grid .FieloELRCourseFieldsSection{
+    width: 359px;
+}
+
+.THIS .FieloELRCourseFieldsSection{
+    box-shadow: 2px 0 0.4em #d8dde6;
+}
+
+.THIS .slds-card .fielo-section-layout {
+    height: 58px;
+}
+
+.THIS .fielo-section__field-value{
+    font-size: 18px;
+}
+
+.THIS .slds-card .fielo-section__field{
+    margin: 3px 0 0 7px ;
+}
+
+.THIS .fielo-dates-center{
+    margin-right: 25px;
+}
+
+
+/* CSS Grid Field Section Vertical*/
+
+.THIS .grid .fielo-section-layout{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+	width: 100%;    
+}
+
+.THIS .fielo-section__field:first-child{
+    grid-column: 1/4;
+    margin-left: 20px;
+}
+
+.THIS .fielo-section__field:nth-child(2){
+    grid-column: 4/8;
+    max-width: 100px;
+}
+
+.THIS .fielo-section__field:nth-child(3){
+    grid-column: 8/12;
+    min-width: 100px;
+}
+
+/* CSS Grid Field Section Horizontal */
+
+.THIS .table .fielo-section-layout{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr );
+    grid-gap: 0.5em;
+    width: 100%;
+}
+
+
+.THIS .table .fielo-section__field:first-child{
+    grid-column: 1/2;
+    margin-left: 20px;
+}
+
+.THIS .table .fielo-section__field:nth-child(2){
+    grid-column: 2/4;
+}
+
+.THIS .table .fielo-section__field:nth-child(3){
+    grid-column: 4/5;
+    min-width: 100px;
+}
+
+/* DATE COMPONENT NULL */
+
+.THIS .no-date .grid .subcomponent:nth-child(2){
+	margin-top: 50px;
+}
+
+.THIS .no-date .grid .subcomponent:nth-child(3){
+	display:none;
+}
+
+.THIS .no-date .grid .subcomponent:last-child{
+	margin-top: 40px;
+}
+
+/*DESCRIPTION NULL */
+
+.THIS .no-description .grid .subcomponent:nth-child(2){
+	display:none;
+}
+.THIS .no-description .grid .subcomponent:nth-child(3){
+	margin: 67px 0;
+}
+
+/* DATE COMPONENT NULL */
+
+.THIS .no-date .table .slds-card__body div[data-field-name="FieloELR__Description__c"]{
+	margin-top: 40px;
+}
+
+.THIS .no-date .table .slds-card__body div[data-field-name="FieloELR__StartDate__c"]{
+	display:none;
+}
+
+/*DESCRIPTION NULL */
+
+.THIS .no-description .table div[data-field-name="FieloELR__Description__c"]{
+	display:none;
+}
+.THIS .no-description .table div[data-field-name="FieloELR__StartDate__c"]{
+	top: 148px;
+}

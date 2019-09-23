@@ -1,0 +1,60 @@
+.THIS{
+    text-align: center;
+    padding: 15px 10px;
+}
+.THIS .startDateContainer, .THIS .endDateContainer, .THIS .line{
+    display:inline-block;
+    color: #54698D;
+}
+
+.THIS .endDateContainer{
+    padding-left: 50px;    
+}
+
+.THIS .line{
+    width: 100px;
+    border-top: 2px solid #CFD7E6;
+    position: relative;
+    bottom: 10px;
+}
+
+.THIS .dotContainer{
+    display:inline-block;
+}
+
+.THIS .dots.grey .dot{
+    background-color: #f6f9fb;
+}
+
+.THIS .dot{
+    margin: auto;
+    height: 20px;
+    width: 20px;
+    background-color: #1589EE;
+    border-radius: 50%;
+    display:block;
+    position: relative;
+}
+
+.THIS .dots.grey .smallDot{
+    background-color: #d5d5d5;
+}
+
+.THIS .smallDot{
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    display:block;
+    left: 5px;
+    top: 5px;
+}
+
+.THIS .green{
+    color: #39BC58;
+}
+
+.THIS .yellow{
+    color: #FCB000;
+}

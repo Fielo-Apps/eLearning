@@ -1,0 +1,47 @@
+<aura:component >
+    <aura:attribute type="Object" name="moduleWrapper"/>
+    <aura:attribute type="Object" name="courseWrapper"/>
+    <aura:attribute type="Object" name="coursePoints"/>
+    <aura:attribute type="String" name="pointFields"/>
+    <aura:attribute type="FieloPLT__Member__c" name="member"/>
+    <aura:attribute type="sObject" name="course"/>
+    <aura:attribute type="sObject" name="moduleResponse"/>
+    <aura:attribute type="sObject" name="firstApproveModuleResponse"/>
+    <aura:attribute type="sObject" name="lastModuleResponse"/>
+    <aura:attribute type="Object[]" name="fieldsMeta"/>
+    <aura:attribute type="Object" name="MRfieldsMeta"/>
+    <aura:attribute type="Boolean" name="useDefaultUX" default="true"/>
+    <aura:attribute type="String" name="modulefields_passed"/>
+    <aura:attribute type="String" name="modulefields_notpassed"/>
+    <aura:attribute type="String" name="modulefields_nottaken"/>
+    
+    <div class="fielo-module-content-container">
+        <lightning:card class="fielo-module-content-container">
+            <aura:set attribute="title">
+                <div class="fielo-module-fields-section">
+                    <c:ModuleFieldsSection
+                                           moduleWrapper="{!v.moduleWrapper}"
+                                           coursePoints="{!v.coursePoints}"
+                                           pointFields="{!v.pointFields}"
+                                           module="{!v.moduleWrapper.module}"
+                                           moduleResponse="{!v.moduleResponse}"
+                                           firstApproveModuleResponse="{!v.firstApproveModuleResponse}"
+                                     	   lastModuleResponse="{!v.lastModuleResponse}"
+                                           fieldsMeta="{!v.fieldsMeta}"
+                                           MRfieldsMeta="{!v.MRfieldsMeta}"
+                                           useDefaultUX="{!v.useDefaultUX}"
+                                           modulefields_passed="{!v.modulefields_passed}"
+                                           modulefields_notpassed="{!v.modulefields_notpassed}"
+                                           modulefields_nottaken="{!v.modulefields_nottaken}"
+                                           />
+                </div>
+            </aura:set>
+            <aura:set attribute="actions">
+                <c:ModuleActions courseWrapper="{!v.courseWrapper}" moduleWrapper="{!v.moduleWrapper}" location="body" member="{!v.member}" course="{!v.course}"/> 
+            </aura:set>
+            <div class="fielo-module-description">
+                {!v.moduleWrapper.module.FieloELR__Description__c}
+            </div>
+        </lightning:card>
+    </div>
+</aura:component>

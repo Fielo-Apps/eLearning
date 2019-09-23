@@ -1,0 +1,74 @@
+<apex:component layout="none" >
+<apex:attribute name="field" type="String" default="" description="name of the field" />
+<apex:attribute name="type" type="String" default="" description="Data type" />
+<apex:attribute name="cssClass" type="String" default="" description="extra classes" />
+<apex:attribute name="href" type="String" default="#" description="href value" />
+<apex:attribute name="title" type="String" default="" description="title value" />
+<apex:attribute name="content" type="String" default="" description="Data content" />
+<apex:attribute name="record" type="sObject" default="" description="Record" />
+
+<!-- FALTA NUMBER, RECORD TYPE, AUTO NUMBER, CHECKBOX , EMAIL, MASTER DETAIL -->
+<!-- VACÍO -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == ''}" >
+    <span class="fielosf-output slds-hide {!cssClass}" title="{!title}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- LINK || LOOKUP  -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'link' ||  LOWER(type) == 'reference'}" >
+    <a class="fielosf-output slds-hide {!cssClass}" title="{!title}" data-field="{!field}" data-type="{!type}" href="{!href}" >{!content}</a>
+</apex:panelGroup>
+
+<!-- STRING || FORMULA -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'string' || LOWER(type) == 'html'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- TEXTAREA -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'textarea'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- DATE -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'date'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- DATE -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'datetime'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- PICKLIST -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'picklist'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+
+<!-- DOUBLE -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'double'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+<!-- RICHTEXT -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'richtext'}" >
+    <apex:outputField value="{!record[field]}" />    
+</apex:panelGroup>
+
+<!-- CHECKBOX BOOLEAN-->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) == 'checkbox' || LOWER(type) == 'boolean'}" >                              
+        <span class="fielosf-output slds-checkbox disabled" data-field="{!field}" data-type="{!type}">
+            <apex:panelGroup rendered="{!content == 'true'}" layout="none" >
+                <input id="-input" type="checkbox" checked="true" />
+            </apex:panelGroup>
+            <apex:panelGroup rendered="{!content != 'true'}" layout="none" >
+                <input id="-input" type="checkbox" />
+            </apex:panelGroup>            
+            <label class="slds-checkbox__label" for="-input">
+                <span class="slds-checkbox--faux"></span>                            
+            </label>            
+        </span>    
+</apex:panelGroup>
+
+<!-- OTRO -->
+<apex:panelGroup layout="none" rendered="{!LOWER(type) != '' && LOWER(type) != 'link' &&  LOWER(type) != 'reference' && LOWER(type) != 'string' && LOWER(type) != 'html' && LOWER(type) != 'textarea' && LOWER(type) != 'date' && LOWER(type) != 'datetime' && LOWER(type) != 'picklist' && LOWER(type) != 'double' && LOWER(type) != 'richtext' && LOWER(type) != 'checkbox' && LOWER(type) != 'boolean'}" >
+    <span class="fielosf-output slds-hide {!cssClass}" data-field="{!field}" data-type="{!type}" >{!content}</span>
+</apex:panelGroup>
+</apex:component>

@@ -1,0 +1,1 @@
+{"version":3,"sources":["core-ie10.scss","core-ie10.css"],"names":[],"mappings":"AAAA,wBCEE,8CDCA,8CAGI,MAAA,KACA,MAAA","file":"core-ie10.css","sourcesContent":["@media (max-width: 48em) {\n  // Arregla tabla mobile\n  // Estaquea verticalmente\n  .slds-max-medium-table--stacked-horizontal {\n    th,\n    td {\n      float: left;\n      width: 100%;\n    }\n  }\n}\n",null]}

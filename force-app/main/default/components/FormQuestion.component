@@ -1,0 +1,146 @@
+<apex:component controller="FormQuestionController">
+	<!-- Generales del Form -->
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+    <apex:attribute name="className" description="Inject a css class to the form container" type="String" />
+	<!-- Controladores -->
+    <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
+    <apex:attribute name="saveController" description="controller with save remote action" type="String" default="FormQuestionController.save" />
+    <apex:attribute name="retrieveController" description="controller with retrieve remote action" type="String" default="FormQuestionController.retrieve" />
+    <apex:attribute name="secondaryParameters" description="Parameters to be passed after sobject. Separated by comma" type="String" default="" />
+	<!-- Sections y Elementos -->
+    <apex:attribute name="mode" description="new, update, view" type="String" />
+    <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
+    <apex:attribute name="fieldset" type="String" default="" description="Form Fields" assignTo="{!cFieldset}"/>
+    <apex:attribute name="questionSection" type="String" default="" description="Form Fields"/>
+    <apex:attribute name="record" type="SObject" description="" assignTo="{!recordObject}"/>
+    <apex:attribute name="redirect" description="Redirects after save" type="Boolean" default="true" />
+    <apex:attribute name="saveConfirm" description="Confirmation before save" type="String" default="false" />
+    <apex:attribute name="saveConfirmMessage" description="Confirmation message before save" type="String" default="false" />
+    <apex:attribute name="sections" type="String" default="" description="Form Fields" />
+    <apex:attribute name="dataOrderBy" type="String" default="FieloELR__Order__c" description="Form Fields" />
+    <apex:attribute name="dataFilters" type="String" description=""/>
+    <apex:attribute name="layout" type="String" default="inline" description="" assignTo="{!cLayout}"/>
+    <apex:attribute name="step" type="String" default="questionType" description=""/>
+
+    <div class="fielosf-question-wizard" form-id="{!formId}">
+
+	    <div id="{!formId}" 
+	        role="dialog" 
+	        tabindex="-1" 
+	        aria-labelledby="{!formId}headerModal" 
+	        class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" 
+	        data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}"
+	        data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}"
+	        data-on-show=""
+	        data-object-name="{!sObjectName}"
+	        data-fields="{!fields}"
+	        data-secondary-parameters="{!secondaryParameters}"
+	        data-redirect="{!redirect}"
+	        data-order-by="{!dataOrderBy}"
+	    >
+	        <div class="slds-modal__container">
+	            <div class="slds-modal__header slds-text-heading--medium">
+	                <button class="slds-button slds-modal__close slds-button--icon-inverse" data-aljs-dismiss="modal" title="Close">
+	                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+	                        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#close"></use>
+	                    </svg>
+	                    <span class="slds-assistive-text">Close</span>
+	                </button>
+	                <h2 id="{!formId}headerModal" class="slds-text-heading--medium">{!heading}</h2>
+	            </div>
+	            <div class="slds-modal__content slds-p-around--medium slds-align slds-align_absolute-center">
+	            <div id="{!formId}-FieloELR__Type__c" data-field-name="FieloELR__Type__c" class="slds-form-element" data-component-id="FieloELR__Type__c" data-type="radio">
+		            <fieldset>
+						<legend class="slds-form-element__legend slds-form-element__label">Type</legend>
+						<div class="slds-form-element__control">
+							<span class="slds-radio slds-hide slds-is-collapsed">
+								<input name="{!formId}-FieloELR__Type__c" type="radio" id="{!formId}-None" value="None" />
+									<label class="slds-radio__label" for="None">
+									<span class="slds-radio--faux"></span>
+									<span class="slds-form-element__label">None</span>
+								</label>
+							</span>
+							<apex:repeat value="{!mapPicklistOptions['FieloELR__Type__c']}" var="entry">
+							<span class="slds-radio">
+								<input name="{!formId}-FieloELR__Type__c" type="radio" id="{!formId}-{!entry.id}" value="{!entry.id}" />
+									<label class="slds-radio__label" for="{!formId}-{!entry.id}">
+									<span class="slds-radio--faux"></span>
+									<span class="slds-form-element__label">{!entry.Label}</span>
+								</label>
+							</span>
+							</apex:repeat>
+						</div>
+					</fieldset>
+				</div>
+	            </div>
+	            <div class="slds-modal__footer">
+	                <a data-aljs-dismiss="modal" class="slds-button slds-button--neutral fielosf-question-wizard__cancel">{!$Label.Cancel}</a>
+	                <a class="slds-button slds-button--brand fielosf-question-wizard__next" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}">{!$Label.Next}</a>
+	                <a data-aljs="modal" data-action="{!formId}-multiplechoice" data-aljs-show="{!formId}-multiplechoice" class="slds-button slds-button--brand fielosf-question-wizard__next-multiplechoice" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}" data-parameters="{!dataFilters}">{!$Label.Next}</a>
+	            </div>          
+	        </div>
+	    </div>
+
+	   	<div id="{!formId}-multiplechoice" 
+	        role="dialog" 
+	        tabindex="-1" 
+	        aria-labelledby="{!formId}-multiplechoice-headerModal"
+	        class="slds-hide slds-modal slds-modal--large slds-fade-in-open slds-form {!className}"
+	        data-save-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!saveController}"
+	        data-retrieve-controller="{!IF(ISBLANK(namespace),'',namespace + '.')}{!retrieveController}"
+	        data-on-show="FieloQuestionWizard_retrieve"
+	        data-object-name="{!sObjectName}"
+	        data-fields="{!fields}"
+	        data-secondary-parameters="{!secondaryParameters}"
+	        data-redirect="{!redirect}"
+	        data-order-by="{!dataOrderBy}"
+	    >
+	        <div class="slds-modal__container">
+	            <div class="slds-modal__header slds-text-heading--medium">
+	                <button class="slds-button slds-modal__close slds-button--icon-inverse" data-aljs-dismiss="modal" title="Close">
+	                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+	                        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#close"></use>
+	                    </svg>
+	                    <span class="slds-assistive-text">Close</span>
+	                </button>
+	                <h2 id="{!formId}-multiplechoice-headerModal" class="slds-text-heading--medium">{!heading}</h2>
+	            </div>
+	            <div class="slds-modal__content slds-p-around--medium slds-align slds-align_absolute-center">
+		            <c:Sections formId="{!formId}-multiplechoice-section"
+	            		sObjectName="{!sObjectName}"
+	            		fieldset="{!questionSection}"
+	            		mode="{!mode}"
+	            		layout="compound"
+	            	/>
+	            	<c:AnswerOptions formid="{!formId}-multiplechoice-answers" 
+						buttons="{'Name':'New', 'Type':'Link', 'CssClass': 'slds-button--new-answer','Label':'New','Action':'#'}"
+						sObjectName="FieloELR__AnswerOption__c"
+						fieldset="{!answerOptionsPS.FieloPLT__Fieldset__c}"
+					/>
+	            </div>
+	            <div class="slds-modal__footer">
+	                <a data-aljs-dismiss="modal" class="slds-button slds-button--neutral fielosf-question-wizard__cancel">{!$Label.Cancel}</a>
+	                <a class="slds-button slds-button--brand fielosf-question-wizard__save" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}">{!$Label.Save}</a>
+	                <a class="slds-button slds-button--brand fielosf-question-wizard__saveNew" data-confirm="{!saveConfirm}" data-confirm-message="{!saveConfirmMessage}">{!$Label.SaveAndNew}</a>
+	            </div>          
+	        </div>
+	    </div>
+	</div>
+	<script type="text/javascript">
+    	/* For IE Compatibility */
+		if (window.Element && !Element.prototype.closest) {
+		  Element.prototype.closest =
+		  function(s) {
+		    var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+		      i,
+		      el = this;
+		    do {
+		      i = matches.length;
+		      while (--i >= 0 && matches.item(i) !== el) {};
+		    } while ((i < 0) && (el = el.parentElement));
+		    return el;
+		  };
+		}
+	</script>
+</apex:component>

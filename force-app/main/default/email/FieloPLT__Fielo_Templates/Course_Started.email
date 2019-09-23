@@ -1,0 +1,14 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<div style=""><font face="arial">Hi there {!FieloELR__CourseStatus__c.FieloELR__Member__r.Name},</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">Well done for getting stuck into {!FieloELR__CourseStatus__c.FieloELR__Course__r.Name} course.&nbsp;&nbsp;</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">Take your time concluding the modules and good luck!</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">We think you’ll do great.</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">Best,</font></div><div style=""><font face="arial"><br></font></div><div style=""><font face="arial">&lt;Company Name&gt;</font></div>]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="0" >
+<![CDATA[]]></td>
+</tr>
+</table>

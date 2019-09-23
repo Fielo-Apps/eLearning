@@ -1,0 +1,68 @@
+.THIS.fielo-dates-container {
+    min-height: 60px;
+}
+.THIS .fielo-dates-left {
+    width: 61px;
+    height: 47px;
+}
+.THIS .fielo-date-values{
+    width: 100%;
+}
+
+.THIS .fielo-date-values .fielo-startdate{
+    width: 50%;
+}
+
+.THIS .fielo-date-values .fielo-enddate{
+    width: 50%;
+}
+
+.THIS .fielo-course-start-date {
+    padding-right: 25px;
+}
+
+.THIS .fielo-course-start-date {
+    padding-left: 25px;
+}
+
+.THIS .fielo-date-value-output {
+    width: 138.5px;
+    
+}
+
+.THIS .fielo-circle-container {
+    padding-top: 3px;
+}
+
+.THIS .circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 14px;
+    color: #fff;
+    line-height: 45px;
+    text-align: center;
+    background: linear-gradient(-45deg, #78ba43, white);
+    transform: rotate(-20deg);
+    text-transform: uppercase;
+}
+
+.THIS .fielo-date-grid{
+    height: 50px;
+}
+
+.THIS .fielo-dates-center{
+    min-width: 277px;
+}
+
+.THIS .fielo-font--warning {
+    color: #FFB75D;
+}
+
+.THIS .fielo-font--ended {
+    color: #C23934;
+}
+
+.THIS .fielo-font--early {
+    color: #4BCA81;
+}

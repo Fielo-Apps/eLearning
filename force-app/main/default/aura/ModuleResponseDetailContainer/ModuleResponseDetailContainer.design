@@ -1,0 +1,11 @@
+<design:component label="Fielo - Module Response Detail">
+    
+    <design:attribute label="Enable Full User Experience" name="useDefaultUX" description="Leave this box checked to enable Fielo's full user experience, or uncheck it to use only module response fields in the component." default="true"/>
+    
+    <design:attribute label="Passed Module Fields" name="modulefields_passed" description="Enter the API names of the fields you want to be displayed when a member passes a module." default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
+    
+    <design:attribute label="Not Passed Module Fields" name="modulefields_notpassed" description="Enter the API names of the fields you want to be displayed when a member completes a module without passing." default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
+    
+    <design:attribute label="Show Question Name" name="showQuestionName" description="Check this box to display the name of the question next to the question number. (Don't worry, question text is always displayed.)" default="false"/>
+    
+</design:component>

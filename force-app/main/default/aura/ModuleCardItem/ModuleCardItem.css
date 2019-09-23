@@ -1,0 +1,7 @@
+.THIS .slds-card__header {
+    padding-left: 24px;
+}
+
+.THIS .fielo-module-fields-section .fielo-section__field:nth-child(3){
+ 	margin-left: 4px;   
+}

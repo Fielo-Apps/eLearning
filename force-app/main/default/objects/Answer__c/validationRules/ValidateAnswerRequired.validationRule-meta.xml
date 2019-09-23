@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateAnswerRequired</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISPICKVAL(QuestionResponse__r.Question__r.Type__c, &#39;Matching Options&#39;)), ISBLANK( AnswerOption__c ))</errorConditionFormula>
+    <errorDisplayField>AnswerOption__c</errorDisplayField>
+    <errorMessage>The answer is required.</errorMessage>
+</ValidationRule>

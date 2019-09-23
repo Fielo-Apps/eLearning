@@ -1,0 +1,129 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId" access="global" controller="ModuleResponseDetailController">
+    <aura:attribute type="String" name="recordId" description="Module Id"/>
+    <aura:attribute type="String" name="coursesPage" />
+    <aura:attribute type="String" name="moduleHeaderText" />
+    <aura:attribute type="Object" name="moduleResponseResult" />
+    <aura:attribute type="Object" name="courseStructure" />
+    <aura:attribute type="Object" name="config" />
+    <aura:attribute type="sObject" name="module" />
+    <aura:attribute type="sObject" name="course" />
+    <aura:attribute type="sObject" name="courseStatus" />
+    <aura:attribute type="sObject" name="moduleResponse" />
+    <aura:attribute type="sObject" name="firstApproveModuleResponse" />
+    <aura:attribute type="sObject" name="lastModuleResponse" />
+    <aura:attribute type="sObject" name="nextModule" />
+    <aura:attribute type="sObject[]" name="moduleResponses" />
+    <aura:attribute type="Object" name="moduleWrapper" />
+    <aura:attribute type="Object" name="courseWrapper" />
+    <aura:attribute type="Object" name="coursePoints" />
+    <aura:attribute type="string" name="pointFields" default="FieloPLT__Points__c"/>
+    <aura:attribute type="FieloPLT__Member__c" name="member" />
+    <aura:attribute type="Object[]" name="fieldsMeta" description="Module "/>
+    <aura:attribute type="Object" name="MRfieldsMeta"/>
+    <aura:attribute type="Boolean" name="useDefaultUX" default="true" access="global"/>
+    <aura:attribute type="Boolean" name="moduleResponseReady" default="false"/>
+    <aura:attribute type="Boolean" name="moduleInProgress" default="false"/>
+    <aura:attribute type="Boolean" name="isCollapsed" default="false"/>
+    <aura:attribute type="Boolean" name="showQuiz" default="false"/>
+    <aura:attribute type="Boolean" name="showDetails" default="true"/>
+    <aura:attribute type="Boolean" name="showQuestionName" access="global"/>
+    <aura:attribute type="Boolean" name="showBodyActions" default="true"/>
+    <aura:attribute type="String" name="modulefields_passed" description="Modules Fields To Display when module is already taken and passed" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c" access="global"/>
+    <aura:attribute type="String" name="modulefields_notpassed" description="Modules Fields To Display when module is already taken and not passed" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c" access="global"/>
+    <aura:attribute type="String" name="modulefields_nottaken" description="Modules Fields To Display when module not taken yet" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__KeyDependencies__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c" access="global"/>
+    <aura:attribute type="Object" name="quizAttributes"/>
+    
+    <aura:handler event="FieloPLT:UpdateMemberEvent" action="{!c.updateMember}"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.module != null}">
+        <div class="fielo-module-detail-container">
+            
+            <lightning:breadcrumbs >
+                <lightning:breadcrumb label="{!$Label.c.Courses}" onclick="{!c.backToCourses}" />
+                <lightning:breadcrumb label="{!v.course.Name}" onclick="{!c.backToParentCourse}" />
+                <li class="slds-breadcrumb__item slds-text-title_caps fielo-breadcrumb__current">
+                    {!v.module.Name}
+                </li>
+            </lightning:breadcrumbs>
+            
+            
+            <lightning:card class="fielo-module-card">
+                <aura:set attribute="title">
+                    <div class="fielo-module-title" title="{!v.moduleHeaderText}">
+                        <lightning:formattedRichText aura:id="moduleHeaderText" />
+                    </div>
+                </aura:set>
+                <aura:set attribute="actions">
+                    <aura:if isTrue="{! and(v.moduleResponseReady == true, v.moduleInProgress == false) }">
+                        <c:ModuleActions courseWrapper="{!v.courseWrapper}" moduleWrapper="{!v.moduleWrapper}" location="header" member="{!v.member}" course="{!v.course}" courseStatus="{!v.courseStatus}" showStatus="false"/>
+                    </aura:if>
+                </aura:set>
+                <div class="fielo-module-content">
+                    <aura:if isTrue="{! v.moduleResponseReady }">
+                        <lightning:card class="fielo-module-content-container">
+                            <aura:set attribute="title">
+                                <div class="fielo-module-fields-section">
+                                    <aura:if isTrue="{! v.showDetails }">
+                                        <c:ModuleFieldsSection
+                                                               moduleWrapper="{!v.moduleWrapper}"
+                                                               coursePoints="{!v.coursePoints}"
+                                                               pointFields="{!v.pointFields}"
+                                                               module="{!v.module}"
+                                                               moduleResponse="{!v.moduleResponse}"
+                                                               firstApproveModuleResponse="{!v.firstApproveModuleResponse}"
+                                                               lastModuleResponse="{!v.lastModuleResponse}"
+                                                               fieldsMeta="{!v.fieldsMeta}"
+                                                               MRfieldsMeta="{!v.MRfieldsMeta}"
+                                                               useDefaultUX="{!v.useDefaultUX}"
+                                                               modulefields_passed="{!v.modulefields_passed}"
+                                                               modulefields_notpassed="{!v.modulefields_notpassed}"
+                                                               modulefields_nottaken="{!v.modulefields_nottaken}"
+                                                               />
+                                    </aura:if>
+                                </div>
+                            </aura:set>
+                            <aura:set attribute="actions">
+                                <aura:if isTrue="{! and(v.showBodyActions == true, v.moduleResponseReady == true, v.moduleInProgress == false) }">
+                                    <c:ModuleActions courseWrapper="{!v.courseWrapper}" moduleWrapper="{!v.moduleWrapper}" location="body" member="{!v.member}" course="{!v.course}" courseStatus="{!v.courseStatus}" showViewResultsButton="false" nextModule="{!v.nextModule}"/>
+                                </aura:if>
+                            </aura:set>
+                        </lightning:card>
+                    </aura:if>
+                </div>
+            </lightning:card>
+            
+            <div class="fielo-module-content">
+                <aura:if isTrue="{! and(v.module.FieloELR__Content__c != null, v.module.FieloELR__Content__c!= '') }">
+                    <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                        <lightning:layoutItem>
+                            <h3 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_medium"><b>{!$Label.c.ModuleContentText}</b></h3>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem>
+                            <lightning:button label="{!v.isCollapsed ? $Label.c.ShowContent : $Label.c.HideContent }" variant="neutral" onclick="{!c.toggleContent}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <aura:if isTrue="{!v.isCollapsed == false}">
+                        <c:ModuleContentViewer url="{!v.module.FieloELR__Content__c}" mediaType="{!v.module.FieloELR__ContentType__c}" config="{!v.config}"/>
+                    </aura:if>
+                </aura:if>
+            </div>
+            
+        </div>
+        <div class="fielo-quiz-container">
+            <aura:if isTrue="{!v.showQuiz}">
+                <c:Quiz aura:id="module-quiz" 
+                        submitMode="Module"
+                        presentationMode="All at once"
+                        showQuestionName="{!v.showQuestionName}"
+                        mode="view"
+                        overrideId="{!v.quizAttributes.overrideId}"
+                        module="{!v.quizAttributes.module}"
+                        moduleResponseWrapper="{!v.quizAttributes.moduleResponseWrapper}"
+                        questions="{!v.quizAttributes.questions}"
+                        showActions="false"
+                        />
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

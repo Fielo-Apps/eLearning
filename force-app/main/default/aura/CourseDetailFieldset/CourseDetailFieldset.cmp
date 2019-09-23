@@ -1,0 +1,38 @@
+<aura:component >
+    <aura:attribute type="sObject" name="record" />
+    <aura:attribute type="String" name="fields" />
+    <aura:attribute type="Object[]" name="outputFields" />
+    <aura:attribute type="sObject[]" name="dependencies" />
+    <aura:attribute type="Object" name="fieldMeta" />
+    <aura:attribute type="Boolean" name="useDefaultUX" default="true"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div data-fields="{!v.fields}" data-use-defaultux="{!v.useDefaultUX}" data-record-id="{!v.record.Id}">
+        <aura:iteration items="{!v.outputFields}" var="field">
+            <aura:if isTrue="{! and(v.useDefaultUX == true, or(field.fieldName == 'FieloELR__Description__c', field.fieldName == 'FieloELR__KeyDependencies__c'))}">
+                <aura:if isTrue="{!field.fieldName == 'FieloELR__Description__c'}">
+                    <p><h1 class="description fielo-default-ux">{!v.record.FieloELR__Description__c}</h1></p>
+                </aura:if>
+                <aura:if isTrue="{!and(v.dependencies != null, field.fieldName == 'FieloELR__KeyDependencies__c')}">
+                    <div data-field-name="{!field.fieldName}" class="{! 'slds-form-element fielo-default-ux ' + field.fieldClass}">
+                        <label class="slds-form-element__label" for="prerequisites">{!$Label.c.Prerequisites}</label>
+                        <div class="slds-form-element__control" id="prerequisites" >
+                            <aura:iteration items="{!v.dependencies}" var="predecessor">
+                                {!'- ' + predecessor.FieloELR__Predecessor__r.Name}<br/>
+                            </aura:iteration>
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:set attribute="else">
+                    <div data-field-name="{!field.fieldName}" class="{! 'slds-form-element ' + field.fieldClass}">
+                        <label class="slds-form-element__label" for="{! 'output-' + field.fieldClass}">{!field.fieldLabel}</label>
+                        <div class="slds-form-element__control" id="{! 'output-' + field.fieldClass}" >
+                            <c:CourseOutputField record="{!v.record}" fieldName="{!field.fieldName}" fieldValue="{!field.untypedFieldValue}" fieldMeta="{!field.fieldMeta}"/>
+                        </div>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </aura:iteration>
+    </div>
+</aura:component>

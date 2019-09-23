@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateAnswerLookup</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISBLANK( AnswerOption__c )),  AnswerOption__r.Question__c !=  QuestionResponse__r.Question__c )</errorConditionFormula>
+    <errorMessage>The answer must belong to the same question.</errorMessage>
+</ValidationRule>

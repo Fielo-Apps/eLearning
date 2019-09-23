@@ -1,0 +1,40 @@
+<aura:component controller="ModuleResponseController">
+    <aura:attribute name="moduleResponse" type="ModuleResponse__c" />
+    <aura:attribute name="questionsModule" type="sObject[]" />
+    <aura:attribute name="moduleResponseQuestions" type="ModuleResponse__c" />
+    <aura:attribute name="moduleGrade" type="String" />
+    <aura:attribute name="showAnswers" type="Boolean" default="false" />
+    <aura:attribute name="showDetail" type="Boolean" default="false" />
+    <aura:attribute name="responseMessage" type="String" />
+    <aura:attribute name="fieldset" type="sObject[]" />
+    <aura:attribute name="fieldsModuleResponse" type="String" default="Name,FieloELR__NumberOfAttempt__c"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.showAnswers}">
+        <div class="slds-text-heading_large responseMessage" data-is-approved="{!v.moduleResponseQuestions.moduleResponse.FieloELR__IsApproved__c}">
+            {!v.responseMessage}            
+        </div>
+        <aura:if isTrue="{!v.showDetail}">
+            <h3 class="slds-section__title slds-p-top--small">
+                <span class="slds-truncate" title="Section Title">Module Response Detail</span>                
+            </h3>
+            <div class="slds-grid slds-wrap slds-p-top--small">          
+                <aura:iteration items="{!v.fieldset}" var="field"  >                        
+                    <div class="{!'slds-col slds-size_1-of-' + v.fieldset.length}">
+                        <aura:if isTrue="{!field.showLabel}">
+                            <label class="slds-form-element__label inline">{!field.label}</label>
+                        </aura:if>                            
+                        <c:OutputField record="{!v.moduleResponseQuestions.moduleResponse}" fieldName="{!field.apiName}" type="{!field.type}"/>
+                    </div>  
+                </aura:iteration>
+            </div>                        
+        </aura:if>
+        <h3 class="slds-section__title slds-p-top--small">                
+            <span class="slds-truncate" title="Section Title">Questions</span>
+        </h3>            
+        <aura:iteration var="question" items="{!v.questionsModule}">
+            <c:Question question="{!question}" type="{!question.FieloELR__Type__c}" mode="view" />
+        </aura:iteration>                            
+        
+    </aura:if>
+</aura:component>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApprovalGradeRange</fullName>
+    <active>true</active>
+    <description>Approval grade must be a value between 0 and 100.</description>
+    <errorConditionFormula>OR(ApprovalGrade__c &lt; 0, ApprovalGrade__c &gt; 1)</errorConditionFormula>
+    <errorDisplayField>ApprovalGrade__c</errorDisplayField>
+    <errorMessage>The approval grade must be a value between 0 and 100.</errorMessage>
+</ValidationRule>

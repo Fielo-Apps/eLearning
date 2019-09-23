@@ -1,0 +1,69 @@
+<aura:component>
+    <aura:attribute type="Boolean" name="showLabel" default="true"/>
+    <aura:attribute type="Boolean" name="registered" default="false"/>
+    <aura:attribute type="Object" name="fieldMeta"/>
+    <aura:attribute type="String" name="stringValue"/>
+    <aura:attribute type="Boolean" name="booleanValue"/>
+    <aura:attribute type="Boolean" name="retistered" default="false"/>
+    <aura:attribute type="Decimal" name="decimalValue"/>
+    <aura:attribute type="Object" name="fieldValue"/>
+    <aura:attribute type="Object" name="oldFieldValue"/>
+    <aura:attribute type="Aura.Component" name="lookupComponent"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler event="c:RegisterComponent" name="lookupRegister" action="{!c.lookupRegister}"/>
+    <aura:handler event="c:FieldUpdate" name="fieldUpdate" action="{!c.lookupUpdate}"/>
+    
+    <aura:registerEvent name="fieldUpdate" type="c:FieldUpdate"/>
+    <aura:registerEvent name="fieldRegister" type="c:RegisterComponent"/>
+    
+    <aura:method name="setFieldValue" action="{!c.setFieldValue}"> 
+        <aura:attribute type="Object" name="fieldValue"/>
+    </aura:method>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'picklist'}">
+        <lightning:select aura:id="field-input" name="{!v.fieldMeta.attributes.name}" label="{!v.fieldMeta.attributes.label}" onchange="{!c.handleChange}" title="{!v.fieldMeta.attributes.tooltip}">
+            <aura:if isTrue="{!and(v.fieldMeta.firstOptionLabel != null, v.fieldMeta.firstOptionLabel != '') ? true : false }">
+                <option value="">{!v.fieldMeta.firstOptionLabel}</option>
+                <aura:set attribute="else">
+                    <option value="">{!$Label.c.SelectAnOption}</option>
+                </aura:set>
+            </aura:if>
+            <aura:iteration items="{!v.fieldMeta.picklistentries}" var="picklistEntry">
+                <option value="{!picklistEntry.value}">{!picklistEntry.label}</option>
+            </aura:iteration>
+        </lightning:select>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'number'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="Number" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" onblur="{!c.formatField}" value="{!v.decimalValue}" step="{!v.fieldMeta.attributes.step}" formatter="{!v.fieldMeta.attributes.formatter}" title="{!v.fieldMeta.attributes.tooltip}" min="{!v.fieldMeta.attributes.min}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'date'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="Date" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" value="{!v.stringValue}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'text'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" value="{!v.stringValue}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+    
+	<aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'reference'}">
+        <c:LookupField aura:id="lookup-field" field="{!v.fieldMeta}" showLabel="{!v.showLabel}" fieldValue="{!v.stringValue}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'time'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="time" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'url'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="url" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'email'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="email" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'datetime'}">
+        <lightning:input aura:id="field-input" name="{!v.fieldMeta.attributes.name}" type="datetime" label="{!v.showLabel == true ? v.fieldMeta.attributes.label : ' '}" onchange="{!c.handleChange}" title="{!v.fieldMeta.attributes.tooltip}"/>
+    </aura:if>
+</aura:component>

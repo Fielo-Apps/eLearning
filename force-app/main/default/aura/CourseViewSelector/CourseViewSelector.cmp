@@ -1,0 +1,16 @@
+<aura:component >
+    <aura:registerEvent name="courseViewSelected" type="c:CourseViewSelected"/>
+    
+    <div class="slds-col slds-align_absolute-center">
+        <div class="slds-tabs_default">
+            <ul class="slds-tabs_default__nav" role="tablist">
+                <li aura:id="mycoursestab" class="slds-tabs_default__item slds-is-active" title="{!$Label.c.MyCourses}" role="presentation">
+                    <a class="slds-tabs_default__link" href="javascript:void(0);" onclick="{!c.handleTabClick}" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="myCourses">{!$Label.c.MyCourses}</a>
+                </li>
+                <li aura:id="availablecoursestab" class="slds-tabs_default__item" title="{!$Label.c.AvailableCourses}" role="presentation">
+                    <a class="slds-tabs_default__link" href="javascript:void(0);" onclick="{!c.handleTabClick}" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="availableCourses">{!$Label.c.AvailableCourses}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</aura:component>

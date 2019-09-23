@@ -1,0 +1,78 @@
+<apex:component layout="none" controller="PicklistController">
+<!-- ATRIBUTOS GENERALES -->
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+    <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+    <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+    <apex:attribute name="value" description="Value of the fields" type="String" />
+    <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+    <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+    <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+    <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+    <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
+<!-- ATRIBUTOS LISTAS -->        
+    <apex:attribute name="options" description="JSON with the Options" type="String" assignTo="{!cOptions}" />
+    <apex:attribute name="picklistEntries" type="Object[]" description="List with the Options" />
+<!-- ATRIBUTOS DEPENDENCIAS -->    
+    <apex:attribute name="controller" description="Field" type="String"  />
+    <apex:attribute name="optionsGetter" description="Javascript method responsable of handle return the options when the controller field change" type="String"  />    
+    <apex:attribute name="validFor" default="" description="JSON with the ValidFor Dependency" type="String" />
+    <!-- ATRIBUTOS PROPIOS DEL RADIO -->
+    <apex:attribute name="group" default="true" description="Is Radio Group " type="Boolean" />
+    <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+        <fieldset id="{!formId}-{! IF ( ISBLANK(fieldName), SUBSTITUTE( describe.Name, '_', ''), fieldName) }" class="slds-form-element {!className}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" data-component-id="{!describe.label}" data-type="radio" data-controller-element="{! IF( ISBLANK(controller), '', formId + '-' + controller ) }" data-valid-for="{!validFor}" data-options-getter="{!optionsGetter}" data-on-change="{!onchange}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+            <apex:panelGroup layout="none" rendered="{!showLabel}">
+                <legend class="slds-form-element__legend slds-form-element__label">
+                  <apex:panelGroup layout="none" rendered="{! IF( ISBLANK(required), !describe.Nillable, IF(required == 'true', true, false) ) }"><abbr class="slds-required" title="required">*</abbr></apex:panelGroup>{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}
+                  <apex:panelGroup layout="none" rendered="{! !ISBLANK(describe.inlineHelpText)}">
+                      <div class="slds-form-element__icon">
+                          <a href="javascript:void(0);">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+                              <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+                            </svg>
+                            <span class="slds-assistive-text">{!$Label.Help}</span>
+                          </a>
+                          <div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" >
+                            <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+                          </div>
+                      </div>
+                  </apex:panelGroup>
+                </legend>
+            </apex:panelGroup>
+              <div class="slds-form-element__control">
+            <apex:panelGroup layout="none" rendered="{! !group }" > 
+                <apex:repeat value="{!IF(options!='', optionsList,picklistEntries)}" var="p" >
+                      <span class="slds-radio">
+                <input name="{!formId}-{!describe.name}" type="radio" id="{!formId}-{!fieldName}-{!p['Id']}" value="{!p['Id']}" />
+                  <label class="slds-radio__label" for="{!formId}-{!fieldName}-{!p['Id']}">
+                    <span class="slds-radio--faux"></span>
+                    <span class="slds-form-element__label">{!p['Label']}</span>
+                  </label>
+                      </span>
+                </apex:repeat>
+            </apex:panelGroup>
+            <apex:panelGroup layout="none" rendered="{! group }" > 
+                <div class="slds-radio--button-group">
+                    <apex:repeat value="{!IF(options!='', optionsList,picklistEntries)}" var="p" >
+                      <span class="slds-button slds-radio--button" data-option-name="{!p['Id']}">
+                        <input name="{!formId}-{!describe.name}" type="radio" id="{!formId}-{!fieldName}-{!p['Id']}" value="{!p['Id']}" />
+                        <label class="slds-radio--button__label" for="{!formId}-{!fieldName}-{!p['Id']}">
+                          <span class="slds-radio--faux">{!p['Label']}</span>
+                        </label>
+                      </span>
+                    </apex:repeat>
+                </div>
+            </apex:panelGroup>
+              </div>
+            <div class="slds-form-element__help slds-hide"></div>
+        </fieldset>
+    </apex:panelGroup>    
+    <apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+        <div class="slds-form-element {!className}" data-type="text" data-value="text" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" id="{!formId}-{!fieldName }">
+            <span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+            <div class="slds-form-element__control slds-has-divider--bottom">
+                <span class="slds-form-element__static fielosf-output" data-name="{!describe.Name}" data-type="text">{!value}</span>
+            </div>
+        </div>
+    </apex:panelGroup>
+</apex:component>

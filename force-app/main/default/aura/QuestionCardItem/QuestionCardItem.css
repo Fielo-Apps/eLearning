@@ -1,0 +1,34 @@
+.THIS .fielo-question__toggle-button-container{
+    width: fit-content;
+	padding-right: 27px;
+}
+
+.THIS .fielo-question-content {
+    padding-left: 68px;
+    max-width: 564px;
+}
+
+.THIS .slds-card__header {
+    padding-left: 24px;
+}
+
+.THIS .fielo-question__status lightning-icon{
+    height: 30px;
+    width: 30px;
+}
+
+.THIS .fielo-question__status{
+    margin-right: 18px;
+}
+
+.THIS .fielo-question__status svg{
+    vertical-align: top;
+}
+
+.THIS .slds-icon-action-reject {
+    background-color: #C23934;
+}
+
+.THIS .slds-icon-action-approval {
+	background-color: #04844B;
+}

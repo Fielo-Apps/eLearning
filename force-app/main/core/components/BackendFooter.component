@@ -1,0 +1,54 @@
+<apex:component layout="none" controller="BackendFooterController">
+  <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
+  <apex:attribute name="externalJS" type="String" description="List of external JS separated by ," assignTo="{!cExternalJS}"/>
+  <apex:attribute name="appiphony" type="Boolean" default="true" description="" />
+  <apex:attribute name="helpers" type="String" default="" description="" />
+    <script>
+      var ie = {};
+      if (navigator.userAgent.indexOf("MSIE 9.0") !== -1) {
+        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie9.css')}";
+        ie.jsSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core-ie9.min.js')}";
+      } else if(navigator.userAgent.indexOf("MSIE 10.0") !== -1) {
+        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie10.css')}";
+      } else if(navigator.userAgent.indexOf("MSIE 11.0") !== -1) {
+        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie11.css')}";
+      }else{
+        ie=null;
+      }
+      // si es IE cargo su css y js
+      if (ie){
+        var js = document.createElement("script"),
+            css = document.createElement("link");
+        // para js
+        if(ie.jsSrc) {
+          js.setAttribute("src", ie.jsSrc);
+          document.getElementsByTagName("head")[0].appendChild(js);
+        }
+
+        // para css
+        if(ie.cssSrc) {
+          css.setAttribute("rel", "stylesheet");
+          css.setAttribute("type", "text/css");
+          css.setAttribute("href", ie.cssSrc);
+          document.getElementsByTagName("head")[0].appendChild(css);
+        }
+      }
+    </script>
+    <apex:panelGroup rendered="{!appiphony}">
+      <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'jquery/jquery.min.js')}"></script>
+      <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'appiphony/jquery.aljs-all-with-moment.min.js')}"></script>
+    </apex:panelGroup>
+    <c:BackEndJSSettings ns="{!namespace}" offset="{!offset}"/>
+    <script src="{!URLFOR($Resource.FieloSalesforce_Backend, 'tinymce/js/tinymce/tinymce.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}"></script>  
+    
+    
+    <apex:panelGroup rendered="{! ! ISBlank(externalJS) }">
+      <apex:repeat var="url" value="{!JSUrls}" >
+        <script type="text/javascript" src="{!url}"></script>
+      </apex:repeat>
+    </apex:panelGroup>
+    <apex:panelGroup rendered="{! ! ISBlank(helpers) }">
+      <script type="text/javascript">fielo.helper.init([ {!helpers} ]);</script>
+    </apex:panelGroup>
+</apex:component>

@@ -1,0 +1,7 @@
+.THIS .slds-carousel__content {
+    display: none;
+}
+
+.THIS .slds-carousel__image img {
+    max-height: 458px;
+}

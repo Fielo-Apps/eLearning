@@ -1,0 +1,22 @@
+<aura:component>
+    <aura:attribute type="String" name="name"/>
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="String" name="className"/>
+    <aura:attribute type="Object[]" name="fields"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.fields != null}">
+        <div class="fielo-section slds-p-top_medium">
+            <lightning:layout class="{! 'fielo-section-layout' + v.className}" verticalAlign="start" horizontalAlign="start">
+                <aura:iteration items="{!v.fields}" var="field">
+                    <lightning:layoutItem class="fielo-section__field">
+                        <label class="slds-form-element__label">{!field.label}</label>
+                        <span class="fielo-section__field-value">{!field.value}</span>
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+        </div>
+    </aura:if>
+</aura:component>

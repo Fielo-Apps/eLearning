@@ -1,0 +1,25 @@
+.THIS.fielo-module-header-container{
+    display: inline-flex;
+    width: 90%;
+}
+
+.THIS .module-name {
+    width: 90%;
+}
+
+.THIS .fielo-module__toggle-button-container{
+    width: fit-content;
+	padding-right: 27px;
+}
+
+.THIS a:link{
+    color: #0070D2;
+}
+
+.THIS .slds-rich-text-editor__output span {
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+}

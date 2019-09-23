@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseNameNotBlank</fullName>
+    <active>true</active>
+    <description>Course name field needs to be complete.</description>
+    <errorConditionFormula>ISBLANK( Name )|| ISNULL(Name)</errorConditionFormula>
+    <errorDisplayField>Name</errorDisplayField>
+    <errorMessage>You must enter the Name of the Course</errorMessage>
+</ValidationRule>

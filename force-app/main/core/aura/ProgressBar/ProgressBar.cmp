@@ -1,0 +1,67 @@
+<aura:component >
+    <aura:attribute name="record" type="String" />
+    <aura:attribute name="config" type="String" />
+    <aura:attribute name="fieldName" type="String" />
+    <aura:attribute name="value" type="String" />    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>        
+    
+    <aura:attribute name="layout" type="String" />
+    
+    <aura:attribute name="range" type="Integer[]" default="[33, 66, 100]"/>
+    <aura:attribute name="lowrangeStyle" type="String" />
+    <aura:attribute name="highrangeStyle" type="String" />
+    <aura:attribute name="lowdataStyle" type="String" />
+    <aura:attribute name="highdataStyle" type="String" />
+    <aura:attribute name="percentageStyle" type="String" />
+    <aura:attribute name="percentage" type="String" />    
+    <div class="fielosf-progress-bar">
+        <aura:if isTrue="{!v.layout == 'bar'}">
+            <div aura:id="progressBar" class="slds-progress-bar slds-progress-bar_circular" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{!v.value}" role="progressbar">
+                <span class="slds-progress-bar__value" style="{!'width:' + v.value + '%'}">
+                    <!--<span class="slds-assistive-text">Progress:{!v.value}%</span>-->
+                </span>
+            </div>
+            <div class="bar-chart-information slds-p-top--small">
+                <div class="bar-chart-label slds-text-align_left">0</div>
+                <div class="bar-chart-label slds-text-align_center">{!v.value}%</div>
+                <div class="bar-chart-label slds-text-align_right">{!v.record.Range[1]}</div>
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.layout == 'circular'}">
+            <div class="{!v.percentage + ' outerCircle'}">
+                <span>{!v.value} %</span>
+                <div class="slice">
+                    <div class="bar" style="{!v.percentageStyle}"></div>
+                    <div class="fill"></div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.layout == 'gauge'}">
+            <div class="progress-bar-container">            
+                <div class="gauge-chart-container">
+                    <!--<div class="gauge__marker" style="{!v.lowrangeStyle}"></div>
+                    <div class="gauge__marker" style="{!v.highrangeStyle}"></div>-->
+                    <div class="gauge-chart-middle"></div>
+                    <div class="gauge-chart-background"></div>
+                    <div class="gauge-chart-data" style="{!v.percentageStyle}" ></div>
+                    <!--<div class="gauge-chart-data green" ></div>
+                    <div class="gauge-chart-data yellow" style="{!v.highdataStyle}" ></div>
+                    <div class="gauge-chart-data red" style="{!v.lowdataStyle}" ></div>-->
+                </div>
+                <div class="gauge-chart-needle" style="{!v.percentageStyle}"></div>
+                <div>
+                    <div class="gauge-chart-label slds-text-align_left">0</div>
+                    <div class="gauge-chart-label slds-text-align_right">{!v.record.Range[1]}</div>
+                </div>
+                <div class="gauge-chart-value">{!v.record.Value} ({!v.value} %)</div>
+            </div>
+            
+        </aura:if>
+        
+        
+        
+    </div>
+    
+</aura:component>

@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT" description="Called By Filter">
+    <aura:attribute name="filterObject" type="Object"/>
+    <aura:attribute name="whereClause" type="String"/>
+    <aura:attribute name="sortByClause" type="String"/>
+    <aura:attribute name="dynamicFilter" type="String"/>
+</aura:event>

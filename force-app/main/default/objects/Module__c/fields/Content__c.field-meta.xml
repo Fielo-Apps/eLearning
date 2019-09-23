@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Content__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>For Youtube and Vimeo videos, enter the embed URL. For internally-hosted files, enter the URL starting after your Salesforce instance (i.e. /servlet/...). For externally-hosted files, enter the full URL.</inlineHelpText>
+    <label>Content</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

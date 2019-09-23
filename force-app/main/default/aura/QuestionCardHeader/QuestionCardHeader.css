@@ -1,0 +1,27 @@
+.THIS {
+    width: 100%;
+}
+.THIS.fielo-question-header-container{
+    display: inline-flex;
+}
+
+.THIS .slds-card__header {
+    padding-left: 24px;
+}
+
+.THIS .fielo-question__toggle-button-container{
+    width: fit-content;
+	padding-right: 27px;
+}
+
+.THIS .fielo-question__name {
+    width: 85%;
+}
+
+.THIS .slds-rich-text-editor__output span {
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+}

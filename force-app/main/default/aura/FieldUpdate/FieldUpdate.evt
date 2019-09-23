@@ -1,0 +1,12 @@
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute type="String" name="fieldName"/>
+    <aura:attribute type="String" name="fieldType"/>
+    <aura:attribute type="String" name="jsType"/>
+    
+    <aura:attribute type="Object" name="fieldValue"/>
+    <aura:attribute type="String" name="stringValue"/>
+    <aura:attribute type="Boolean" name="booleanValue"/>
+    <aura:attribute type="Decimal" name="decimalValue"/>
+    <aura:attribute type="Boolean" name="isNull"/>
+    <aura:attribute type="Boolean" name="isQuoted"/>
+</aura:event>

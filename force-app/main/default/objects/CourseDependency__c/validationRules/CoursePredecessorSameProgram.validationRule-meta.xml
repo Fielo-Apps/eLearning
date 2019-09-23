@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CoursePredecessorSameProgram</fullName>
+    <active>true</active>
+    <errorConditionFormula>Course__r.Program__c != Predecessor__r.Program__c</errorConditionFormula>
+    <errorMessage>Course and Prerequisite must belong to the same Program</errorMessage>
+</ValidationRule>

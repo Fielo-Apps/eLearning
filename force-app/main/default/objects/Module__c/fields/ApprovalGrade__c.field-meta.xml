@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApprovalGrade__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the minimum grade (from 0 to 100) that members must get to pass the module.</inlineHelpText>
+    <label>Approval Grade</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

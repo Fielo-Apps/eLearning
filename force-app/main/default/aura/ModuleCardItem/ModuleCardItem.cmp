@@ -1,0 +1,62 @@
+<aura:component>
+    <aura:attribute type="Object" name="moduleWrapper" />
+    <aura:attribute type="Object" name="courseWrapper" />
+    <aura:attribute type="Object" name="coursePoints" />
+    <aura:attribute type="String" name="pointFields" />
+    <aura:attribute type="FieloPLT__Member__c" name="member" />
+    <aura:attribute type="Boolean" name="showModuleContent" default="false"/>
+    <aura:attribute type="Boolean" name="useDefaultUX" default="true"/>
+    <aura:attribute type="String" name="modulefields_passed"/>
+    <aura:attribute type="String" name="modulefields_notpassed"/>
+    <aura:attribute type="String" name="modulefields_nottaken"/>
+    <aura:attribute type="Object[]" name="fieldsMeta"/>
+    <aura:attribute type="Object" name="MRfieldsMeta"/>
+    <aura:attribute type="sObject[]" name="moduleResponses"/>
+    <aura:attribute type="sObject" name="moduleResponse"/>
+    <aura:attribute type="sObject" name="firstApproveModuleResponse"/>
+    <aura:attribute type="sObject" name="lastModuleResponse"/>
+    <aura:attribute type="sObject" name="course"/>
+    <aura:attribute type="sObject" name="courseStatus"/>
+    <aura:attribute type="String" name="nextModuleInCourse"/>
+    <aura:attribute type="String" name="iconName" default="utility:chevronright"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler name="toggleModuleContent" event="c:ToggleModuleContent" action="{!c.toggleModuleContent}"/>
+    <aura:method name="toggle" action="{!c.toggleContent}">
+        <aura:attribute type="Boolean" name="collapse" />
+    </aura:method>
+    
+    <div class="fielo-module-card-item" data-member-id="{!v.member.Id}" data-course-id="{!v.course.Id}">
+        <lightning:card class="fielo-module-card">
+            <aura:set attribute="title">
+                <c:ModuleCardHeader record="{!v.moduleWrapper.module}" iconName="{!v.iconName}"/>
+            </aura:set>
+            <aura:set attribute="actions">
+                <aura:if isTrue="{!v.course.Id != null}">
+                	<c:ModuleActions courseWrapper="{!v.courseWrapper}" moduleWrapper="{!v.moduleWrapper}" location="header" member="{!v.member}" course="{!v.course}" courseStatus="{!v.courseStatus}"/>
+				</aura:if>
+            </aura:set>
+            <div class="fielo-module-content">
+                <aura:if isTrue="{!v.showModuleContent}">
+                    <c:ModuleContent 
+                                     courseWrapper="{!v.courseWrapper}"
+                                     moduleWrapper="{!v.moduleWrapper}"
+                                     coursePoints="{!v.coursePoints}"
+                                     pointFields="{!v.pointFields}"
+                                     fieldsMeta="{!v.fieldsMeta}"
+                                     MRfieldsMeta="{!v.MRfieldsMeta}"
+                                     moduleResponse="{!v.moduleWrapper.isApproved ? v.firstApproveModuleResponse : v.lastModuleResponse}"
+                                     firstApproveModuleResponse="{!v.firstApproveModuleResponse}"
+                                     lastModuleResponse="{!v.lastModuleResponse}"
+                                     useDefaultUX="{!v.useDefaultUX}"
+                                     modulefields_passed="{!v.modulefields_passed}"
+                                     modulefields_notpassed="{!v.modulefields_notpassed}"
+                                     modulefields_nottaken="{!v.modulefields_nottaken}"
+                                     member="{!v.member}"
+                                     course="{!v.course}"
+                                     />
+                </aura:if>
+            </div>
+        </lightning:card>
+    </div>
+</aura:component>

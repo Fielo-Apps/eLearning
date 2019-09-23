@@ -1,0 +1,17 @@
+.THIS .fielo-module-image {
+    width: 754px;
+    min-height: 458px;
+}
+
+.THIS .fielo-module-audio {
+    width: 100%;
+    min-height: 458px;
+}
+
+.THIS.fielo-module-content-viewer{
+    max-height: 458px;
+}
+
+.THIS.fielo-module-content-viewer img{
+    max-height: 458px;
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidateAttemptNumber</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISBLANK(NumberOfAttempt__c)),NumberOfAttempt__c &gt; ModuleResponse__r.Module__r.AttemptsAllowedPerQuestion__c)</errorConditionFormula>
+    <errorMessage>You have reached the limit of attempts for this question.</errorMessage>
+</ValidationRule>

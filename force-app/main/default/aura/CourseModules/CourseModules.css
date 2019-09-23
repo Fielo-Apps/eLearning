@@ -1,0 +1,47 @@
+.THIS.fielo-modules-container {
+    color: #54698D;
+    max-width: 753px;
+}
+
+.THIS .fielo-module-card-container > header{
+    display: none;
+}
+
+.THIS .fielo-module-card-container > header ~ header{
+    display: unset;
+}
+
+.THIS .description {
+    text-align: justify;
+}
+
+.THIS .fielo-course-tab-selector{
+    background-color: #E6EEF1;
+}
+
+
+.THIS .fielo-course-tab-selector .slds-grid .slds-tabs_default{
+    display: inline-flex;
+    width: max-content;
+    background-color: #E6EEF1;
+}
+
+.THIS .fielo-course-tab-selector .slds-grid .slds-tabs_default__nav{
+    display: inline-flex;
+    background-color: #E6EEF1;
+}
+
+
+.THIS .slds-tabs_default__item.slds-is-active::after{
+    background-color: #0070D2;
+}
+
+.THIS .slds-tabs_default__item::after{
+    background-color: #E6EEF1;
+}
+
+.THIS .slds-tabs_default__item {
+    text-transform: none !important;
+    color: #54698D;
+    font: Salesforce Sans;
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NotActiveIfNew</fullName>
+    <active>true</active>
+    <description>The module cannot be created with status active, as it won&#39;t have questions yet.</description>
+    <errorConditionFormula>AND( ISNEW() , IsActive__c )</errorConditionFormula>
+    <errorDisplayField>IsActive__c</errorDisplayField>
+    <errorMessage>New module (without questions) cannot be active.</errorMessage>
+</ValidationRule>

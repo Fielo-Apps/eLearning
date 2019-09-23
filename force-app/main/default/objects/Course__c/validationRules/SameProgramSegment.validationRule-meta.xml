@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SameProgramSegment</fullName>
+    <active>true</active>
+    <description>The course must have a segment within the same program.</description>
+    <errorConditionFormula>Segment__r.FieloPLT__Program__c  &lt;&gt;  Program__c &amp;&amp;  NOT(ISNULL(Segment__r.FieloPLT__Program__c) ||  ISBLANK(Segment__r.FieloPLT__Program__c))</errorConditionFormula>
+    <errorDisplayField>Segment__c</errorDisplayField>
+    <errorMessage>Segment must be on the same program.</errorMessage>
+</ValidationRule>

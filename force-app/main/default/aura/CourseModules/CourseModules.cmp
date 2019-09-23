@@ -1,0 +1,95 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" controller="CourseModulesController">
+    <aura:attribute type="String" name="recordId" description="Course Id"/>
+    <aura:attribute type="String" name="fields" description="Modules Fields To Query" default="Id,Name,FieloELR__Description__c,FieloELR__AttemptsAllowed__c,FieloELR__Order__c"/>
+    
+    <!-- DESIGN ATTRIBUTES BEGINS -->
+    <aura:attribute access="global" type="Boolean" name="useDefaultUX" default="true"/>
+    <aura:attribute access="global" type="String" name="pointFields" default="FieloPLT__Points__c"/>
+    <aura:attribute access="global" type="String" name="modulefields_passed" description="Modules Fields To Display when module is already taken and passed" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
+    <aura:attribute access="global" type="String" name="modulefields_notpassed" description="Modules Fields To Display when module is already taken and not passed" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
+    <aura:attribute access="global" type="String" name="modulefields_nottaken" description="Modules Fields To Display when module not taken yet" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__KeyDependencies__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
+    <!-- DESIGN ATTRIBUTES ENDS -->
+    
+    <aura:attribute type="String" name="courseDetailFields" description="Course Fields To Display in the details tab" default="FieloELR__Description__c,FieloELR__KeyDependencies__c"/>
+    <aura:attribute type="String" name="nextModuleId"/>
+    <aura:attribute type="String" name="activeViewName" default="detail"/>
+    <aura:attribute type="Object[]" name="moduleWrapperList" description="Complex type list of Modules to display"/>
+    <aura:attribute type="Object[]" name="fieldsMeta"/>
+    <aura:attribute type="Object" name="MRfieldsMeta"/>
+    <aura:attribute type="Object" name="CoursefieldsMeta"/>
+    <aura:attribute type="Object" name="courseWrapper"/>
+    <aura:attribute type="Object" name="coursePoints" />
+    <aura:attribute type="sObject" name="course"/>
+    <aura:attribute type="sObject" name="courseStatus"/>
+    <aura:attribute type="sObject[]" name="moduleResponses"/>
+    <aura:attribute type="FieloPLT__Member__c" name="member" description="Current Member"/>
+    <aura:attribute type="Boolean" name="isCollapsed" default="false"/>
+    <aura:attribute type="Boolean" name="showModules" default="false"/>
+    
+    <aura:handler event="FieloPLT:UpdateMemberEvent" action="{!c.updateMember}"/>
+    <aura:handler name="courseViewSelected" event="c:CourseViewSelected" action="{!c.handleCourseViewSelected}"/>
+    <!-- <aura:handler name="init" action="{!c.doInit}" value="{!this}"/> -->
+    
+    <div class="fielo-modules-container" data-course-id="{!v.recordId}" data-next-module="{!v.nextModuleId}" data-coursestatus-id="{!v.courseStatus.Id}">
+        
+        <aura:if isTrue="{! v.showModules }">
+            <div class="slds-p-bottom_large">
+                <div class="fielo-course-tab-selector">
+                    <div class="slds-grid">
+                        <div class="slds-col">
+                        </div>
+                        <c:courseDetailsTabs aura:id="tabs" course="{!v.course}" recordId="{!v.recordId}" courseDetailFields="{!v.courseDetailFields}"/>
+                        <div class="slds-col">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <aura:if isTrue="{!v.activeViewName == 'detail'}">
+                <aura:if isTrue="{! v.CoursefieldsMeta != null }">
+                    <c:CourseDetailFieldset record="{!v.course}" fields="{!v.courseDetailFields}" fieldMeta="{!v.CoursefieldsMeta}" dependencies="{!v.courseWrapper.course.FieloELR__PredecessorCourses__r.records}"/>
+                </aura:if>
+                <aura:set attribute="else">
+                    <div class="display-none-tab"></div>
+                </aura:set>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.activeViewName == 'modules'}">
+                
+                <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                    <lightning:layoutItem>
+                        <h3 class="slds-text-heading_medium slds-p-bottom_medium"><b>{!$Label.c.Modules + ' (' + v.moduleWrapperList.length + ')'}</b></h3>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem>
+                        <lightning:button label="{!v.isCollapsed ? $Label.c.ExpandAll : $Label.c.CollapseAll }" variant="neutral" onclick="{!c.toggleAll}"/>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                
+                <lightning:card class="fielo-module-card-container">
+                    <aura:if isTrue="{! and(v.moduleWrapperList != null, v.fieldsMeta != null, v.MRfieldsMeta != null) }">
+                        <aura:iteration items="{!v.moduleWrapperList}" var="moduleWrapper">
+                            <c:ModuleCardItem aura:id="module-card"
+                                              moduleWrapper="{!moduleWrapper}"
+                                              fieldsMeta="{!v.fieldsMeta}"
+                                              MRfieldsMeta="{!v.MRfieldsMeta}"
+                                              moduleResponses="{!v.moduleResponses}"
+                                              nextModuleInCourse="{!v.nextModuleId}"
+                                              useDefaultUX="{!v.useDefaultUX}"
+                                              modulefields_passed="{!v.modulefields_passed}"
+                                              modulefields_notpassed="{!v.modulefields_notpassed}"
+                                              modulefields_nottaken="{!v.modulefields_nottaken}"
+                                              member="{!v.member}"
+                                              course="{!v.course}"
+                                              courseStatus="{!v.courseStatus}"
+                                              courseWrapper="{!v.courseWrapper}"
+                                              coursePoints="{!v.coursePoints}"
+                                              pointFields="{!v.pointFields}"
+                                              />
+                        </aura:iteration>
+                    </aura:if>
+                </lightning:card>
+            </aura:if>
+        </aura:if>
+    </div>
+</aura:component>

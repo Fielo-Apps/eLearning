@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuestioPoolPositive</fullName>
+    <active>true</active>
+    <description>Question Pool cannot be equal to zero.</description>
+    <errorConditionFormula>QuestionPool__c &lt;= 0</errorConditionFormula>
+    <errorDisplayField>QuestionPool__c</errorDisplayField>
+    <errorMessage>Question Pool must be greater than zero.</errorMessage>
+</ValidationRule>

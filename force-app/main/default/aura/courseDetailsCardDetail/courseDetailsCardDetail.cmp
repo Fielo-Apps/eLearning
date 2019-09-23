@@ -1,0 +1,36 @@
+<aura:component >
+<aura:attribute name="course" type="Course__c" />
+    
+    <div> 
+        <article class="slds-card slds-grid">
+            <div>
+                <!-- Grid of Card -->
+                <div class="slds-card__body del-box-ex">
+                    
+                    <!-- Grid of Image Side -->
+                    <div class=" slds-size--5-of-12 del-img-bg slds-grid slds-grid_align-center">
+                        <span> Imagem </span>
+                    </div>          
+                    
+                    <!-- Grid de Description + Date -->
+                    <div class="   slds-size--7-of-12">
+                        <div class="  slds-grid_align-center slds wrap">
+                            <div class="media_description slds-col slds-size--10-of-12"> 
+                                 {!v.course.FieloELR__Description__c}
+                            </div>
+                            <div class="slds-col slds-size--8-of-12">
+                                <span> Days Left</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer class="slds-card__footer">
+                    <a class="slds-card__footer-action" href="javascript:void(0);">View Module
+                        <span class="slds-assistive-text">Test</span>
+                    </a>
+                </footer>
+            </div>
+        </article>    
+    </div>
+</aura:component>

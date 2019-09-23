@@ -1,0 +1,71 @@
+<apex:page tabStyle="Course__c" sidebar="false" standardController="ModuleResponse__c" extensions="ModuleResponseViewController" docType="html-5.0">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'lightning/styles/salesforce-lightning-design-system-vf.min.css')}"></link>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'fielo/styles/core.css')}"></link>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'styles/core.css')}"></link>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+<body>
+	<div class="fielosf fielosf-elearning fielosf-course-view">
+		<!-- STANDARD Header  -->
+		<c:BackendHeaderRecord firstHeading="{!$ObjectType[objectName].labelPlural}"
+			prefix="FieloELR"
+			secondHeading="{!record['name']}"
+			icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/{!viewSettings.FieloPLT__Icon__c}"
+			helpUrl="http://documentation.fielo.com/docs/promotion"
+			sObjectName="{!objectName}"
+			record="{!record}"
+			fieldset="{!viewSettings.FieloPLT__Fieldset__c}"
+			buttons="{!MID(viewSettings.FieloPLT__Buttons__c,2,LEN(viewSettings.FieloPLT__Buttons__c)-1)}"
+			tools="{!MID(viewSettings.FieloPLT__Tools__c,2,LEN(viewSettings.FieloPLT__Tools__c)-1)}"
+		/>
+		<c:Form namespace="FieloELR" formId="FieloELR__ModuleResponse__cForm"
+			heading="{!$Label.fieloelr__edit} {!record['Name']}"
+			sObjectName="{!objectName}"
+			fieldset="{!editSettings.FieloPLT__Sections__c}"
+			saveController="ModuleResponseViewController.save"
+			secondaryParameters="{!secondaryParameters}"
+			retrieveController="ModuleResponseViewController.retrieve"
+			record="{!record}"
+		/>
+
+		<apex:repeat value="{!relatedSettings}" var="rel">
+	        <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloELR__QuestionResponse__c'}">
+	          <c:RelatedList namespace="FieloELR" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
+	            icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
+	            sObjectName="{!rel.FieloPLT__TargetObject__c}"
+	            dataFilters="{!rel.FieloPLT__DataFilters__c}"
+            	parameters="{!rel.FieloPLT__DataFilters__c}"
+	            fieldset="{!rel.FieloPLT__Fieldset__c}"
+	            buttons="{!rel.FieloPLT__Buttons__c}"
+	            tools="{!rel.FieloPLT__Tools__c}"
+	            actions="{!rel.FieloPLT__Actions__c}"
+	            dataOrderBy="{!rel.FieloPLT__OrderBy__c}"
+	            />
+	            <apex:repeat value="{!relatedFormsSettings}" var="relForm">
+	            	<apex:panelGroup rendered="{!relForm.FieloPLT__Object__c = 'FieloELR__QuestionResponse__c' && relForm.FieloPLT__Type__c = 'Edit'}">
+	            		<c:Form namespace="FieloELR" formId="FieloELR__QuestionResponse__cForm"
+						heading="{!$Label.fieloelr__edit} {!$ObjectType.QuestionResponse__c.label}"
+						sObjectName="{!relForm.FieloPLT__Object__c}"
+						fieldset="{!relForm.FieloPLT__Sections__c}"
+						saveController="ModuleResponseViewController.saveQuestionResponse"
+						/>
+	            	</apex:panelGroup>
+	            	<apex:panelGroup rendered="{!relForm.FieloPLT__Object__c = 'FieloELR__QuestionResponse__c' && relForm.FieloPLT__Type__c = 'New'}">
+						<c:Form namespace="FieloELR" formId="FieloELR__QuestionResponse__cFormNew"
+						heading="{!$Label.fieloelr__new} {!$ObjectType.QuestionResponse__c.label}"
+						sObjectName="{!relForm.FieloPLT__Object__c}"
+						fieldset="{!relForm.FieloPLT__Sections__c}"
+						saveController="CourseViewController.saveQuestionResponse"
+						/>
+	            	</apex:panelGroup>
+	            </apex:repeat>
+	        </apex:panelGroup>
+	    </apex:repeat>
+	</div>
+	<c:BackendFooter namespace="FieloELR" helpers="'FieloForm','FieloPaginator','FieloFilter','FieloRelatedRecords','FieloELearning','FieloRecentReorder'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')},{!URLFOR($Resource.FieloElr_Salesforce, 'scripts/core.js')}"/>
+	<script type="text/javascript" src="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'jquery/jquery-ui.min.js')}"></script>
+</body>
+</html>
+</apex:page>

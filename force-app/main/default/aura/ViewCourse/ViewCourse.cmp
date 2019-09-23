@@ -1,0 +1,20 @@
+<aura:component>
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="String" name="name"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="String" name="fieldName"/>
+    <aura:attribute type="Boolean" name="viewResults" default="false"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+
+    <aura:if isTrue="{!v.config.type == 'btn'}">
+        <div class="fielo-view-course" data-course-id="{!v.record.Id}">
+            <aura:if isTrue="{!v.viewResults}">
+            	<lightning:button label="{!$Label.c.ViewResults}" name="viewResults" onclick="{!c.gotoDetail}" variant="brand" />
+                <aura:set attribute="else">
+                    <lightning:button label="{!v.config.label}" name="{!v.config.label}" onclick="{!c.gotoDetail}" variant="{!v.config.variant}" />
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

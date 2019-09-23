@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GradeApprovalIfActive</fullName>
+    <active>true</active>
+    <description>When the module is set to active must validate that the Grade Approval is not null.</description>
+    <errorConditionFormula>AND( IsActive__c , ISBLANK( ApprovalGrade__c ))</errorConditionFormula>
+    <errorDisplayField>ApprovalGrade__c</errorDisplayField>
+    <errorMessage>Active modules must have an approval grade.</errorMessage>
+</ValidationRule>

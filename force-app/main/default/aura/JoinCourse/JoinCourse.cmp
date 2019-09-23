@@ -1,0 +1,10 @@
+<aura:component controller="JoinCourseController" >
+    <aura:attribute name="record" type="String"/>    
+    <aura:attribute name="join" type="Boolean" default="true" /> 
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>    
+    <aura:registerEvent name="showRecord" type="c:ShowRecordEvent"/>
+    <aura:if isTrue="{!v.join}">
+        <lightning:button variant="brand" onclick="{!c.joinCourse}" > Join Course </lightning:button>
+    </aura:if>            
+</aura:component>

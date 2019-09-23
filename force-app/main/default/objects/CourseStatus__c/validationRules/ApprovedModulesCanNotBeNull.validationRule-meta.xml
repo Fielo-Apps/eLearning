@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApprovedModulesCanNotBeNull</fullName>
+    <active>true</active>
+    <description>The Approved Modules field cannot be null.</description>
+    <errorConditionFormula>ISBLANK(ApprovedModules__c)</errorConditionFormula>
+    <errorMessage>The Approved Modules cannot be null.</errorMessage>
+</ValidationRule>

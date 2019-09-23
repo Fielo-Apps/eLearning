@@ -1,0 +1,56 @@
+<aura:component >
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="String" name="fieldName"/>
+    <aura:attribute type="Object" name="fieldValue"/>
+    <aura:attribute type="Object" name="fieldMeta"/>
+    
+    <aura:attribute type="String" name="stringValue"/>
+    <aura:attribute type="Boolean" name="booleanValue"/>
+	<aura:attribute type="Decimal" name="decimalValue"/>
+	<aura:attribute type="Object" name="dateValue"/>
+    
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'picklist'}">
+        <lightning:formattedText value="{!v.fieldValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'number'}">
+        <aura:if isTrue="{!v.fieldMeta.attributes.type == 'currency'}">
+            <lightning:formattedNumber value="{!v.fieldValue}" style="currency" currencyCode="{!v.fieldMeta.attributes.currencyCode}"/>
+            <aura:set attribute="else">
+                <lightning:formattedNumber value="{!v.fieldValue}"/>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'date'}">
+        <ui:outputDate value="{!v.stringValue}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'text'}">
+        <lightning:formattedText value="{!v.fieldValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'reference'}">
+		<lightning:formattedText value="{!v.stringValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'time'}">
+	    <lightning:formattedTime value="{!v.fieldValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'url'}">
+	    <lightning:formattedUrl value="{!v.fieldValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'email'}">
+    	<lightning:formattedEmail value="{!v.fieldValue}" />
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fieldMeta.attributes.inputType == 'datetime'}">
+		<lightning:formattedDateTime value="{!v.fieldValue}" year="4-digit" month="2-digit" day="2-digit" minute="2-digit" hour="2-digit" second="2-digit" hour12="false"/>
+    </aura:if>
+</aura:component>

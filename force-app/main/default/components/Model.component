@@ -1,0 +1,23 @@
+<apex:component controller="ModelController" layout="none">
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+    <apex:attribute name="modelType" type="String"  description=""  assignTo="{!cModelType}"/>
+    <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+
+    <div id="{!formId}-{!fieldName }" data-field-name="modelId" class="slds-form-element {!className}" data-component-id="modelId" data-type="radio">
+        <apex:repeat value="{!modelsByClass}" var="c">
+        <fieldset>
+            <legend class="slds-form-element__legend slds-form-element__label">{!c}</legend>
+            <apex:repeat value="{!modelsByClass[c]}" var="model">
+            <span class="slds-radio">
+                <input name="{!formId}-{!fieldName}" type="radio" id="{!formId}-{!model.id}" value="{!model.id}" />
+                <label class="slds-radio__label" for="{!formId}-{!model.id}">
+                    <span class="slds-radio--faux"></span>
+                    <span class="slds-form-element__label">{!model.name}</span>
+                </label>
+            </span>
+        </apex:repeat>
+    </fieldset>
+    </apex:repeat>
+    </div>
+</apex:component>

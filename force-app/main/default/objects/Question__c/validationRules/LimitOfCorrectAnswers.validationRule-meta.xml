@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LimitOfCorrectAnswers</fullName>
+    <active>true</active>
+    <description>If the question type is &quot;Single choice&quot; or &quot;Statement&quot; only one answer can be marked as &quot;IsCorrect&quot;.</description>
+    <errorConditionFormula>AND( OR( TEXT(Type__c)  = &#39;Single Choice&#39;, TEXT(Type__c)   = &#39;Statement&#39; ) , CorrectAnswerOptions__c &gt; 1)</errorConditionFormula>
+    <errorMessage>For &quot;Single Choice&quot; and &quot;Statement&quot; questions, only one answer can be marked as correct.</errorMessage>
+</ValidationRule>

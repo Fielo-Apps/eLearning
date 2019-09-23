@@ -1,0 +1,5 @@
+<aura:component extensible="false">
+	<aura:attribute name="pdfData" type="String" description="PDF data in base64 encoded format"/>
+    <aura:attribute name="urlToFile" type="String" description="PDF data in base64 encoded format"/>
+	<iframe aura:id="pdfFrame" src="{!v.urlToFile}" class="pdfFrame"></iframe>
+</aura:component>

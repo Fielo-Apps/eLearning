@@ -1,0 +1,43 @@
+<aura:component>
+    <aura:attribute type="Question__c" name="question"/>
+    <aura:attribute type="sObject[]" name="answers"/>
+    <aura:attribute type="String" name="textValue"/>
+    <aura:attribute type="Boolean" name="showQuestionContent" default="true"/>
+    <aura:attribute type="Boolean" name="showQuestionName"/>
+    <aura:attribute type="String" name="status"/>
+    <aura:attribute type="String" name="mode" default="edit"/>
+    <aura:attribute type="Integer" name="questionNumber"/>
+    <aura:attribute type="String" name="iconName" default="utility:chevrondown"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler name="toggleQuestionContent" event="c:ToggleQuestionContent" action="{!c.toggleQuestionContent}"/>
+    
+    <aura:method name="toggle" action="{!c.toggleContent}">
+        <aura:attribute type="Boolean" name="collapse" />
+    </aura:method>
+    
+    <aura:method name="getAnswers" action="{!c.getAnswers}"/>
+    
+    <div class="fielo-question-card-item" data-member-id="{!v.member.Id}">
+        <lightning:card class="fielo-question-card">
+            <aura:set attribute="title">
+                <c:QuestionCardHeader record="{!v.question}" iconName="{!v.iconName}" showQuestionName="{!v.showQuestionName}" status="{!v.status}" questionNumber="{!v.questionNumber}"/>
+            </aura:set>
+            <aura:set attribute="actions">
+                <div class="fielo-question__status">
+                    <aura:if isTrue="{! and(v.status != '', v.status != null)}">
+                        <aura:if isTrue="{!v.status == 'passed'}">
+                            <lightning:icon size="xx-small" iconName="action:approval" alternativeText="{!$Label.c.Passed}"/>
+                            <aura:set attribute="else">
+                                <lightning:icon size="xx-small" iconName="action:reject" alternativeText="{!$Label.c.NotPassed}"/>
+                            </aura:set>
+                        </aura:if>
+                    </aura:if>
+                </div>
+            </aura:set>
+            <div class="fielo-question-content">
+                <c:Question aura:id="question-component" question="{!v.question}" type="{!v.question.FieloELR__Type__c}" moduleId="{!v.module.Id}" showContent="{!v.showQuestionContent}" status="{!v.status}" mode="{!v.mode}"/>
+            </div>
+        </lightning:card>
+    </div>
+</aura:component>

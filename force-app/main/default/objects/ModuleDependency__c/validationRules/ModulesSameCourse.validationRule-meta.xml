@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ModulesSameCourse</fullName>
+    <active>true</active>
+    <description>When a Module dependency is created/updated, both modules must belong to the same course.</description>
+    <errorConditionFormula>Predecessor__r.Course__c   &lt;&gt;   Module__r.Course__c</errorConditionFormula>
+    <errorMessage>Both modules must belong to the same course.</errorMessage>
+</ValidationRule>

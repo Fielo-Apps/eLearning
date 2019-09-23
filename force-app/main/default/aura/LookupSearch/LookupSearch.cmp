@@ -1,0 +1,48 @@
+<aura:component controller="LookupSearchController">
+    <aura:attribute type="sObject[]" name="results"/>
+    <aura:attribute type="String" name="filterFields" default="Name"/>
+    <aura:attribute type="String" name="fields" default="Name"/>
+    <aura:attribute type="String" name="fieldset"/>
+    <aura:attribute type="String" name="modalClass" default="slds-modal"/>
+    <aura:attribute type="String" name="backDropClass" default="slds-backdrop"/>
+    <aura:attribute type="String" name="sObjectName"/>
+    <aura:attribute type="String" name="whereClause"/>
+    <aura:attribute type="String" name="searchValue"/>
+    <aura:attribute type="String" name="header"/>
+    
+    
+    <!-- PAGINADOR -->
+    <aura:attribute name="paging" type="Boolean" />
+    <aura:attribute name="quantity" type="Integer"/>
+    <aura:handler name="paging" event="c:PaginatorEvent" action="{!c.paginator}" default="false"/>
+    <!-- PAGINADOR -->
+    
+    <aura:method name="show" action="{!c.show}" />
+    <aura:method name="hide" action="{!c.hide}" />
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:handler event="c:FilterRecords" name="filterRecords" action="{!c.filterResults}"/>
+    <aura:handler event="c:SelectRecord" name="selectOption" action="{!c.optionSelected}"/>
+    <aura:registerEvent name="selectOption" type="c:SelectRecord"/>
+    
+    <div class="fielo-lookup-search">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="{!v.modalClass}" data-object-name="{!v.sObjectName}">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.hide}">
+                        X
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Select + ' ' + v.header}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c:Filter aura:id="lookup-filter" objectName="{!v.sObjectName}" filterFields="{!v.filterFields}" rangedFields="" />
+                    <h3 class="slds-text-heading_small"><b>{!$Label.c.Results}</b></h3>
+                    <c:ListView objectAPIName="{!v.sObjectName}" layout="table" columns="1" fieldset="{!v.fieldset}" records="{!v.results}" paging="true" quantity="10" />
+                </div>
+            </div>
+        </section>
+        <div class="{!v.backDropClass}"></div>
+    </div>
+</aura:component>

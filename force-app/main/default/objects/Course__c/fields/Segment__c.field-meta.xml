@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>To target your course by segment, add the segment(s) you want to make eligible. If blank, all program members will be eligible. You can view, edit and create segments in the Programs tab.</inlineHelpText>
+    <label>Segment</label>
+    <referenceTo>FieloPLT__Segment__c</referenceTo>
+    <relationshipLabel>Courses</relationshipLabel>
+    <relationshipName>Courses</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

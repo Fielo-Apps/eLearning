@@ -1,0 +1,61 @@
+<apex:component layout="none" controller="PicklistController">
+<!-- ATRIBUTOS GENERALES -->
+    <apex:attribute name="formId" type="String" default="form" description="" />
+    <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+    <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+    <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+    <apex:attribute name="value" description="Value of the fields" type="String" assignTo="{!cValue}"/>
+    <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+    <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+    <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+    <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+    <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
+<!-- ATRIBUTOS DE LISTAS  -->
+    <apex:attribute name="options" description="JSON with the Options" type="String" assignTo="{!cOptions}" />
+    <apex:attribute name="picklistEntries" description="List with the Options" type="Object[]"/>
+<!-- ATRIBUTOS PARTICULARES DEL LOOKUP  -->
+    <apex:attribute name="sObjectName" description="" type="String" 		/>
+    <apex:attribute name="idField" description="" type="String" default="Id"/>
+    <apex:attribute name="labelField" description="" type="String" default="Name"/>
+    <apex:attribute name="metaField" description="" type="String" />
+    <apex:attribute name="formNewId" description="" type="String" default="Name"/>
+    <apex:attribute name="whereCondition" description="" type="String" default=""/>
+
+    <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+		<div id="{!formId}-{! IF ( ISBLANK(fieldName), SUBSTITUTE( describe.Name, '_', ''), fieldName) }" class="slds-form-element slds-lookup {!className}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" data-component-id="{!describe.label}" data-type="lookup" data-on-change="{!onchange}" data-object-label="{!IF( ISBLANK(sObjectName), '', $ObjectType[sObjectName].label)}"  data-new-form="{!formNewId}" data-object-plural-label="{!IF( ISBLANK(sObjectName), '', $ObjectType[sObjectName].labelPlural)}" data-object-name="{!sObjectName}" data-field-id="{!idField}" data-where="{!whereCondition}" data-items="{!options}" data-field-meta="{!metaField}" data-field-label="{!labelField}" data-select="single" data-scope="single" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+			<apex:panelGroup layout="none" rendered="{!showLabel}">
+				<label class="slds-form-element__label" for="{!formId}-{!fieldName}-input" ><apex:panelGroup layout="none" rendered="{! IF( ISBLANK(required), !describe.Nillable, IF(required == 'true', true, false) ) }"><abbr class="slds-required" title="required">*</abbr></apex:panelGroup>{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</label>
+				<apex:panelGroup layout="none" rendered="{! !ISBLANK(describe.inlineHelpText)}">
+					<div class="slds-form-element__icon">
+						<a href="javascript:void(0);">
+					      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+					        <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+					      </svg>
+						  <span class="slds-assistive-text">{!$Label.Help}</span>
+						</a>
+						<div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" >
+						  <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+						</div>
+					</div>
+				</apex:panelGroup>
+			</apex:panelGroup>
+			<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+				<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+				    <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+				        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#search"></use>
+				    </svg>
+				    <input id="{!formId}-{!fieldName}-input" name="{!describe.Name}" class="slds-lookup__search-input slds-input" type="text" aria-autocomplete="list" role="combobox" aria-expanded="true" aria-activedescendant="" placeholder="{!$Label.SearchObjects}" />
+				</div>
+			</div>
+		  <div class="slds-form-element__help slds-hide"></div>
+    </div>
+	</apex:panelGroup>
+	<apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+		<div class="slds-form-element {!className}" data-type="text" data-value="{!value}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" id="{!formId}-{!fieldName }">
+			<span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+			<div class="slds-form-element__control slds-has-divider--bottom">
+				<c:OutputField title="{!describe.Name}" field="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" type="link" href="/{!value}" content="{!fixedName}" cssClass="slds-form-element__static"/>
+			</div>
+		</div>
+	</apex:panelGroup>
+</apex:component>

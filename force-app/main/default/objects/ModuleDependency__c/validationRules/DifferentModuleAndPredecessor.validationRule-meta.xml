@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DifferentModuleAndPredecessor</fullName>
+    <active>true</active>
+    <description>When a module dependency is created/updated, the Module and its Predecessor must be different.</description>
+    <errorConditionFormula>Module__c   =  Predecessor__c</errorConditionFormula>
+    <errorMessage>A module cannot be its own prerequisite.</errorMessage>
+</ValidationRule>

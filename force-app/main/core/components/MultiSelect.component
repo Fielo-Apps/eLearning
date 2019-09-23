@@ -1,0 +1,97 @@
+<apex:component layout="none" controller="PicklistController">
+  <!-- ATRIBUTOS GENERALES -->
+  <apex:attribute name="formId" type="String" default="form" description="" />
+  <apex:attribute name="showLabel" type="Boolean" default="true" description="" />
+  <apex:attribute name="describe" description="Field" type="Schema.DescribeFieldResult" />
+  <apex:attribute name="mode" description="Mode values are hidden,view,edit,new,update" type="String" default="edit" />
+  <apex:attribute name="value" description="Value of the fields" type="String" />
+  <apex:attribute name="className" description="Inject a css class to the form element" type="String" />
+  <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
+  <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
+  <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+  <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
+  <!-- ATRIBUTOS LISTAS -->
+  <apex:attribute name="options" description="JSON with the Options" type="String" assignTo="{!cOptions}" />
+  <apex:attribute name="picklistEntries" description="List with the Options" type="Object[]"/>
+  <!-- ATRIBUTOS DEPENDENCIAS -->
+  <apex:attribute name="controller" description="Field" type="String"  />
+  <apex:attribute name="controllerField" description="Field" type="String" default="#" />
+  <apex:attribute name="optionsGetter" description="Javascript method responsable of handle return the options when the controller field change" type="String"  />
+  <apex:attribute name="validFor" default="" description="JSON with the ValidFor Dependency" type="String" />
+  <!-- ATRIBUTOS PARTICULARES DEL MULTI -->
+  <apex:attribute name="showOrder" default="false" description="show up and down" type="Boolean"  />
+  <apex:attribute name="selectedTitle" default="" description="Title of the selected items" type="String"  />
+
+  <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
+    <div id="{!formId}-{! IF ( ISBLANK(fieldName), SUBSTITUTE( describe.Name, '_', ''), fieldName) }" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" class="slds-form-element fielosf-multiselect {!className}" data-component-id="{!describe.label}" data-type="multiselect" data-config="" data-controller-element="{! IF(controllerField == '#','',formId + '-' + controllerField ) }" data-valid-for="{!validFor}" data-options-getter="{!optionsGetter}" data-on-change="{!onchange}" data-options="{!optionsString}" data-selected="{!value}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+      <div class="slds-picklist--draggable slds-grid" data-aljs="multi-select">
+        <div>
+          <apex:panelGroup layout="none" rendered="{!showLabel}">
+          <span class="slds-form-element__label" aria-label="select-1"><apex:panelGroup layout="none" rendered="{! IF( ISBLANK(required), !describe.Nillable, IF(required == 'true', true, false) ) }"><abbr class="slds-required" title="required">*</abbr></apex:panelGroup>{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+          <apex:panelGroup layout="none" rendered="{! !ISBLANK(describe.inlineHelpText)}">
+          <div class="slds-form-element__icon">
+            <a href="javascript:void(0);">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  aria-hidden="true" class="slds-button__icon">
+                <use xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#info"></use>
+              </svg>
+              <span class="slds-assistive-text">{!$Label.Help}</span>
+            </a>
+            <div class="slds-hide slds-popover slds-popover--tooltip slds-nubbin--bottom-left" role="tooltip" >
+              <div class="slds-popover__body">{!describe.inlineHelpText}</div>
+            </div>
+          </div>
+        </apex:panelGroup>
+      </apex:panelGroup>
+      <div class="slds-picklist slds-picklist--multi" data-aljs-multi-select="unselected">
+        <ul class="slds-picklist__options slds-picklist__options--multi shown"></ul>
+      </div>
+    </div>
+    <div class="slds-grid slds-grid--vertical">
+      <button class="slds-button slds-button--icon-container" data-aljs-multi-select="unselect">
+        <svg aria-hidden="true" class="slds-button__icon">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#left"></use>
+        </svg>
+        <span class="slds-assistive-text">{!$Label.Picklist}</span>
+      </button>
+      <button class="slds-button slds-button--icon-container" data-aljs-multi-select="select">
+        <svg aria-hidden="true" class="slds-button__icon">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#right"></use>
+        </svg>
+        <span class="slds-assistive-text">{!$Label.Picklist}</span>
+      </button>
+    </div>
+    <div>
+      <span class="slds-form-element__label" aria-label="select-2">{!selectedTitle}</span>
+      <div class="slds-picklist slds-picklist--multi" data-aljs-multi-select="selected">
+        <ul class="slds-picklist__options slds-picklist__options--multi shown"></ul>
+      </div>
+    </div>
+    <apex:panelGroup layout="none" rendered="{! showOrder }">
+    <div class="slds-grid slds-grid--vertical">
+      <button class="slds-button slds-button--icon-container" data-aljs-multi-select="move-up">
+        <svg aria-hidden="true" class="slds-button__icon">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#up"></use>
+        </svg>
+        <span class="slds-assistive-text">{!$Label.Picklist}</span>
+      </button>
+      <button class="slds-button slds-button--icon-container" data-aljs-multi-select="move-down">
+        <svg aria-hidden="true" class="slds-button__icon">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/utility-sprite/svg/symbols.svg#down"></use>
+        </svg>
+        <span class="slds-assistive-text">{!$Label.Picklist}</span>
+      </button>
+    </div>
+    </apex:panelGroup>
+    </div>
+    <div class="slds-form-element__help slds-hide"></div>
+    </div>
+  </apex:panelGroup>
+  <apex:panelGroup layout="none" rendered="{! describe.Accessible && ( mode == 'view' || ! (mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new')) ) }">
+    <div class="slds-form-element {!className}" data-type="text" data-value="{!value}" data-field-name="{!IF ( ISBLank(describe.Name), fieldName, describe.Name )}" id="{!formId}-{!fieldName }">
+      <span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
+      <div class="slds-form-element__control slds-has-divider--bottom">
+        <span class="slds-form-element__static">{!value}</span>
+      </div>
+    </div>
+  </apex:panelGroup>
+</apex:component>

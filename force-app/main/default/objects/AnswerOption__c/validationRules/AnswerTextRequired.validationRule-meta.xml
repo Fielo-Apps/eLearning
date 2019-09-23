@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AnswerTextRequired</fullName>
+    <active>true</active>
+    <description>The answer option text is required.</description>
+    <errorConditionFormula>AND( TEXT(Question__r.Type__c) &lt;&gt; &#39;Matching Options&#39;, ISBLANK( AnswerOptionText__c ))</errorConditionFormula>
+    <errorDisplayField>AnswerOptionText__c</errorDisplayField>
+    <errorMessage>The answer option text is required.</errorMessage>
+</ValidationRule>

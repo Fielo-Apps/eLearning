@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>PLT_Letterhead</letterhead>
+    <name>Course Accomplished</name>
+    <style>formalLetter</style>
+    <subject>Congrats - course accomplished</subject>
+    <textOnly>Hello {!FieloELR__CourseStatus__c.FieloELR__Member__r.Name},
+
+Congratulations, you’ve just completed the course {!FieloELR__CourseStatus__c.FieloELR__Course__r.Name}.
+
+You’re busy improving your professional capabilities, making yourself a cut above the rest. We really appreciate your commitment and loyalty to &lt;Company name&gt;.
+
+You have now earned points that you&#39;ll be able to redeem in our rewards catalog.
+
+Why not take another one of our e-learning courses? You may learn something really important that will help you develop professionally and sell more, and you can earn even more points towards rewards. The more points you have stored up, the better the reward offerings.
+
+Keep up the excellent work.
+
+&lt;Company Name&gt;</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MemberProgram</fullName>
+    <active>true</active>
+    <description>Validate that member&#39;s program is the same as Courses&#39;s program</description>
+    <errorConditionFormula>Member__r.FieloPLT__Program__c !=  Course__r.Program__c</errorConditionFormula>
+    <errorMessage>The member should belong to the Course&#39;s program.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LimitOfAnswers</fullName>
+    <active>true</active>
+    <description>If the question type is &quot;Statement&quot; no more than two answers can be created.</description>
+    <errorConditionFormula>AND( TEXT(Type__c)  = &#39;Statement&#39;,  TotalAnswerOptions__c &gt; 2)</errorConditionFormula>
+    <errorMessage>For &quot;Statement&quot; questions, no more than two answers can be created.</errorMessage>
+</ValidationRule>

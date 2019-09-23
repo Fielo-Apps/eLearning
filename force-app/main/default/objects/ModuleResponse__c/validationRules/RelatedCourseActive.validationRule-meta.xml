@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RelatedCourseActive</fullName>
+    <active>true</active>
+    <errorConditionFormula>!ISPICKVAL(CourseStatus__r.Course__r.Status__c,&#39;Active&#39;)
+&amp;&amp; (ISNEW() ||  
+AND( IsSubmitted__c &amp;&amp; !PRIORVALUE(IsSubmitted__c))
+)</errorConditionFormula>
+    <errorMessage>The related course must be active</errorMessage>
+</ValidationRule>

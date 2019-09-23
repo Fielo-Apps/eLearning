@@ -1,0 +1,17 @@
+<aura:component >
+    <aura:attribute name="record" type="sObject"/>
+    <aura:attribute name="name" type="String" />
+
+    <aura:attribute name="config" type="String" />
+    <aura:attribute name="fieldName" type="String" />
+
+
+    <aura:registerEvent name="showRecord" type="c:ShowRecordEvent"/>
+
+    <aura:if isTrue="{!v.config.type == 'btn'}">
+        <lightning:button label="{!v.config.label}" name="{!v.config.label}" onclick="{!c.showRecord}" variant="{!v.config.variant}" />
+        <aura:set attribute="else">
+            <a onclick="{!c.showRecord}" class="fielo-link"> <c:OutputField type="{!v.config.fieldType}" fieldName="{!v.fieldName}" record="{!v.record}"/></a>
+        </aura:set>
+    </aura:if>
+</aura:component>

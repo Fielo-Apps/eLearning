@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CannotChangeQuestion</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED( Question__c )</errorConditionFormula>
+    <errorDisplayField>Question__c</errorDisplayField>
+    <errorMessage>Cannot change the related question.</errorMessage>
+</ValidationRule>

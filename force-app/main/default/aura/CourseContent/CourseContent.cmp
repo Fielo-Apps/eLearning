@@ -1,0 +1,22 @@
+<aura:component>
+    <aura:attribute type="String" name="name"/>
+    <aura:attribute type="sObject" name="record"/>
+    <aura:attribute type="String" name="config"/>
+    <aura:attribute type="String" name="imageURL"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <div aura:id="image-container" class="fielo-course-content">
+        <aura:if isTrue="{!v.record.FieloELR__Image__c != null}">
+            <img src="{!v.imageURL}" title="{!v.record.Name}"/>
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.record.FieloELR__ExternalURL__c != null}">
+                    <img src="{!v.record.FieloELR__ExternalURL__c}" title="{!v.record.Name}"/>
+                    <aura:set attribute="else">
+                        <img class="fielo-no-content-image" src="{!$Resource.images + '/coruseWithNoContent.jpg'}" title="{!$Label.c.NoContent}"/>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div>
+</aura:component>

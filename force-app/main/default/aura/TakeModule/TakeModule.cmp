@@ -1,0 +1,17 @@
+<aura:component controller="TakeModuleController">
+    <aura:attribute name="record" type="String"/>    
+    <aura:attribute name="takeModule" type="Boolean" default="false" /> 
+    <aura:attribute name="label" type="String" default="Take Module" />
+    <aura:attribute name="moduleResponse" type="ModuleResponse__c"/>    
+    <aura:attribute name="showModule" type="Boolean" default="false" /> 
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>    
+    
+    <aura:if isTrue="{!v.takeModule}">
+        <lightning:button variant="brand" onclick="{!c.takeModule}" > {!v.label} </lightning:button>
+    </aura:if>  
+    
+    <aura:if isTrue="{!v.showModule}">
+        <lightning:button variant="brand" onclick="{!c.showModule}" > View </lightning:button>
+    </aura:if>
+    
+</aura:component>

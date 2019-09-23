@@ -1,0 +1,13 @@
+<aura:component>
+    <aura:attribute type="String" name="urls"/>
+    <aura:attribute type="String[]" name="urlList"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <aura:iteration var="url" items="{!v.urlList}">
+            <lightning:carouselImage src = "{!url}" >
+            </lightning:carouselImage>
+        </aura:iteration>
+    </lightning:carousel>	
+</aura:component>

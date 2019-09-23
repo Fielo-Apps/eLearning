@@ -1,0 +1,84 @@
+<apex:page tabStyle="Course__c" sidebar="false" standardController="Question__c" extensions="QuestionViewController" docType="html-5.0">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'lightning/styles/salesforce-lightning-design-system-vf.min.css')}"></link>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'fielo/styles/core.css')}"></link>
+    <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'styles/core.css')}"></link>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+<body>
+	<div class="fielosf fielosf-elearning fielosf-module-view">
+		<!-- STANDARD Header  -->
+		<c:BackendHeaderRecord firstHeading="{!$ObjectType[objectName].labelPlural}"
+			prefix="FieloELR"
+			secondHeading="{!record['name']}"
+			icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/{!viewSettings.FieloPLT__Icon__c}"
+			helpUrl="http://documentation.fielo.com/docs/promotion"
+			sObjectName="{!objectName}"
+			record="{!record}"
+			fieldset="{!viewSettings.FieloPLT__Fieldset__c}"
+			buttons="{!MID(viewSettings.FieloPLT__Buttons__c,2,LEN(viewSettings.FieloPLT__Buttons__c)-1)}"
+			tools="{!MID(viewSettings.FieloPLT__Tools__c,2,LEN(viewSettings.FieloPLT__Tools__c)-1)}"
+		/>
+		<c:FormQuestion namespace="FieloELR" 
+    		formId="FieloELR__Question__cForm"
+			heading="{!$ObjectType[objectName].label} Wizard"
+			sObjectName="{!objectName}"
+			fieldset="{'Name':'FieloELR__Type__c','Type':'radio'}"
+			questionSection="{!editSettings.FieloPLT__Sections__c}"
+			record="{!record}"
+			dataFilters="{'Module__c':'{!Question__c.Module__c}'}"
+			dataOrderBy="FieloELR__Order__c"
+    	/>
+		<!-- STANDARD Detail  -->
+		<apex:panelGroup rendered="{!hasDetail}">
+			<c:Detail formId="{!objectName}Detail"
+			  heading="{!record['Name']}"
+			  sObjectName="{!objectName}"
+			  fieldset="{!detailSettings.FieloPLT__Sections__c}"
+			  record="{!record}"
+			/>
+		</apex:panelGroup>
+
+		<!-- RELATED LISTS -->
+		<apex:repeat value="{!relatedSettings}" var="rel">
+			<c:RelatedList namespace="FieloELR" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
+	            icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
+	            sObjectName="{!rel.FieloPLT__TargetObject__c}"
+	            dataFilters="{!rel.FieloPLT__DataFilters__c}"
+            	parameters="{!rel.FieloPLT__DataFilters__c}"
+	            fieldset="{!rel.FieloPLT__Fieldset__c}"
+	            buttons="{!rel.FieloPLT__Buttons__c}"
+	            tools="{!rel.FieloPLT__Tools__c}"
+	            actions="{!rel.FieloPLT__Actions__c}"
+	            dataOrderBy="{!rel.FieloPLT__OrderBy__c}"
+	            showPaginator="true"
+	            />
+		</apex:repeat>
+		<apex:repeat value="{!relatedFormsSettings}" var="relForm">
+        	<c:Form namespace="FieloELR" formId="{!relForm.FieloPLT__Object__c}Form{!IF(relForm.FieloPLT__Type__c = 'New','New','')}"
+				heading="{!$Label.fieloelr__edit} {!$ObjectType[relForm.FieloPLT__Object__c].label}"
+				sObjectName="{!relForm.FieloPLT__Object__c}"
+				fieldset="{!relForm.FieloPLT__Sections__c}"
+				/>
+        </apex:repeat>
+	</div>
+	<c:BackendFooter namespace="FieloELR" helpers="'FieloForm','FieloPaginator','FieloFilter','FieloRelatedRecords','FieloELearning','FieloRecentReorder','FieloQuestionWizard'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')},{!URLFOR($Resource.FieloElr_Salesforce, 'scripts/core.js')}"/>
+	<script type="text/javascript" src="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'jquery/jquery-ui.min.js')}"></script>
+	<script>
+		if(typeof BackEndJSSettings == 'undefined') {
+			var BackEndJSSettings = {};
+		}
+		if(typeof BackEndJSSettings.LABELS == 'undefined') {
+		 	BackEndJSSettings.LABELS = {};
+		}
+		BackEndJSSettings.LABELS.ChooseQuestionType = '{!$Label.fieloelr__ChooseQuestionType}';
+		BackEndJSSettings.LABELS.QuestionTextRequired = '{!$Label.fieloelr__QuestionTextRequired}';
+		BackEndJSSettings.LABELS.MatchingTextRequired = '{!$Label.fieloelr__MatchingTextRequired}';
+		BackEndJSSettings.LABELS.AnswerOptionTextRequired = '{!$Label.fieloelr__AnswerOptionTextRequired}';
+		BackEndJSSettings.LABELS.True = '{!$Label.fieloelr__True}';
+		BackEndJSSettings.LABELS.False = '{!$Label.fieloelr__False}';
+	</script>
+</body>
+</html>
+</apex:page>

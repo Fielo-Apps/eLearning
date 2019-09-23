@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CourseProgram</fullName>
+    <active>true</active>
+    <description>Forces the user to choose a program in the Course object.</description>
+    <errorConditionFormula>ISBLANK(Program__c)||  ISNULL(Program__c)</errorConditionFormula>
+    <errorDisplayField>Program__c</errorDisplayField>
+    <errorMessage>You must select a Program</errorMessage>
+</ValidationRule>

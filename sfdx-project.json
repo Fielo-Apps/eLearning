@@ -1,0 +1,11 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    }
+  ],
+  "namespace": "FieloELR",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "45.0"
+}

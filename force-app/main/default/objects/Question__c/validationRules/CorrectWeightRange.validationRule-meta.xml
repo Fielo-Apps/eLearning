@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CorrectWeightRange</fullName>
+    <active>true</active>
+    <description>The Correct Weight must be greater than 0.</description>
+    <errorConditionFormula>CorrectWeight__c  &lt;= 0</errorConditionFormula>
+    <errorDisplayField>CorrectWeight__c</errorDisplayField>
+    <errorMessage>The correct weight must be a positive number.</errorMessage>
+</ValidationRule>

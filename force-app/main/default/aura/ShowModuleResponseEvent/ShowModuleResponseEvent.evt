@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+	<aura:attribute name="moduleResponse" type="ModuleResponse__c"/>
+    <aura:attribute name="view" type="Boolean"/>
+    <aura:attribute name="name" type="String"/>
+</aura:event>

@@ -1,0 +1,21 @@
+<apex:component controller="FormModelController">
+  <apex:attribute name="formId" type="String" default="form" description="" />
+  <apex:attribute name="record" type="FieloPLT__Model__c" description="" />
+  <apex:attribute name="heading" type="String" default="" description="Text of First heading line" />
+  <apex:attribute name="mode" description="new, update, view" type="String" />
+  <apex:attribute name="className" description="Inject a css class to the form container" type="String" />
+  <apex:attribute name="sObjectName" description="Save as Model object" default="FieloPLT__Model__c" type="String" />
+
+
+  <c:Form namespace="FieloELR" formId="{!formId}" heading="{!heading}" mode="{!mode}" className="{!className}"
+  retrieveController="FormModelController.retrieve"
+  fieldset="{ 'Name': 'Information', 'Rows':[
+       [{ 'Name': 'Name', 'Type': 'input'}]
+      ,[{ 'Name': 'FieloPLT__Type__c', 'Type': 'picklist'}]
+      ,[{ 'Name': 'FieloPLT__Category__c', 'Type': 'picklist'}]
+      ,[{ 'Name': 'FieloPLT__Icon__c', 'Type': 'input'}]
+      ,[{ 'Name': 'FieloPLT__JSON__c', 'Type': 'input'}]
+      ]}"
+  sObjectName="{!sObjectName}"
+  />
+</apex:component>
