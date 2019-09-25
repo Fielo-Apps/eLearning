@@ -2,7 +2,7 @@
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
     <available>true</available>
     <encodingKey>ISO-8859-1</encodingKey>
-    <letterhead>PLT_Letterhead</letterhead>
+    <letterhead>FieloPLT__PLT_Letterhead</letterhead>
     <name>Module Accomplished</name>
     <style>formalLetter</style>
     <subject>Congrats - module accomplished</subject>
