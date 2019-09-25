@@ -56,7 +56,6 @@
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Module Response</label>
     <nameField>
         <displayFormat>{0000000000}</displayFormat>

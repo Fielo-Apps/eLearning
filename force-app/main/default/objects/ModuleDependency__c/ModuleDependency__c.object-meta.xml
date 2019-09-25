@@ -54,7 +54,6 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Module Dependency</label>
     <nameField>
         <displayFormat>MD-{00000000}</displayFormat>

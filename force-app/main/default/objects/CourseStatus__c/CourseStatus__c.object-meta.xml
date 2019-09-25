@@ -56,7 +56,6 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Course Status</label>
     <nameField>
         <displayFormat>CS-{0000}</displayFormat>

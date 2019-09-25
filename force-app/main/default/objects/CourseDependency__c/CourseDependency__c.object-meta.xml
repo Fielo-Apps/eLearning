@@ -54,7 +54,6 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Course Dependency</label>
     <nameField>
         <displayFormat>CD-{00000000}</displayFormat>

@@ -54,7 +54,6 @@
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Answer</label>
     <nameField>
         <displayFormat>A-{00000000}</displayFormat>

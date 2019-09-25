@@ -54,7 +54,6 @@
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Question Response</label>
     <nameField>
         <displayFormat>QR-{00000000}</displayFormat>
