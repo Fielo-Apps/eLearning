@@ -33,9 +33,9 @@
                                     <span class="slds-assistive-text">Account</span>
                                 </span>
                                 <input aura:id="fielo-lookup-input" data-record-id="{!v.selectedRecord.Id}" type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-5" aria-controls="listbox-id-2" autocomplete="off" role="textbox" placeholder="Select an Option" readonly="true" value="{!v.selectedRecord.Name}" title="{!v.selectedRecord.Name}" />
-                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="{!$Label.c.Remove}" onclick="{!c.removeRecord}">
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="{!$Label.fieloplt.Remove}" onclick="{!c.removeRecord}">
                                     <lightning:icon iconName="utility:close" size="x-small" alternativeText="Record"/>
-                                    <span class="slds-assistive-text">{!$Label.c.Remove}</span>
+                                    <span class="slds-assistive-text">{!$Label.fieloplt.Remove}</span>
                                 </button>
                             </aura:set>
                         </aura:if>
