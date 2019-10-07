@@ -2,11 +2,11 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>standard-home</defaultLandingTab>
     <label>Fielo Platform</label>
-    <tab>FieloPLT__Incentives</tab>
-    <tab>FieloPLT__Member__c</tab>
-    <tab>FieloPLT__Reward__c</tab>
-    <tab>FieloPLT__Redemption__c</tab>
-    <tab>FieloPLT__Libraries</tab>
-    <tab>FieloPLT__Programs</tab>
-    <tab>FieloELR__Course__c</tab>
+    <tabs>FieloPLT__Incentives</tabs>
+    <tabs>FieloPLT__Member__c</tabs>
+    <tabs>FieloPLT__Reward__c</tabs>
+    <tabs>FieloPLT__Redemption__c</tabs>
+    <tabs>FieloPLT__Libraries</tabs>
+    <tabs>FieloPLT__Programs</tabs>
+    <tabs>FieloELR__Course__c</tabs>
 </CustomApplication>
