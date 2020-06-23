@@ -22,7 +22,7 @@
         "value" : "FieloELR"
       }, {
         "apiName" : "fieloplt__version__c",
-        "value" : "1.008"
+        "value" : "1.009"
       } ],
       "relatedList" : [ {
         "objectAPIName" : "fieloplt__ruletrigger__c",
@@ -30,15 +30,6 @@
           "fieldsValues" : [ {
             "apiName" : "name",
             "value" : "Member completes course"
-          }, {
-            "apiName" : "fieloplt__conditionfield__c",
-            "value" : "FieloELR__Course_Accomplished__c"
-          }, {
-            "apiName" : "fieloplt__conditiontype__c",
-            "value" : "Text"
-          }, {
-            "apiName" : "fieloplt__conditionvalue__c",
-            "value" : "true"
           }, {
             "apiName" : "fieloplt__date__c",
             "value" : "FieloELR__CompletedDate__c"
@@ -49,6 +40,9 @@
             "apiName" : "fieloplt__library__c.fieloplt__externalid__c",
             "value" : "FieloELR",
             "refObject" : "fieloplt__library__c"
+          },{
+            "apiName" : "fieloplt__status__c",
+            "value" : "Active"
           }, {
             "apiName" : "fieloplt__lookupfromemailalert__c",
             "value" : "FieloELR__CourseStatus__c"
@@ -59,6 +53,9 @@
             "apiName" : "fieloplt__lookupfromtracker__c",
             "value" : "FieloELR__CourseStatus__c"
           }, {
+            "apiName" : "fieloplt__lookupfrompoint__c",
+            "value" : "FieloELR__CourseStatus__c"
+          },{
             "apiName" : "fieloplt__object__c",
             "value" : "FieloELR__CourseStatus__c"
           } ],
@@ -75,6 +72,15 @@
                 "apiName" : "fieloplt__ruletrigger__c.fieloplt__externalid__c",
                 "value" : "CourseStatus",
                 "refObject" : "fieloplt__ruletrigger__c"
+              },{
+                "apiName" : "fieloplt__conditionfield__c",
+                "value" : "FieloELR__Course_Accomplished__c"
+              }, {
+                "apiName" : "fieloplt__conditiontype__c",
+                "value" : "Text"
+              }, {
+                "apiName" : "fieloplt__conditionvalue__c",
+                "value" : "true"
               }, {
                 "apiName" : "fieloplt__targetemailfield__c",
                 "value" : "FieloELR__Member__r.FieloPLT__Email__c"
@@ -269,15 +275,6 @@
             "apiName" : "name",
             "value" : "Member passes module"
           }, {
-            "apiName" : "fieloplt__conditionfield__c",
-            "value" : "FieloELR__IsApproved__c"
-          }, {
-            "apiName" : "fieloplt__conditiontype__c",
-            "value" : "Text"
-          }, {
-            "apiName" : "fieloplt__conditionvalue__c",
-            "value" : "true"
-          }, {
             "apiName" : "fieloplt__date__c",
             "value" : "FieloELR__SubmitDate__c"
           }, {
@@ -288,6 +285,9 @@
             "value" : "FieloELR",
             "refObject" : "fieloplt__library__c"
           }, {
+            "apiName" : "fieloplt__status__c",
+            "value" : "Active"
+          }, {
             "apiName" : "fieloplt__lookupfromemailalert__c",
             "value" : "FieloELR__ModuleResponse__c"
           }, {
@@ -295,6 +295,9 @@
             "value" : "FieloELR__ModuleResponse__c"
           }, {
             "apiName" : "fieloplt__lookupfromtracker__c",
+            "value" : "FieloELR__ModuleResponse__c"
+          },{
+            "apiName" : "fieloplt__lookupfrompoint__c",
             "value" : "FieloELR__ModuleResponse__c"
           }, {
             "apiName" : "fieloplt__object__c",
@@ -309,6 +312,15 @@
               }, {
                 "apiName" : "fieloplt__externalid__c",
                 "value" : "ModuleResponseFieloELRMemberc"
+              },{
+                "apiName" : "fieloplt__conditionfield__c",
+                "value" : "FieloELR__IsApproved__c"
+              }, {
+                "apiName" : "fieloplt__conditiontype__c",
+                "value" : "Text"
+              }, {
+                "apiName" : "fieloplt__conditionvalue__c",
+                "value" : "true"
               }, {
                 "apiName" : "fieloplt__ruletrigger__c.fieloplt__externalid__c",
                 "value" : "ModuleResponse",
@@ -1371,7 +1383,11 @@
           }, {
             "apiName" : "fieloplt__iscustom__c",
             "value" : "false"
-          }, {
+          }, 
+          {
+            "apiName" : "fieloplt__isactive__c",
+            "value" : "false"
+          },{
             "apiName" : "fieloplt__library__c.fieloplt__externalid__c",
             "value" : "FieloELR",
             "refObject" : "fieloplt__library__c"
