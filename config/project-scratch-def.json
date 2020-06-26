@@ -2,9 +2,11 @@
   "orgName": "Fielo ELR",
   "edition": "Developer",
   "settings": {
-    "orgPreferenceSettings": {
-      "s1DesktopEnabled": true,
-      "translation": true
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
     }
   },
   "language": "en_US",
