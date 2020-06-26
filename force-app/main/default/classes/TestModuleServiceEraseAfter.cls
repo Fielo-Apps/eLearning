@@ -22,8 +22,9 @@ public with sharing class TestModuleServiceEraseAfter {
 		System.assertEquals(true, modules.get(0).IsActive__c);
 
 		List<FieloELR__Course__c> courses = new List<FieloELR__Course__c>();
-		courses = [SELECT Id, Status__c FROM Course__c WHERE Program__c =: programs.get(0).id];
+		courses = [SELECT Id, Status__c,Segment__c FROM Course__c WHERE Program__c =: programs.get(0).id];
 		courses.get(0).Status__c = 'Active';
+		courses.get(0).Segment__c = null;
 		update courses;
 		
 		System.assertEquals('Active', courses.get(0).Status__c);
@@ -37,6 +38,11 @@ public with sharing class TestModuleServiceEraseAfter {
 		if(!members.isEmpty()){
 			member = members.get(0);
 		}
+
+		FieloELR__CourseStatus__c courseStatus = new FieloELR__CourseStatus__c();
+        courseStatus.FieloELR__Member__c = member.id;
+        courseStatus.FieloELR__Course__c = courses.get(0).id;
+        insert courseStatus;
 
 		Set<String> fldModule = new Set<String>{'FieloELR__Content__c'};
 		Set<String> fldQuestion = new Set<String>{'FieloELR__CorrectAnswerOptions__c'};

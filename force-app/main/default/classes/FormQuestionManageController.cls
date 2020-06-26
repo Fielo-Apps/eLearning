@@ -38,7 +38,7 @@ public with sharing class FormQuestionManageController {
 
                 // SR: FLS Check
                 for (String fieldName : fields.split(',') ) {
-                    if ( !fieldsMap.get(fieldName).getDescribe().isAccessible() ) {
+                    if (!fieldsMap.get(fieldName.trim().toLowerCase()).getDescribe().isAccessible() ) {
                         throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{csObjectName, fieldName}));
                     }
                 }
