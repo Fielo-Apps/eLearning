@@ -16,7 +16,7 @@ private class TestCreateCourse{
         insert programs;
 
         //Segments
-        segments = MockUpFactory.createSegments('testSegment',2,'Dynamic');
+        segments = MockUpFactory.createSegments('testSegment',2,'Manual');
         segments.get(0).FieloPLT__Program__c = programs.get(0).id;
         segments.get(1).FieloPLT__Program__c = programs.get(1).id;
         insert segments;
@@ -46,6 +46,11 @@ private class TestCreateCourse{
         members = MockUpFactory.createMembers(programs.get(0).id, 2);
         members.get(1).FieloPLT__Program__c = programs.get(1).id;
         insert members;
+
+        List<FieloPLT__MemberSegment__c> memberSegments = new List<FieloPLT__MemberSegment__c>();
+        memberSegments.add(new FieloPLT__MemberSegment__c(FieloPLT__Member__c = members.get(0).Id,FieloPLT__Segment__c = segments.get(0).id));
+        memberSegments.add(new FieloPLT__MemberSegment__c(FieloPLT__Member__c = members.get(1).Id,FieloPLT__Segment__c = segments.get(1).id));
+        insert memberSegments;
 
         //Module
         FieloELR__Module__c moduleTest = new FieloELR__Module__c();
@@ -122,6 +127,7 @@ private class TestCreateCourse{
         update courses.get(3);
         update courses.get(2);
 
+        FieloPLT.SObjectService.setStaticVariables();
           //Course Status
         FieloELR__CourseStatus__c courseStatus = new FieloELR__CourseStatus__c();
         courseStatus.FieloELR__Member__c = members.get(1).id;
