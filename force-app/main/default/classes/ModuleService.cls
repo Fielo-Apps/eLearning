@@ -150,6 +150,7 @@ global class ModuleService {
 		if(fieldsAnswerOption != null){
 			fieldsAnswerOptionClone = new Set<String>(fieldsAnswerOption);
 			fieldsAnswerOptionClone.add('FieloELR__IsCorrect__c');
+			fieldsAnswerOptionClone.add('FieloELR__MatchingText__c');
 			if(!fieldsQuestionClone.isEmpty()){
 				questionQuery += ',';
 			}
