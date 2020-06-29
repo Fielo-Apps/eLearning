@@ -223,7 +223,7 @@ private class TestCreateCourseStatus{
 		listCourse.get(6).FieloELR__Status__c = 'Active';
 		update listCourse;
 
-
+		FieloPLT.SObjectService.setStaticVariables();
 		//////COURSES STATUS
 		FieloELR__CourseStatus__c cStatus1 = new FieloELR__CourseStatus__c();
 		cStatus1.FieloELR__Member__c = listMemb.get(3).Id;
