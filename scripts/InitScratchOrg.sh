@@ -11,3 +11,6 @@ sfdx force:source:push -w 60
 
 # Assign the permission set to the user
 sfdx force:user:permset:assign --permsetname FieloELRAdmin
+
+# Deploy Unpackaged
+sfdx force:source:deploy -p unpackaged/
