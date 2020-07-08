@@ -235,7 +235,7 @@
                     } catch(e) {
                         console.log(e);
                     }
-                s});      
+                });      
                 // Send action off to be executed
                 $A.enqueueAction(action);   
             }            

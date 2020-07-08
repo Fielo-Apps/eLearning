@@ -8,7 +8,7 @@
             if (moduleResponseResult.moduleResponse.FieloELR__Module__r) {
                 moduleId = moduleResponseResult.moduleResponse.FieloELR__Module__r.Id;
             }
-            if (moduleId) {
+            if (moduleId && moduleId != '') {
                 var params = {
                     'member': member,
                     'moduleId': moduleId,
@@ -142,35 +142,37 @@
         try{
             var action = component.get('c.getModuleResponse');
             var moduleResponseId = component.get('v.recordId');
-            var params = {
-                'moduleResponseId': moduleResponseId,
-                'fieldsModuleResponse': this.requiredModuleResponseFields.join(','),
-                'fieldsQuestion': this.requiredQuestionFields.join(','),
-                'fieldsAnswerOption': this.requiredAnswerOptionsFields.join(',')
-            };
-            action.setParams(params);
-            action.setCallback(this, function(response) {
-                var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();
-                if (component.isValid() && state === 'SUCCESS') {
-                    try {
-                        var moduleResponseResult = JSON.parse(response.getReturnValue());
-                        component.set('v.moduleResponseResult', moduleResponseResult);
-                        this.getModuleData(component);
-                    } catch(e) {
-                        console.log(e);
+            if (moduleResponseId && moduleResponseId != '') {
+                var params = {
+                    'moduleResponseId': moduleResponseId,
+                    'fieldsModuleResponse': this.requiredModuleResponseFields.join(','),
+                    'fieldsQuestion': this.requiredQuestionFields.join(','),
+                    'fieldsAnswerOption': this.requiredAnswerOptionsFields.join(',')
+                };
+                action.setParams(params);
+                action.setCallback(this, function(response) {
+                    var toastEvent = $A.get("e.force:showToast");
+                    var state = response.getState();
+                    if (component.isValid() && state === 'SUCCESS') {
+                        try {
+                            var moduleResponseResult = JSON.parse(response.getReturnValue());
+                            component.set('v.moduleResponseResult', moduleResponseResult);
+                            this.getModuleData(component);
+                        } catch(e) {
+                            console.log(e);
+                        }
+                    } else {
+                        var errorMsg = response.getError()[0].message;
+                        toastEvent.setParams({
+                            "title": errorMsg,
+                            "message": " ",
+                            "type": "error"
+                        });
+                        toastEvent.fire(); 
                     }
-                } else {
-                    var errorMsg = response.getError()[0].message;
-                    toastEvent.setParams({
-                        "title": errorMsg,
-                        "message": " ",
-                        "type": "error"
-                    });
-                    toastEvent.fire(); 
-                }
-            });
-            $A.enqueueAction(action);
+                });
+                $A.enqueueAction(action);
+            }
         } catch(e) {
             console.log(e);
         }
@@ -180,39 +182,42 @@
             var action = component.get('c.getCourseModules');
             var course = component.get('v.course');
             var member = component.get('v.member');
-            var params = {
-                'member': member,
-                'courseId': course.Id
-            };
-            action.setParams(params);
-            action.setCallback(this, function(response) {
-                var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();
-                if (component.isValid() && state === 'SUCCESS') {
-                    try {
-                        var courseStructure = JSON.parse(response.getReturnValue());
-                        component.set('v.courseStructure', courseStructure);
-                        component.set('v.courseWrapper', courseStructure.wrappers[0]);
-                        if (courseStructure.coursePoints) {
-                        	component.set('v.coursePoints', courseStructure.coursePoints);
-                            component.set('v.showDetails', false);
-                            component.set('v.showDetails', true);
+
+            if (course && course.Id && course.Id != '') {
+                var params = {
+                    'member': member,
+                    'courseId': course.Id
+                };
+                action.setParams(params);
+                action.setCallback(this, function(response) {
+                    var toastEvent = $A.get("e.force:showToast");
+                    var state = response.getState();
+                    if (component.isValid() && state === 'SUCCESS') {
+                        try {
+                            var courseStructure = JSON.parse(response.getReturnValue());
+                            component.set('v.courseStructure', courseStructure);
+                            component.set('v.courseWrapper', courseStructure.wrappers[0]);
+                            if (courseStructure.coursePoints) {
+                                component.set('v.coursePoints', courseStructure.coursePoints);
+                                component.set('v.showDetails', false);
+                                component.set('v.showDetails', true);
+                            }
+                            this.getNextModule(component);
+                        } catch(e) {
+                            console.log(e);
                         }
-                        this.getNextModule(component);
-                    } catch(e) {
-                        console.log(e);
+                    } else {
+                        var errorMsg = response.getError()[0].message;
+                        toastEvent.setParams({
+                            "title": errorMsg,
+                            "message": " ",
+                            "type": "error"
+                        });
+                        toastEvent.fire(); 
                     }
-                } else {
-                    var errorMsg = response.getError()[0].message;
-                    toastEvent.setParams({
-                        "title": errorMsg,
-                        "message": " ",
-                        "type": "error"
-                    });
-                    toastEvent.fire(); 
-                }
-            });
-            $A.enqueueAction(action);
+                });
+                $A.enqueueAction(action);
+            }
         } catch(e) {
             console.log(e);
         }
