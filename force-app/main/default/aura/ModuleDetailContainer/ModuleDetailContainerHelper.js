@@ -253,6 +253,41 @@
             console.log(e);
         }
     },
+    setRequiredFields: function(component) {
+        try {
+            var fields = !$A.util.isUndefinedOrNull(component.get('v.modulefields_passed'))
+                    && component.get('v.modulefields_passed').split(',') || [];
+            
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_notpassed'))
+                && component.get('v.modulefields_notpassed').split(',') || []);
+    
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_nottaken'))
+                && component.get('v.modulefields_nottaken').split(',') || []);
+    
+            var moduleFields = new Set();
+            var moduleResponseFields = new Set();
+    
+            fields.forEach(field => {
+                if (field.toLowerCase().indexOf('fieloelr__moduleresponse__c') != -1) {
+                    field.split('.')[1].toLowerCase() != 'fieloelr__transactions__r' &&
+                            field.split('.')[1].toLowerCase() != 'fieloelr__tracker__r' &&
+                            moduleResponseFields.add(field.split('.')[1]);
+                } else {
+                    moduleFields.add(field);
+                }
+            });
+    
+            if (moduleFields.size) {
+                this.requiredModuleFields = Array.from(new Set(this.requiredModuleFields.concat(Array.from(moduleFields))));
+            }
+    
+            if (moduleResponseFields.size) {
+                this.requiredModuleResponseFields = Array.from(new Set(this.requiredModuleResponseFields.concat(Array.from(moduleResponseFields))));
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    },
     requiredModuleFields: [
         'Id',
         'Name',

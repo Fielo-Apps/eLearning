@@ -317,7 +317,7 @@
             moduleResponseWrapper.moduleResponse = moduleResponse;
             moduleResponseWrapper.questions = questions;
             window.localStorage.setItem('currentModuleReponse', JSON.stringify(moduleResponseWrapper));
-            quizAttributes.overrideId = moduleResponse.Id;
+            quizAttributes.overrideId = moduleResponse && moduleResponse.Id || null;
             quizAttributes.moduleResponseWrapper = moduleResponseWrapper;
             quizAttributes.questions = module.questions;
             quizAttributes.module = module;
@@ -341,17 +341,16 @@
             var questionCards = quizCmp.find('question-card');
             if (!(questionCards instanceof Array)) {
                 questionCards = [];
-                questionCards.push(quizCmp.find('question-card'));
+                quizCmp.find('question-card') && questionCards.push(quizCmp.find('question-card'));
             }
-            if (moduleResponseResult.questions) {
+            if (moduleResponseResult.questions && moduleResponseResult.questions.length && questionCards && questionCards.length) {
                 var questionCmp;
                 var questionCard;
                 moduleResponseResult.questions.forEach(function(qrw) {
                     questionCard = questionCards.filter(function(cmp) {
-                        return cmp.get('v.question').Id == qrw.question.Id;
+                        return cmp && cmp.get('v.question').Id == qrw.question.Id;
                     });
                     questionCard = questionCard[0];
-                    console.log('answer for: ' + questionCard.get('v.question').Name);
                     questionCard.set('v.mode', 'view');
                     if (qrw.questionResponse.FieloELR__IsCorrect__c) {
                         questionCard.set('v.status', 'passed');
@@ -455,6 +454,44 @@
             $A.enqueueAction(action);
         } catch(e) {
             console.log(e);
+        }
+    },
+    setRequiredFields: function (component) {
+        try {
+            var fields = !$A.util.isUndefinedOrNull(component.get('v.modulefields_passed'))
+                && component.get('v.modulefields_passed').split(',') || [];
+
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_notpassed'))
+                && component.get('v.modulefields_notpassed').split(',') || []);
+
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_nottaken'))
+                && component.get('v.modulefields_nottaken').split(',') || []);
+
+            var moduleFields = new Set();
+            var moduleResponseFields = new Set();
+
+            fields.forEach(field => {
+                if (field.toLowerCase().indexOf('fieloelr__moduleresponse__c') != -1) {
+                    field.split('.')[1].toLowerCase() != 'fieloelr__transactions__r' &&
+                        field.split('.')[1].toLowerCase() != 'fieloelr__tracker__r' &&
+                        moduleResponseFields.add(field.split('.')[1]);
+                } else {
+                    moduleFields.add(field);
+                }
+            });
+
+            if (moduleFields.size) {
+                this.requiredModuleFields = Array.from(new Set(this.requiredModuleFields.concat(Array.from(moduleFields))));
+            }
+
+            if (moduleResponseFields.size) {
+                this.requiredModuleResponseFields = Array.from(new Set(this.requiredModuleResponseFields.concat(Array.from(moduleResponseFields))));
+            }
+
+            console.log(`this.requiredModuleFields: ${JSON.stringify(this.requiredModuleFields, null, 2)}`);
+            console.log(`this.requiredModuleResponseFields: ${JSON.stringify(this.requiredModuleResponseFields, null, 2)}`);
+        } catch (e) {
+            console.error(e);
         }
     },
     requiredModuleFields: [

@@ -40,3 +40,12 @@
 .THIS .fielo-dependency-helptext .slds-button__icon{
     color: #54698d;
 }
+
+.THIS .fielo-section-layout{
+    overflow: auto;
+}
+
+.THIS .slds-popover__body{
+    height: 300px;
+    overflow-y: auto;
+}
