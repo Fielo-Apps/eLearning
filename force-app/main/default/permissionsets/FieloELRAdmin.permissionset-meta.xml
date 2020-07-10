@@ -390,7 +390,7 @@
         <field>FieloELR__QuestionResponse__c.TextValue__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <label>FieloPRP Admin</label>
+    <label>FieloELR Admin</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>

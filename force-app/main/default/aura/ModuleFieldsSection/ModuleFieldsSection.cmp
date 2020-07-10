@@ -29,6 +29,7 @@
                     <lightning:layoutItem class="fielo-section__field">
                         <label class="slds-form-element__label">{!field.label}</label>
                         <span class="{! 'fielo-section__field-value ' + field.className}">{!field.value}&nbsp;
+                            <aura:if isTrue="{!field.isTooLong}"><lightning:helptext class="fielo-dependency-helptext" iconName="utility:threedots" content="{!field.fullValue}"/></aura:if>
                             <aura:if isTrue="{!field.hasDependency}"><lightning:helptext class="fielo-dependency-helptext" content="{!field.dependencyText}"/></aura:if>
                         </span>
                     </lightning:layoutItem>

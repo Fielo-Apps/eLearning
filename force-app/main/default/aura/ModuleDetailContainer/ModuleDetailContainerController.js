@@ -7,6 +7,7 @@
                 window.localStorage.setItem('currentModuleReponseId','');
             }
             helper.getConfig(component);
+            helper.setRequiredFields(component);
             helper.getModuleFieldsData(component);
             helper.getModuleResponseFieldsData(component);
         } catch(e) {

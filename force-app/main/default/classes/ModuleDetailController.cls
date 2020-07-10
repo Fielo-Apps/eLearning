@@ -120,42 +120,36 @@ public with sharing class ModuleDetailController {
 
 	@AuraEnabled
 	public static String getCourseData(FieloPLT__Member__c member, String courseId) {
-		try{
-			String key = courseId + member.Id;
-			String courseStatusQuery = 'SELECT Id, Name, FieloELR__Course__c, (SELECT Id, Name, FieloELR__Module__c, FieloELR__NumberofApprove__c FROM FieloELR__ModuleResponses__r ORDER BY FieloELR__Module__r.FieloELR__Order__c, FieloELR__NumberOfAttempt__c ) FROM FieloELR__CourseStatus__c WHERE FieloELR__ExternalKey__c = :key';
+		String key = courseId + member.Id;
+		String courseStatusQuery = 'SELECT Id, Name, FieloELR__Course__c, (SELECT Id, Name, FieloELR__Module__c, FieloELR__NumberofApprove__c FROM FieloELR__ModuleResponses__r ORDER BY FieloELR__Module__r.FieloELR__Order__c, FieloELR__NumberOfAttempt__c ) FROM FieloELR__CourseStatus__c WHERE FieloELR__ExternalKey__c = :key';
 
-			List<FieloELR__CourseStatus__c> courseStatus;
-			if( Schema.sObjectType.CourseStatus__c.isAccessible() && Schema.sObjectType.CourseStatus__c.fields.Course__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.fields.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.fields.NumberofApprove__c.isAccessible() ){
-				courseStatus = (List<FieloELR__CourseStatus__c>) Database.query(courseStatusQuery);
-			}
+		List<FieloELR__CourseStatus__c> courseStatus;
+		if( Schema.sObjectType.CourseStatus__c.isAccessible() && Schema.sObjectType.CourseStatus__c.fields.Course__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.fields.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.fields.NumberofApprove__c.isAccessible() ){
+			courseStatus = (List<FieloELR__CourseStatus__c>) Database.query(courseStatusQuery);
+		}
 
-			List<CourseService.CourseWrapper> courseWrappers = CourseService.getCoursesMap(
-											new Set<String>{'Id','FieloELR__SubscriptionMode__c','FieloELR__Status__c'},
-											new Set<String>{'Id','Name'},
-											new Set<String>{'Id','Name'},
-											null,
-											new Set<Id>{courseId},
-											member.FieloPLT__Program__c,
-                                            member.Id,
-											false,
-											false,
-											null, 
-											null, 
-											'LastModifiedDate DESC' ,
-											'');
+		List<CourseService.CourseWrapper> courseWrappers = CourseService.getCoursesMap(
+										new Set<String>{'Id','FieloELR__SubscriptionMode__c','FieloELR__Status__c'},
+										new Set<String>{'Id','Name'},
+										new Set<String>{'Id','Name'},
+										null,
+										new Set<Id>{courseId},
+										member.FieloPLT__Program__c,
+										member.Id,
+										false,
+										false,
+										null, 
+										null, 
+										'LastModifiedDate DESC' ,
+										'');
 
-			String coursesPoints = CourseService.getCoursePoints(new Set<Id>{courseId}, member.Id);
+		String coursesPoints = CourseService.getCoursePoints(new Set<Id>{courseId}, member.Id);
 
-			return JSON.serialize(new Map<String, Object>{
-				'courseStatus' => courseStatus,
-				'courseWrapper' => courseWrappers,
-				'coursePoints' => coursesPoints != null ? JSON.deserializeUntyped(coursesPoints) : null
-			});
-		} catch(DMLException e) {
-           	throw new AuraHandledException(e.getDMLMessage(0));
-        } catch(Exception e){
-            throw new AuraHandledException(e.getMessage());
-        }
+		return JSON.serialize(new Map<String, Object>{
+			'courseStatus' => courseStatus,
+			'courseWrapper' => courseWrappers,
+			'coursePoints' => coursesPoints != null ? JSON.deserializeUntyped(coursesPoints) : null
+		});
 	}
 
 	@AuraEnabled

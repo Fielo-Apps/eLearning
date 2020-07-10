@@ -54,6 +54,12 @@
                             singleField.label = fieldsMetaMap[fieldName].attributes.label;
                             if (module[fieldName]) {
                                 singleField.value = module[fieldName];
+
+                                if (singleField.value.length > 15) {
+                                    singleField.isTooLong = true;
+                                    singleField.fullValue = singleField.value;
+                                    singleField.value = singleField.value.substr(0, 14);
+                                }
                             }
                             fieldValues.push(singleField);
                         }
@@ -92,6 +98,12 @@
                                     
                                     if (module[fieldName]) {
                                         singleField.value = module[fieldName];
+
+                                        if (singleField.value.length > 15) {
+                                            singleField.isTooLong = true;
+                                            singleField.fullValue = singleField.value;
+                                            singleField.value = singleField.value.substr(0, 14);
+                                        }
                                         
                                         if (fieldName.toLowerCase() == 'fieloelr__numberofquestions__c') {
                                             if (moduleResponse) {
@@ -146,6 +158,12 @@
                                     
                                     if (module[fieldName]) {
                                         singleField.value = module[fieldName];
+
+                                        if (singleField.value.length > 15) {
+                                            singleField.isTooLong = true;
+                                            singleField.fullValue = singleField.value;
+                                            singleField.value = singleField.value.substr(0,14);
+                                        }
                                         
                                         if (fieldName.toLowerCase() == 'fieloelr__numberofquestions__c') {
                                             if (moduleResponse) {
