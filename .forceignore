@@ -10,3 +10,8 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+force-app/main/default/classes/TestCourseStatusViewController.cls
+force-app/main/default/classes/TestCreateCourseStatus.cls
+force-app/main/default/classes/TestCreateCourse.cls
+force-app/main/default/permissionsets/FieloLearningCommunity.permissionset-meta.xml
