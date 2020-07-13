@@ -1,6 +1,7 @@
 ({
     doInit: function(component, event, helper) {
         try{
+            helper.setRequiredFields(component);
             helper.getConfig(component);
             helper.getModuleResponseFieldsData(component);
             helper.getModuleFieldsData(component);

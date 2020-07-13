@@ -154,7 +154,7 @@
                 modulesFieldset += ',FieloELR__AttemptsAllowed__c';
             }
             var dynamicFilterString = component.get('v.dynamicFilterString');
-            var sortByClause = component.get('v.sortByClause');
+            var sortByClause = component.get('v.sortByClause') || component.get('v.defaultSortBy');
             if(member){            
                 var action;
                 var activeViewName = component.get('v.activeViewName');
@@ -235,7 +235,7 @@
                     } catch(e) {
                         console.log(e);
                     }
-                s});      
+                });      
                 // Send action off to be executed
                 $A.enqueueAction(action);   
             }            

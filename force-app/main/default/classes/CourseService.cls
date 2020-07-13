@@ -874,23 +874,25 @@ global class CourseService {
 			Set<String> transactionPointFields = new Set<String>();
 			Set<String> trackerPointFields = new Set<String>();
 			Map<String, Map<String,Set<String>>> programPointTypesMap = new Map<String, Map<String,Set<String>>>();
+			String transactionField;
 
 			for(FieloPLT__ProgramPointType__c ppt: ppts) {
+				transactionField = ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c;
 				if (!programPointTypesMap.containsKey(ppt.FieloPLT__Program__c)) {
 					programPointTypesMap.put(ppt.FieloPLT__Program__c, new Map<String, Set<String>>{
-						'transactionPointFields' => new Set<String>{ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c},
+						'transactionPointFields' => new Set<String>{transactionField},
 						'trackerPointFields' => new Set<String>{}
 					});
 				} else {
-					programPointTypesMap.get(ppt.FieloPLT__Program__c).get('transactionPointFields').add(ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c);
-					programPointTypesMap.get(ppt.FieloPLT__Program__c).get('trackerPointFields').add('FieloPLT__Transaction__r.' + ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c);
+					programPointTypesMap.get(ppt.FieloPLT__Program__c).get('transactionPointFields').add(transactionField);
+					programPointTypesMap.get(ppt.FieloPLT__Program__c).get('trackerPointFields').add('FieloPLT__Transaction__r.' + transactionField);
 				}
 				// SR: Dynamic FLS Check
-				if ( !transactionFieldsMap.get(ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c).getDescribe().isAccessible() ) {
-					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'FieloPLT__Transaction__c',ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c}));
+				if ( !transactionFieldsMap.get(transactionField).getDescribe().isAccessible() ) {
+					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'FieloPLT__Transaction__c',transactionField}));
 				}
-				transactionPointFields.add(ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c);
-				trackerPointFields.add('FieloPLT__Transaction__r.' + ppt.FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c);
+				transactionPointFields.add(transactionField);
+				trackerPointFields.add('FieloPLT__Transaction__r.' + transactionField);
 			}
 
 			courseStatusQuery = 'SELECT Id, FieloELR__Course__c, FieloELR__Course__r.FieloELR__Program__c, (SELECT Id, ' + String.join(new List<String>(transactionPointFields), ',') + ' FROM FieloELR__Transactions__r WHERE FieloPLT__IsReverted__c = false AND FieloPLT__IsProcessed__c = true), (SELECT Id,' + String.join(new List<String>(trackerPointFields), ',') + ' FROM FieloELR__Trackers__r WHERE FieloPLT__IsReverted__c = false AND FieloPLT__IsProcessed__c = true) FROM FieloELR__CourseStatus__c WHERE Id in :courseStatusIds';

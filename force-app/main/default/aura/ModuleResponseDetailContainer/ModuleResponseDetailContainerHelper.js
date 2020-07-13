@@ -8,7 +8,7 @@
             if (moduleResponseResult.moduleResponse.FieloELR__Module__r) {
                 moduleId = moduleResponseResult.moduleResponse.FieloELR__Module__r.Id;
             }
-            if (moduleId) {
+            if (moduleId && moduleId != '') {
                 var params = {
                     'member': member,
                     'moduleId': moduleId,
@@ -142,35 +142,37 @@
         try{
             var action = component.get('c.getModuleResponse');
             var moduleResponseId = component.get('v.recordId');
-            var params = {
-                'moduleResponseId': moduleResponseId,
-                'fieldsModuleResponse': this.requiredModuleResponseFields.join(','),
-                'fieldsQuestion': this.requiredQuestionFields.join(','),
-                'fieldsAnswerOption': this.requiredAnswerOptionsFields.join(',')
-            };
-            action.setParams(params);
-            action.setCallback(this, function(response) {
-                var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();
-                if (component.isValid() && state === 'SUCCESS') {
-                    try {
-                        var moduleResponseResult = JSON.parse(response.getReturnValue());
-                        component.set('v.moduleResponseResult', moduleResponseResult);
-                        this.getModuleData(component);
-                    } catch(e) {
-                        console.log(e);
+            if (moduleResponseId && moduleResponseId != '') {
+                var params = {
+                    'moduleResponseId': moduleResponseId,
+                    'fieldsModuleResponse': this.requiredModuleResponseFields.join(','),
+                    'fieldsQuestion': this.requiredQuestionFields.join(','),
+                    'fieldsAnswerOption': this.requiredAnswerOptionsFields.join(',')
+                };
+                action.setParams(params);
+                action.setCallback(this, function(response) {
+                    var toastEvent = $A.get("e.force:showToast");
+                    var state = response.getState();
+                    if (component.isValid() && state === 'SUCCESS') {
+                        try {
+                            var moduleResponseResult = JSON.parse(response.getReturnValue());
+                            component.set('v.moduleResponseResult', moduleResponseResult);
+                            this.getModuleData(component);
+                        } catch(e) {
+                            console.log(e);
+                        }
+                    } else {
+                        var errorMsg = response.getError()[0].message;
+                        toastEvent.setParams({
+                            "title": errorMsg,
+                            "message": " ",
+                            "type": "error"
+                        });
+                        toastEvent.fire(); 
                     }
-                } else {
-                    var errorMsg = response.getError()[0].message;
-                    toastEvent.setParams({
-                        "title": errorMsg,
-                        "message": " ",
-                        "type": "error"
-                    });
-                    toastEvent.fire(); 
-                }
-            });
-            $A.enqueueAction(action);
+                });
+                $A.enqueueAction(action);
+            }
         } catch(e) {
             console.log(e);
         }
@@ -180,39 +182,42 @@
             var action = component.get('c.getCourseModules');
             var course = component.get('v.course');
             var member = component.get('v.member');
-            var params = {
-                'member': member,
-                'courseId': course.Id
-            };
-            action.setParams(params);
-            action.setCallback(this, function(response) {
-                var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();
-                if (component.isValid() && state === 'SUCCESS') {
-                    try {
-                        var courseStructure = JSON.parse(response.getReturnValue());
-                        component.set('v.courseStructure', courseStructure);
-                        component.set('v.courseWrapper', courseStructure.wrappers[0]);
-                        if (courseStructure.coursePoints) {
-                        	component.set('v.coursePoints', courseStructure.coursePoints);
-                            component.set('v.showDetails', false);
-                            component.set('v.showDetails', true);
+
+            if (course && course.Id && course.Id != '') {
+                var params = {
+                    'member': member,
+                    'courseId': course.Id
+                };
+                action.setParams(params);
+                action.setCallback(this, function(response) {
+                    var toastEvent = $A.get("e.force:showToast");
+                    var state = response.getState();
+                    if (component.isValid() && state === 'SUCCESS') {
+                        try {
+                            var courseStructure = JSON.parse(response.getReturnValue());
+                            component.set('v.courseStructure', courseStructure);
+                            component.set('v.courseWrapper', courseStructure.wrappers[0]);
+                            if (courseStructure.coursePoints) {
+                                component.set('v.coursePoints', courseStructure.coursePoints);
+                                component.set('v.showDetails', false);
+                                component.set('v.showDetails', true);
+                            }
+                            this.getNextModule(component);
+                        } catch(e) {
+                            console.log(e);
                         }
-                        this.getNextModule(component);
-                    } catch(e) {
-                        console.log(e);
+                    } else {
+                        var errorMsg = response.getError()[0].message;
+                        toastEvent.setParams({
+                            "title": errorMsg,
+                            "message": " ",
+                            "type": "error"
+                        });
+                        toastEvent.fire(); 
                     }
-                } else {
-                    var errorMsg = response.getError()[0].message;
-                    toastEvent.setParams({
-                        "title": errorMsg,
-                        "message": " ",
-                        "type": "error"
-                    });
-                    toastEvent.fire(); 
-                }
-            });
-            $A.enqueueAction(action);
+                });
+                $A.enqueueAction(action);
+            }
         } catch(e) {
             console.log(e);
         }
@@ -317,7 +322,7 @@
             moduleResponseWrapper.moduleResponse = moduleResponse;
             moduleResponseWrapper.questions = questions;
             window.localStorage.setItem('currentModuleReponse', JSON.stringify(moduleResponseWrapper));
-            quizAttributes.overrideId = moduleResponse.Id;
+            quizAttributes.overrideId = moduleResponse && moduleResponse.Id || null;
             quizAttributes.moduleResponseWrapper = moduleResponseWrapper;
             quizAttributes.questions = module.questions;
             quizAttributes.module = module;
@@ -341,17 +346,16 @@
             var questionCards = quizCmp.find('question-card');
             if (!(questionCards instanceof Array)) {
                 questionCards = [];
-                questionCards.push(quizCmp.find('question-card'));
+                quizCmp.find('question-card') && questionCards.push(quizCmp.find('question-card'));
             }
-            if (moduleResponseResult.questions) {
+            if (moduleResponseResult.questions && moduleResponseResult.questions.length && questionCards && questionCards.length) {
                 var questionCmp;
                 var questionCard;
                 moduleResponseResult.questions.forEach(function(qrw) {
                     questionCard = questionCards.filter(function(cmp) {
-                        return cmp.get('v.question').Id == qrw.question.Id;
+                        return cmp && cmp.get('v.question').Id == qrw.question.Id;
                     });
                     questionCard = questionCard[0];
-                    console.log('answer for: ' + questionCard.get('v.question').Name);
                     questionCard.set('v.mode', 'view');
                     if (qrw.questionResponse.FieloELR__IsCorrect__c) {
                         questionCard.set('v.status', 'passed');
@@ -455,6 +459,44 @@
             $A.enqueueAction(action);
         } catch(e) {
             console.log(e);
+        }
+    },
+    setRequiredFields: function (component) {
+        try {
+            var fields = !$A.util.isUndefinedOrNull(component.get('v.modulefields_passed'))
+                && component.get('v.modulefields_passed').split(',') || [];
+
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_notpassed'))
+                && component.get('v.modulefields_notpassed').split(',') || []);
+
+            fields = fields.concat(!$A.util.isUndefinedOrNull(component.get('v.modulefields_nottaken'))
+                && component.get('v.modulefields_nottaken').split(',') || []);
+
+            var moduleFields = new Set();
+            var moduleResponseFields = new Set();
+
+            fields.forEach(field => {
+                if (field.toLowerCase().indexOf('fieloelr__moduleresponse__c') != -1) {
+                    field.split('.')[1].toLowerCase() != 'fieloelr__transactions__r' &&
+                        field.split('.')[1].toLowerCase() != 'fieloelr__tracker__r' &&
+                        moduleResponseFields.add(field.split('.')[1]);
+                } else {
+                    moduleFields.add(field);
+                }
+            });
+
+            if (moduleFields.size) {
+                this.requiredModuleFields = Array.from(new Set(this.requiredModuleFields.concat(Array.from(moduleFields))));
+            }
+
+            if (moduleResponseFields.size) {
+                this.requiredModuleResponseFields = Array.from(new Set(this.requiredModuleResponseFields.concat(Array.from(moduleResponseFields))));
+            }
+
+            console.log(`this.requiredModuleFields: ${JSON.stringify(this.requiredModuleFields, null, 2)}`);
+            console.log(`this.requiredModuleResponseFields: ${JSON.stringify(this.requiredModuleResponseFields, null, 2)}`);
+        } catch (e) {
+            console.error(e);
         }
     },
     requiredModuleFields: [
