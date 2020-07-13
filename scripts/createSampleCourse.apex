@@ -55,7 +55,7 @@ questions.add(new FieloELR__Question__c(Name = 'Q3', FieloELR__Module__c = modul
     answersOpList.add(new FieloELR__AnswerOption__c(FieloELR__Question__r = questions.get(2), FieloELR__IsCorrect__c = false, FieloELR__AnswerOptionText__c = 'FieloPRP'));
     answersOpList.add(new FieloELR__AnswerOption__c(FieloELR__Question__r = questions.get(2), FieloELR__IsCorrect__c = false, FieloELR__AnswerOptionText__c = 'FieloCMS'));
 
-questions.add(new FieloELR__Question__c(Name = 'Q4', FieloELR__Module__c = modules.get(0).Id, FieloELR__QuestionText__c = 'Name the Fielo APP that is meant for upload invoices', FieloELR__Type__c = 'Single Choicet'));
+questions.add(new FieloELR__Question__c(Name = 'Q4', FieloELR__Module__c = modules.get(0).Id, FieloELR__QuestionText__c = 'Name the Fielo APP that is meant for upload invoices', FieloELR__Type__c = 'Single Choice'));
     answersOpList.add(new FieloELR__AnswerOption__c(FieloELR__Question__r = questions.get(3), FieloELR__IsCorrect__c = false, FieloELR__AnswerOptionText__c = 'FieloELR'));
     answersOpList.add(new FieloELR__AnswerOption__c(FieloELR__Question__r = questions.get(3), FieloELR__IsCorrect__c = false, FieloELR__AnswerOptionText__c = 'FieloGRS'));
     answersOpList.add(new FieloELR__AnswerOption__c(FieloELR__Question__r = questions.get(3), FieloELR__IsCorrect__c = true, FieloELR__AnswerOptionText__c = 'FieloPRP'));
