@@ -238,7 +238,12 @@
                 });      
                 // Send action off to be executed
                 $A.enqueueAction(action);   
-            }            
+            } else {
+                var memberEvent = $A.get("e.FieloPLT:RefreshMemberEvent");
+                if (memberEvent) {
+                    memberEvent.fire();
+                }
+            }
         } catch(e) {
             console.log(e);
         }
