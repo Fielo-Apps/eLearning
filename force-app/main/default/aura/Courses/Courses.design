@@ -14,8 +14,6 @@
     
     <design:attribute label="Sort By Fields" name="sortByFields" description="Enter the API names of the fields you want members to be able to sort by, separated by commas." default="FieloELR__Order__c,FieloELR__StartDate__c,FieloELR__EndDate__c"/>
 
-    <design:attribute label="Sort By (Default)" name="defaultSortBy" description="Enter the API name of the field you want to sort by default" default="FieloELR__Order__c"/>
-
     <design:attribute label="# of Days to Show Courses as New" name="daysToBeConsideredNew" description="Enter the number of days after start date that you want courses to be shown as new. This will display a &quot;New&quot; badge next to the course period. If left blank, no courses will be shown as new." 
                       default='30' />
 	

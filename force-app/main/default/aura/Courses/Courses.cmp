@@ -11,7 +11,6 @@
     <aura:attribute type="String" name="courseRangedFilterFields" access="global" default="FieloELR__StartDate__c,FieloELR__EndDate__c"/>
     <aura:attribute type="String" name="detailFields" access="global" default="FieloELR__Course__c.FieloELR__Modules__r,FieloELR__CourseStatus__c.FieloELR__Transactions__r,FieloELR__CourseStatus__c.FieloELR__Trackers__r,FieloELR__CourseStatus__c.FieloELR__Progress__c"/>
     <aura:attribute type="String" name="sortByFields" access="global" default="FieloELR__Order__c,FieloELR__StartDate__c,FieloELR__EndDate__c"/>
-    <aura:attribute type="String" name="defaultSortBy" access="global" default="FieloELR__Order__c"/>
     <aura:attribute type="String" name="pointFields" access="global" default="FieloPLT__Points__c"/>
     <aura:attribute type="Integer" name="daysToBeConsideredNew" default="10" access="global"/>
     <aura:attribute type="Integer" name="daysToBeConsideredWarning" default="20" access="global"/>
