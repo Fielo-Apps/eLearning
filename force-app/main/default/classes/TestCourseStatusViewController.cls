@@ -68,7 +68,7 @@ public class TestCourseStatusViewController {
  		members = [SELECT Id FROM FieloPLT__Member__c WHERE FieloPLT__Program__c =: programs.get(0).id];
         update members;
 
-		FieloPLT.SObjectService.setStaticVariables();
+		// FieloPLT.SObjectService.setStaticVariables();
         //CourseStatus
 	   	FieloELR__CourseStatus__c record = new FieloELR__CourseStatus__c(
 		Member__c = members.get(0).id

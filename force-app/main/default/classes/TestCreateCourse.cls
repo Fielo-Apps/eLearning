@@ -127,7 +127,7 @@ private class TestCreateCourse{
         update courses.get(3);
         update courses.get(2);
 
-        FieloPLT.SObjectService.setStaticVariables();
+        // FieloPLT.SObjectService.setStaticVariables();
           //Course Status
         FieloELR__CourseStatus__c courseStatus = new FieloELR__CourseStatus__c();
         courseStatus.FieloELR__Member__c = members.get(1).id;
