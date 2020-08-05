@@ -1,5 +1,8 @@
 // CREATE TEST DATA WITH DEPENDENCY
-String versionNo = 'Smoke Test 3';
+
+String versionNo = String.format('Smoke Test {0}', new List<String>{
+  String.valueOf(Database.countQuery('SELECT COUNT() FROM FieloELR__Course__c WHERE Name like \'%Smoke Test%\'') + 1)
+});
 
 List<FieloPLT__Program__c> programs = new List<FieloPLT__Program__c>();
 List<FieloELR__Course__c> courses = new List<FieloELR__Course__c>();
@@ -13,7 +16,8 @@ courses.add(new FieloELR__Course__c( Name = 'Course ' + versionNo, FieloELR__Pro
 
 insert courses;
 
-modules.add(new FieloELR__Module__c(Name = '01 - Basic', FieloELR__Course__c = courses.get(0).id, FieloELR__ApprovalGrade__c = 75, FieloELR__AttemptsAllowed__c = 2, FieloELR__AttemptsAllowedPerQuestion__c = 2, FieloELR__PenaltyMode__c = 'None'));
+modules.add(new FieloELR__Module__c(Name = '01 - Basic', FieloELR__Course__c = courses.get(0).id, FieloELR__ApprovalGrade__c = 75, FieloELR__AttemptsAllowed__c = 2, FieloELR__AttemptsAllowedPerQuestion__c = 2, FieloELR__PenaltyMode__c = 'None', FieloELR__ContentType__c = 'Youtube Video', FieloELR__Content__c = 'https://www.youtube.com/embed/s2UYHc36UWM'));
+
 modules.add(new FieloELR__Module__c(Name = '02 - Advanced', FieloELR__Course__c = courses.get(0).id, FieloELR__ApprovalGrade__c = 75, FieloELR__AttemptsAllowed__c = 2, FieloELR__AttemptsAllowedPerQuestion__c = 2, FieloELR__PenaltyMode__c = 'None'));
 modules.add(new FieloELR__Module__c(Name = '03 - Final', FieloELR__Course__c = courses.get(0).id, FieloELR__ApprovalGrade__c = 75, FieloELR__AttemptsAllowed__c = 2, FieloELR__AttemptsAllowedPerQuestion__c = 2, FieloELR__PenaltyMode__c = 'None'));
 modules.add(new FieloELR__Module__c(Name = '04 - Bonus', FieloELR__Course__c = courses.get(0).id, FieloELR__ApprovalGrade__c = 75, FieloELR__AttemptsAllowed__c = 2, FieloELR__AttemptsAllowedPerQuestion__c = 2, FieloELR__PenaltyMode__c = 'None'));
