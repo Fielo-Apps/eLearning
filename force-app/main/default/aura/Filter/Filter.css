@@ -2,62 +2,10 @@
 	display: inline-flex;
 }
 
-.THIS .slds-form-element:nth-of-type(n){
-    display: inline-block;
-    padding: 10px;
-}
-
-.THIS .slds-form-element:nth-of-type(1){
-    display: inline-block;
-	padding-left: 0px;
-}
-
-.THIS .uiInputNumber{
-    display: inline-block;
-    padding: 10px;
-}
-
-.THIS .uiInputDate{
-    display: inline-block;
-    padding: 10px;
-}
-
-.THIS .uiInputSelect{
-    display: inline-block;
-    padding: 10px;
-}
-
-.THIS .filterBtn{
-    bottom: -1px;
-}
-
 .THIS .range-middle-text{
     display: inline-block;
-    margin-right: 10px;
-}
-
-.THIS .fielo-filter-to-container{
-    margin-bottom: 15px;
-    margin-right: 10px;
 }
 
 .THIS .slds-grid{
     flex-wrap: wrap;
-}
-
-.THIS .sortBtn-container{
-    margin-bottom: 10px;
-    margin-right: 10px;
-}
-
-.THIS .filterBtn-container{
-    margin-bottom: 10px;
-}
-
-.THIS .field-is-ranged {
-	display: inline-flex;
-}
-
-.THIS .fielo-filter-to-container {
-    padding-top: 40px;
 }

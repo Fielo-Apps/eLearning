@@ -28,35 +28,40 @@
             <lightning:layout verticalAlign="end" horizontalAlign="start">
                 <aura:iteration items="{!v.fieldset}" var="field">
                     <aura:if isTrue="{!or(field.attributes.isRanged == true, field.attributes.isRanged == 'true')}">
-                        <lightning:layoutItem class="field-is-ranged">
+                        <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                             <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-right_x-small slds-p-bottom_x-small">
                             <div class="fielo-filter-to-container">
                                 <lightning:formattedText value="{!$Label.c.To}" />
                             </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                             <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}" showLabel="false"/>
                         </lightning:layoutItem>
                         <aura:set attribute="else">
-                            <lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                                 <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}"/>
                             </lightning:layoutItem>
                         </aura:set>
                     </aura:if>
                 </aura:iteration>
                 <aura:if isTrue="{!and(v.showSortBy, v.sortByOptions != null)}">
-                    <lightning:layoutItem>
-                        <lightning:select aura:id="fielo-filter-sort-by" name="sortByClause" label="{!$Label.c.SortBy}" title="{!$Label.c.SortByToolTip}">
-                            <aura:iteration items="{!v.sortByOptions}" var="picklistEntry">
-                                <option aura:id="sort-entry" value="{!picklistEntry.value}">{!picklistEntry.label}</option>
-                            </aura:iteration>
-                        </lightning:select>
+                    <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
+                        <lightning:combobox aura:id="fielo-filter-sort-by"
+                                name="sortByClause"
+                                label="{!$Label.c.SortBy}"
+                                options="{!v.sortByOptions}"
+                                title="{!$Label.c.SortBy}"
+                                class="fielosf-input__brand-icon" />
                     </lightning:layoutItem>
                 </aura:if>
-                <lightning:layoutItem>
+                <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                     <div class="sortBtn-container">
 						<lightning:buttonIcon iconName="{!v.iconName}" class="sortBtn" variant="neutral" onclick="{! c.changeSort }" title="{!v.sortType}"/>
                     </div>
                 </lightning:layoutItem>
-                <lightning:layoutItem>
+                <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                     <div class="filterBtn-container">
                         <lightning:button label="{!$Label.c.Filter}" class="filterBtn" variant="brand" onclick="{!c.filter}" />
                     </div>
