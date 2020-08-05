@@ -310,7 +310,7 @@ global class CourseService {
 		
 		queryCourses += ' FROM Course__c WHERE ';
 		if (courseIds != null) {
-			queryCourses += ' Id in : courseIds ';
+			queryCourses += ' Id in : courseIds AND Status__c != \'Inactive\'';
 		} else {
 			if (status == null) {
 				status = new Set<String>();
