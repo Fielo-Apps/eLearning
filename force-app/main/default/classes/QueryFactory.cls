@@ -111,7 +111,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
                     }
                     else{
                         // Label : {0}. {1} is not a lookup or master-detail field but is used in a cross-object query field.
-                        throw new NonReferenceFieldException(String.format(label.QueryErrorInvalidRelationship, new List<String>{string.valueOf(lastSObjectType), field}));
+                        throw new NonReferenceFieldException(String.format('{0}. {1} is not a lookup or master-detail field but it is used in a cross-object query field.', new List<String>{string.valueOf(lastSObjectType), field}));
                     }
                 }
             }
@@ -268,12 +268,12 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
     public QueryFactory selectFieldSet(Schema.FieldSet fieldSet, Boolean allowCrossObject){
         if(fieldSet.getSObjectType() != table){
             // Label: Field set "{0}" is not for SObject type "{1}".
-            throw new InvalidFieldSetException(String.format(label.QueryErrorInvalidFieldSet, new List<String>{fieldSet.getName(), string.valueOf(table)}));
+            throw new InvalidFieldSetException(String.format('Fieldset {0} is not applicable for SObject type {1}.', new List<String>{fieldSet.getName(), string.valueOf(table)}));
         }
         for(Schema.FieldSetMember field: fieldSet.getFields()){
             if(!allowCrossObject && field.getFieldPath().contains('.')){
                 // Label: Cross-object fields not allowed and field "{0}" is a cross-object field.
-                throw new InvalidFieldSetException(String.format(label.QueryErrorCrossObjectFields, new List<String>{field.getFieldPath()}));
+                throw new InvalidFieldSetException(String.format('Cross-object field such as {0} are not allowed.', new List<String>{field.getFieldPath()}));
             }
             fields.add( getFieldToken(field.getFieldPath()) );
         }
@@ -372,7 +372,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
             return setSubselectQuery(relationship, assertIsAccessible);
         }
         // Label: Invalid call to subselectQuery with relationshipName = {0}.  Relationship does not exist for {1}
-        throw new InvalidSubqueryRelationshipException(String.format(label.QueryErrorInvalidCall, new List<String>{relationshipName,table.getDescribe().getName()}));
+        throw new InvalidSubqueryRelationshipException(String.format('Invalid call to subselectQuery with relationshipName = {0}. Relationship does not exist for {1}.', new List<String>{relationshipName,table.getDescribe().getName()}));
     }
 
     /**
@@ -404,7 +404,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
     **/
     private QueryFactory setSubselectQuery(ChildRelationship relationship, Boolean assertIsAccessible){
         if (this.relationship != null){
-            throw new InvalidSubqueryRelationshipException(label.QueryErrorInvalidCall2);
+            throw new InvalidSubqueryRelationshipException('Invalid call to subselectQuery. You must not add a subselect query to a subselect query.');
         }
         if (this.subselectQueryMap == null){
             this.subselectQueryMap = new Map<ChildRelationship, QueryFactory>();
@@ -442,7 +442,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
             }
         }
         // Label: Invalid call to subselectQuery. Invalid relationship for table {0} and objtype = {1}.
-        throw new InvalidSubqueryRelationshipException(String.format(label.QueryErrorInvalidCall3, new List<String>{string.valueOf(table), string.valueOf(objType)}));
+        throw new InvalidSubqueryRelationshipException(String.format('Invalid call to subselectQuery. Invalid relationship for table {0} and objtype = {1}.', new List<String>{string.valueOf(table), string.valueOf(objType)}));
     }
 
     /**
@@ -669,7 +669,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
         private QueryField(List<Schema.SObjectField> fields){
             if(fields == null || fields.size() == 0){
                 // Label: Invalid field: null
-                throw new InvalidFieldException(label.ErrorQueryInvalidFieldNull);
+                throw new InvalidFieldException('Error: Invalid Null field');
             }
             this.fields = fields.clone(); //don't let clients mutate after setting!
         }
@@ -677,7 +677,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
         private QueryField(Schema.SObjectField field){
             if(field == null){
                 // Label: Invalid field: null
-                throw new InvalidFieldException(label.ErrorQueryInvalidFieldNull);
+                throw new InvalidFieldException('Error: Invalid Null field');
             }
             fields = new List<Schema.SObjectField>{ field };
         }
@@ -744,7 +744,7 @@ public class QueryFactory { //No explicit sharing declaration - inherit from cal
             this.objectType = objectType;
             this.fieldName = fieldName;
             // Label: Invalid field '{0}' for object '{1}'.
-            this.setMessage(String.format(label.QueryErrorInvalidField, new List<String>{string.valueOf(fieldName),string.valueOf(objectType)}));
+            this.setMessage(String.format('Invalid field \'{0}\' for object \'{1}\'.', new List<String>{string.valueOf(fieldName),string.valueOf(objectType)}));
         }
     }
     public class InvalidFieldSetException extends Exception{}
