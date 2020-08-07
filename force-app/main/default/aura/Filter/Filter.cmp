@@ -1,64 +1,68 @@
 <aura:component controller="FilterController">
-    
-    <aura:attribute type="Boolean" name="showFilter" default="false"/>
-    <aura:attribute type="Boolean" name="showSortBy" default="false"/>
-    <aura:attribute type="String" name="objectName"/>
-    <aura:attribute type="String" name="filterFields"/>
-    <aura:attribute type="String" name="rangedFields"/>
-    <aura:attribute type="String" name="sortByClause"/>
-    <aura:attribute type="Object[]" name="sortByOptions"/>
-    <aura:attribute type="Object[]" name="fieldset"/>
-    <aura:attribute type="Object" name="fieldMap"/>
-    <aura:attribute type="Object" name="fieldTypes"/>
-    <aura:attribute type="Object" name="filterObject"/>
-    <aura:attribute type="Object" name="oldFilterObject"/>
-    <aura:attribute type="String" name="iconName" default="utility:arrowup"/>
-    <aura:attribute type="String" name="sortType" default="ASC"/>
+
+    <aura:attribute type="Boolean" name="showFilter" default="false" />
+    <aura:attribute type="Boolean" name="showSortBy" default="false" />
+    <aura:attribute type="String" name="objectName" />
+    <aura:attribute type="String" name="filterFields" />
+    <aura:attribute type="String" name="rangedFields" />
+    <aura:attribute type="String" name="sortByClause" />
+    <aura:attribute type="Object[]" name="sortByOptions" />
+    <aura:attribute type="Object[]" name="fieldset" />
+    <aura:attribute type="Object" name="fieldMap" />
+    <aura:attribute type="Object" name="fieldTypes" />
+    <aura:attribute type="Object" name="filterObject" />
+    <aura:attribute type="Object" name="oldFilterObject" />
+    <aura:attribute type="String" name="iconName" default="utility:arrowup" />
+    <aura:attribute type="String" name="sortType" default="ASC" />
     <!-- DESIGN ATTRIBUTES -->
-    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
-    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
     <!-- EVENTS -->
-    <aura:registerEvent name="filterRecords" type="c:FilterRecords"/>
-    
-    <aura:handler event="c:RegisterComponent" name="fieldRegister" action="{!c.registerComponent}"/>
-    <aura:handler event="c:FieldUpdate" name="fieldUpdate" action="{!c.updFilterObjectEvt}"/>
-    
+    <aura:registerEvent name="filterRecords" type="c:FilterRecords" />
+
+    <aura:handler event="c:RegisterComponent" name="fieldRegister" action="{!c.registerComponent}" />
+    <aura:handler event="c:FieldUpdate" name="fieldUpdate" action="{!c.updFilterObjectEvt}" />
+
     <aura:if isTrue="{!v.showFilter}">
         <div class="fielo-filter-container">
             <lightning:layout verticalAlign="end" horizontalAlign="start">
                 <aura:iteration items="{!v.fieldset}" var="field">
                     <aura:if isTrue="{!or(field.attributes.isRanged == true, field.attributes.isRanged == 'true')}">
-                        <lightning:layoutItem class="field-is-ranged">
-                            <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}"/>
+                        <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
+                            <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-right_x-small slds-p-bottom_x-small">
                             <div class="fielo-filter-to-container">
                                 <lightning:formattedText value="{!$Label.c.To}" />
                             </div>
-                            <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}" showLabel="false"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
+                            <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}" showLabel="false" />
                         </lightning:layoutItem>
                         <aura:set attribute="else">
-                            <lightning:layoutItem>
-                                <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}"/>
+                            <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
+                                <c:InputField aura:id="fielo-filter-input" fieldMeta="{!field}" />
                             </lightning:layoutItem>
                         </aura:set>
                     </aura:if>
                 </aura:iteration>
                 <aura:if isTrue="{!and(v.showSortBy, v.sortByOptions != null)}">
-                    <lightning:layoutItem>
-                        <lightning:select aura:id="fielo-filter-sort-by" name="sortByClause" label="{!$Label.c.SortBy}" title="{!$Label.c.SortByToolTip}">
-                            <aura:iteration items="{!v.sortByOptions}" var="picklistEntry">
-                                <option aura:id="sort-entry" value="{!picklistEntry.value}">{!picklistEntry.label}</option>
-                            </aura:iteration>
-                        </lightning:select>
+                    <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
+                        <lightning:combobox aura:id="fielo-filter-sort-by" name="sortByClause"
+                            label="{!$Label.c.SortBy}" options="{!v.sortByOptions}" title="{!$Label.c.SortBy}"
+                            class="fielosf-input__brand-icon" />
                     </lightning:layoutItem>
                 </aura:if>
-                <lightning:layoutItem>
+                <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                     <div class="sortBtn-container">
-						<lightning:buttonIcon iconName="{!v.iconName}" class="sortBtn" variant="neutral" onclick="{! c.changeSort }" title="{!v.sortType}"/>
+                        <lightning:buttonIcon iconName="{!v.iconName}" class="sortBtn" variant="neutral"
+                            onclick="{! c.changeSort }" title="{!v.sortType}" />
                     </div>
                 </lightning:layoutItem>
-                <lightning:layoutItem>
+                <lightning:layoutItem class="slds-p-top_small slds-p-right_x-small">
                     <div class="filterBtn-container">
-                        <lightning:button label="{!$Label.c.Filter}" class="filterBtn" variant="brand" onclick="{!c.filter}" />
+                        <lightning:button label="{!$Label.c.Filter}" class="filterBtn" variant="brand"
+                            onclick="{!c.filter}" />
                     </div>
                 </lightning:layoutItem>
             </lightning:layout>
