@@ -125,7 +125,7 @@ public with sharing class ModuleResponseDetailController {
 
 			String modulesResponseQuery = 'SELECT ' +
 				String.join(new List<String>(moduleResponseFieldSet), ',') +
-				' FROM FieloELR__ModuleResponse__c WHERE FieloELR__Module__c = :moduleId AND FieloELR__Member__c = :memberId AND FieloELR__IsSubmitted__c = true ORDER BY CreatedDate DESC';
+				' FROM FieloELR__ModuleResponse__c WHERE FieloELR__Module__c = :moduleId AND FieloELR__Member__c = :memberId ORDER BY CreatedDate DESC';
 			
 			List<ModuleResponse__c> moduleResponses;
 
