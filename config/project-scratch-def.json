@@ -1,14 +1,27 @@
 {
   "orgName": "Fielo ELR",
-  "edition": "Developer",
-  "settings": {
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
+    "edition": "Developer",
+    "settings": {
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        },
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
+        },
+        "experienceBundleSettings": {
+            "enableExperienceBundleMetadata": true
+        },
+        "mobileSettings": {
+            "enableS1EncryptedStoragePref2": false
+        }
     },
-    "languageSettings": {
-      "enableTranslationWorkbench": true
-    }
-  },
-  "language": "en_US",
-  "country": "US"
+    "features": [
+        "AuthorApex",
+        "Communities"
+    ],
+    "language": "en_US",
+    "country": "US"
 }
