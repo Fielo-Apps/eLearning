@@ -104,6 +104,25 @@ public class Modules extends SObjectDomain {
         }
     }
 
+    public override void onBeforeUpdate(Map<Id,SObject> existingRecords) {
+        Set<Id> moduleIds = new Set<Id>();
+        Module__c oldModule;
+        for(Module__c module : (List<Module__c>)records) {
+            oldModule = (Module__c)(existingRecords.get(module.Id));
+
+            if(!(oldModule.IsActive__c) && module.IsActive__c) {
+                moduleIds.add(module.Id);
+            }
+        }
+
+        if (!moduleIds.isEmpty()) {
+            Map<Id, Module__c> moduleMap = new Map<Id, Module__c>(new ModulesSelector(new Set<String>{'Id', '(SELECT Id FROM Questions__r)'}).selectById(moduleIds));
+            for(Module__c module : (List<Module__c>)records) {
+                module.NumberOfQuestions__c = moduleMap.get(module.Id).Questions__r.size();
+            }
+        }
+    }
+    
     public override void onAfterUpdate(Map<Id,SObject> existingRecords){
         List<Module__c> activatedModules = new List<Module__c>();
         List<Module__c> inactivatedModules = new List<Module__c>();

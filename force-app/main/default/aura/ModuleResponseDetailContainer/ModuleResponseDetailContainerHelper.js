@@ -23,6 +23,11 @@
                         try {
                             var moduleWrapper = JSON.parse(response.getReturnValue());;
                             var moduleResponses = moduleWrapper.moduleResponses;
+
+                            if (moduleWrapper.module && moduleWrapper.module.FieloELR__Questions__r) {
+                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.length;
+                            }
+
                             component.set('v.moduleWrapper', moduleWrapper);
                             component.set('v.module', moduleWrapper.module);
                             component.set('v.course', moduleWrapper.module.FieloELR__Course__r);
@@ -492,9 +497,6 @@
             if (moduleResponseFields.size) {
                 this.requiredModuleResponseFields = Array.from(new Set(this.requiredModuleResponseFields.concat(Array.from(moduleResponseFields))));
             }
-
-            console.log(`this.requiredModuleFields: ${JSON.stringify(this.requiredModuleFields, null, 2)}`);
-            console.log(`this.requiredModuleResponseFields: ${JSON.stringify(this.requiredModuleResponseFields, null, 2)}`);
         } catch (e) {
             console.error(e);
         }
@@ -512,7 +514,8 @@
         'FieloELR__Content__c',
         'FieloELR__ContentType__c',
         'FieloELR__ExternalURL__c',
-        'FieloELR__QuestionDisplayMode__c'
+        'FieloELR__QuestionDisplayMode__c',
+        '(SELECT Id FROM Questions__r)'
     ],
     requiredModuleResponseFields: [
         'Id',
