@@ -19,4 +19,4 @@ sfdx force:user:permset:assign --permsetname FieloELRAdmin &&
 # rm ./force-app/main/unpackaged
 
 # DEPLOY Unpackaged folder
-sfdx force:source:deploy -f ./unpackaged/
+sfdx force:source:deploy -p ./unpackaged/
