@@ -31,6 +31,9 @@
                     if (courseWrapper.length > 0) {
                         courseWrapper[0].modules.forEach(function(moduleWrapper) {
                             moduleWrapperList.push(moduleWrapper);
+                            if (moduleWrapper && moduleWrapper.module && moduleWrapper.module.FieloELR__Questions__r) {
+                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.records.length;
+                            }
                         });
                         component.set('v.course', courseWrapper[0].course);
                         component.set('v.courseWrapper', courseWrapper[0]);
@@ -113,7 +116,8 @@
         'FieloELR__Order__c',
         'FieloELR__NumberOfQuestions__c',
         'FieloELR__ApprovalGrade__c',
-        'FieloELR__Course__c'
+        'FieloELR__Course__c',
+        '(SELECT Id FROM FieloELR__Questions__r)'
     ],
     requiredModuleResponseFields: [
         'Id',

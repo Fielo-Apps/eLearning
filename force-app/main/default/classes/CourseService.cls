@@ -299,13 +299,17 @@ global class CourseService {
 			queryCourses += ' ,(SELECT ' + String.join(new List<String>(fieldsCourseDependency), ',') + ' FROM PredecessorCourses__r) ';
 		}
 		if(fieldsModule != null){
+			Set<String> safeFieldsModule = new Set<String>(fieldsModule);
 			// SR: Dynamic FLS Check
 			for (String fieldName : fieldsModule) {
 				if ( moduleFieldsMap.containsKey(fieldName) && !moduleFieldsMap.get(fieldName).getDescribe().isAccessible() ) {
 					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Module__c',fieldName}));
 				}
+				if (fieldName.trim().toLowerCase().contains('select') && fieldName.trim().toLowerCase().contains('from')) {
+					safeFieldsModule.remove(fieldName);
+				}
 			}
-			queryCourses += ' ,(SELECT ' + String.join(new List<String>(fieldsModule), ',') + ' FROM Modules__r WHERE IsActive__c = true ORDER BY FieloELR__Order__c) ';
+			queryCourses += ' ,(SELECT ' + String.join(new List<String>(safeFieldsModule), ',') + ' FROM Modules__r WHERE IsActive__c = true ORDER BY FieloELR__Order__c) ';
 		}
 		
 		queryCourses += ' FROM Course__c WHERE ';
@@ -582,8 +586,11 @@ global class CourseService {
 		
 		// SR: CRUD Check
 		List<Course__c> courses;
+		Map<Id, Module__c> moduleMap;
 		if (Schema.sObjectType.Course__c.isAccessible() && Schema.sObjectType.CourseDependency__c.isAccessible() && Schema.sObjectType.Module__c.isAccessible()) {
 			courses = getCourses(fieldsCourseClone, fieldsCourseDependency, fieldsModuleClone, courseIds, status, programId, memberId, filterByDependencies, filterBySegments, false, quantity, offset, orderBy, dynamicFilter);
+
+			moduleMap = new Map<Id, Module__c>(new ModulesSelector(fieldsModuleClone).selectByIdHavingCourses(courseIds));
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c,CourseDependency__c,Module__c'}));
 		}
@@ -622,7 +629,9 @@ global class CourseService {
 		if((fieldsModule != null && fieldsModuleDependency != null) || !filterByDependencies){
 			List<Module__c> modules = new List<Module__c>();
 			for(Course__c c : courses){
-				modules.addAll(c.Modules__r);
+				for (Module__c m : c.Modules__r) {
+					modules.add(moduleMap.get(m.Id));
+				}
 			}
 
 			if(fieldsModule != null && fieldsModuleDependency != null){
@@ -690,7 +699,8 @@ global class CourseService {
 				}
 			}
 			if(!c.Modules__r.isEmpty()){
-				for(Module__c module : c.Modules__r){
+				for(Module__c m : c.Modules__r){
+					Module__c module = moduleMap.get(m.Id);
 					ModuleWrapper mw;
 					if (cs != null) {
 						mw = new ModuleWrapper(

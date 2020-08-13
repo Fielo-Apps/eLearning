@@ -515,7 +515,7 @@
         'FieloELR__ContentType__c',
         'FieloELR__ExternalURL__c',
         'FieloELR__QuestionDisplayMode__c',
-        '(SELECT Id FROM Questions__r)'
+        '(SELECT Id FROM FieloELR__Questions__r)'
     ],
     requiredModuleResponseFields: [
         'Id',
