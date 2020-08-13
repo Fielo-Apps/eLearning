@@ -20,6 +20,7 @@
     <aura:attribute type="Boolean" name="moduleResponseReady" default="false"/>
     <aura:attribute type="Boolean" name="moduleInProgress" default="false"/>
     <aura:attribute type="Boolean" name="isCollapsed" default="false"/>
+    <aura:attribute type="Boolean" name="collapseContent" default="true" access="global"/>
     <aura:attribute type="Boolean" name="showHeaderActions" default="true"/>
     <aura:attribute type="Boolean" name="showBodyActions" default="true"/>
     <aura:attribute type="String" name="modulefields_passed" description="Modules Fields To Display when module is already taken and passed" default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c" access="global"/>

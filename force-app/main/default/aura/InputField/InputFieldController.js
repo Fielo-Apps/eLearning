@@ -2,6 +2,22 @@
     doInit: function(component, event, helper) {
         try{
             if (!component.get('v.registered')) {
+                var fieldMeta = component.get('v.fieldMeta');
+                var finalOptions = [];
+                if (fieldMeta && fieldMeta.attributes && fieldMeta.attributes.inputType == 'picklist') {
+                    fieldMeta.firstOptionLabel && finalOptions.push({
+                        label: fieldMeta.firstOptionLabel,
+                        value: ""
+                    }) || finalOptions.push({
+                        label: $A.get('$Label.c.SelectAnOption'),
+                        value: ""
+                    });
+                    finalOptions = fieldMeta.picklistentries && fieldMeta.picklistentries.length && finalOptions.concat(
+                        fieldMeta.picklistentries
+                    ) || finalOptions;
+                    component.set('v.finalOptions', finalOptions);
+                }
+
                 var registerFieldEvent = component.getEvent("fieldRegister");
                 registerFieldEvent.setParams({
                     'name': 'InputField',

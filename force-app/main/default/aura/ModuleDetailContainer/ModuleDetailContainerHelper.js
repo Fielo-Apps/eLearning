@@ -18,6 +18,11 @@
                     try {
                         var moduleWrapper = JSON.parse(response.getReturnValue());
                         var moduleResponses = moduleWrapper.moduleResponses;
+
+                        if (moduleWrapper.module && moduleWrapper.module.FieloELR__Questions__r) {
+                            moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.records.length;
+                        }
+
                         component.set('v.moduleWrapper', moduleWrapper);
                         component.set('v.module', moduleWrapper.module);
                         component.set('v.course', moduleWrapper.module.FieloELR__Course__r);
@@ -302,7 +307,8 @@
         'FieloELR__ExternalURL__c',
         'FieloELR__QuestionDisplayMode__c',
         'FieloELR__Course__r.FieloELR__Status__c',
-        'FieloELR__Course__r.FieloELR__SubscriptionMode__c'
+        'FieloELR__Course__r.FieloELR__SubscriptionMode__c',
+        '(SELECT Id FROM FieloELR__Questions__r)'
     ],
     requiredModuleResponseFields: [
         'Id',

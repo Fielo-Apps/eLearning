@@ -19,11 +19,11 @@
                         var state = response.getState();
                         if (component.isValid() && state === 'SUCCESS') {                    
                             var fieldMeta = JSON.parse(response.getReturnValue());
-                            // console.log(JSON.stringify(fieldInfo, null, 2));
                             component.set('v.fieldset', fieldMeta.fields);
                             component.set('v.showFilter', true);
                             helper.getTypes(component);
                             helper.getFieldMap(component);
+                            helper.setSort(component);
                         }else {
                             var errorMsg = response.getError()[0].message;
                             toastEvent.setParams({
@@ -46,6 +46,7 @@
                 component.set('v.showFilter', true);
                 helper.getTypes(component);
                 helper.getFieldMap(component);
+                helper.setSort(component);
             }
         } catch(e) {
             console.log(e);
@@ -66,10 +67,10 @@
             whereClause = helper.assembleWhereClause(component, filterObject);
             dynamicFilter = helper.assembleDynamicFilter(component, filterObject);
         }
-        var sortByClause = '';
-        if (component.find('fielo-filter-sort-by')) {
-            sortByClause = component.find('fielo-filter-sort-by').get('v.value');
-        }
+        var sortByClause = component.find('fielo-filter-sort-by') &&
+            component.find('fielo-filter-sort-by').get('v.value') ||
+            '';
+        
         var sortType = '';
         sortType = component.get('v.sortType');
         if (sortType) {
@@ -98,7 +99,6 @@
                 component.set('v.iconName', 'utility:arrowdown');
                 component.set('v.sortType', 'DESC');
             }
-            console.log('selectedValue: ' + component.find('fielo-filter-sort-by').get('v.value'));
         } catch(e) {
             console.log(e);
         }
