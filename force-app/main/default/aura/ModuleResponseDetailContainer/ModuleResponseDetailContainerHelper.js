@@ -25,7 +25,7 @@
                             var moduleResponses = moduleWrapper.moduleResponses;
 
                             if (moduleWrapper.module && moduleWrapper.module.FieloELR__Questions__r) {
-                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.length;
+                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.records.length;
                             }
 
                             component.set('v.moduleWrapper', moduleWrapper);

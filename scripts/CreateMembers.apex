@@ -28,13 +28,30 @@ if (fieloAcc.isEmpty()) {
     insert fieloAcc;
 }
 
+List<String> firstNameList = new List<String>();
+List<String> lastNameList = new List<String>();
 
 for (Integer i=0;i<filelines.size();i++) {
     inputvalues = filelines[i].split(',');
+    firstNameList.add(inputvalues[0]);
+    lastNameList.add(inputvalues[1]);
+}
+
+String firstName, lastName;
+Integer fNameIndex, lNameIndex;
+for (Integer i=0;i<filelines.size();i++) {
+    fNameIndex = Integer.valueof(Math.random() * firstNameList.size());
+    lNameIndex = Integer.valueof(Math.random() * lastNameList.size());
+
+    firstName = firstNameList.remove(fNameIndex);
+    lastName = lastNameList.remove(lNameIndex);
+
+    System.debug(String.format('Creating {0} {1}', new List<String>{firstName,lastName}));
+
     members.add(
         new FieloPLT__Member__c(
-            Name = inputValues[0] + ' ' + inputValues[1],
-            FieloPLT__Email__c = (inputValues[0] + '.' + inputValues[1]).trim().replace(' ','') + '@email.com',
+            Name = firstName + ' ' + lastName,
+            FieloPLT__Email__c = (firstName + '.' + lastName).trim().replace(' ','') + '@email.com',
             FieloPLT__Program__c = programs.get(0).Id,
             FieloPLT__Account__c = fieloAcc.get(0).Id
         )
