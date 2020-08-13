@@ -24,8 +24,8 @@
                             var moduleWrapper = JSON.parse(response.getReturnValue());;
                             var moduleResponses = moduleWrapper.moduleResponses;
 
-                            if (moduleWrapper.module && moduleWrapper.module.Questions__r) {
-                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.Questions__r.length;
+                            if (moduleWrapper.module && moduleWrapper.module.FieloELR__Questions__r) {
+                                moduleWrapper.module.FieloELR__NumberOfQuestions__c = moduleWrapper.module.FieloELR__Questions__r.records.length;
                             }
 
                             component.set('v.moduleWrapper', moduleWrapper);
@@ -515,7 +515,7 @@
         'FieloELR__ContentType__c',
         'FieloELR__ExternalURL__c',
         'FieloELR__QuestionDisplayMode__c',
-        '(SELECT Id FROM Questions__r)'
+        '(SELECT Id FROM FieloELR__Questions__r)'
     ],
     requiredModuleResponseFields: [
         'Id',
