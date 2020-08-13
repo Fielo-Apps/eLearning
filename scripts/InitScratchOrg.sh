@@ -4,16 +4,16 @@
 sfdx force:org:open -p /lightning/setup/DeployStatus/home &&
 
 # Install FieloPLT
-sfdx force:package:install --package 04t2J000000ExfH -w 120 &&
-
-# ADD Unpackaged into folder
-# ln -s ../../unpackaged ./force-app/main/unpackaged &&
+sfdx force:package:install --package 04t2J000000ExfH -w 60 &&
 
 # Push Source
 sfdx force:source:push -w 60 &&
 
-# REMOVE Unpackaged from folder
-# rm ./force-app/main/unpackaged
-
 # DEPLOY Unpackaged folder
-sfdx force:source:deploy -p ./unpackaged/
+sfdx force:source:deploy -p ./unpackaged/ &&
+
+# Assign the permission set to the user
+sfdx force:user:permset:assign --permsetname FieloELRAdmin &&
+
+# Push Again to sync
+sfdx force:source:push -w 60 -f
