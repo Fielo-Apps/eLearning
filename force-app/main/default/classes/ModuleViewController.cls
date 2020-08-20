@@ -139,21 +139,22 @@ public with sharing class ModuleViewController extends PageSettingsController {
 
     public FieloPLT__PageSettings__c getPageSettings(String pageSetingsName, String defaultSection) {
         Map<String,Schema.SObjectField> pageSettingsFieldsMap = Schema.SObjectType.FieloPLT__PageSettings__c.fields.getMap();
-        if(pageSettingsFieldsMap.containskey('lastreferenceddate')){
-            pageSettingsFieldsMap.remove('lastreferenceddate');
+        Map<String,Schema.SObjectField> FieldsMap = pageSettingsFieldsMap.clear();
+        if(FieldsMap.containskey('lastreferenceddate')){
+            FieldsMap.remove('lastreferenceddate');
         }
-        if(pageSettingsFieldsMap.containskey('lastvieweddate')){
-            pageSettingsFieldsMap.remove('lastvieweddate');
+        if(FieldsMap.containskey('lastvieweddate')){
+            FieldsMap.remove('lastvieweddate');
         }
 
-        for (String fieldName : pageSettingsFieldsMap.keySet() ) {
-            if ( !pageSettingsFieldsMap.get(fieldName).getDescribe().isAccessible() ) {
+        for (String fieldName : FieldsMap.keySet() ) {
+            if ( !FieldsMap.get(fieldName).getDescribe().isAccessible() ) {
                 throw new FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'FieloPLT__PageSettings__c', fieldName}));
             }
         }
 
         String query = 'SELECT ';
-        query += String.join(new List<String>(pageSettingsFieldsMap.keySet()), ',');
+        query += String.join(new List<String>(FieldsMap.keySet()), ',');
         query += ' FROM FieloPLT__PageSettings__c';
         query += ' WHERE Name = :pageSetingsName AND FieloPLT__IsActive__c = true' ;
         query += ' LIMIT 1';
