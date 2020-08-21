@@ -139,7 +139,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 
     public FieloPLT__PageSettings__c getPageSettings(String pageSetingsName, String defaultSection) {
         Map<String,Schema.SObjectField> pageSettingsFieldsMap = Schema.SObjectType.FieloPLT__PageSettings__c.fields.getMap();
-        Map<String,Schema.SObjectField> FieldsMap = pageSettingsFieldsMap.clear();
+        Map<String,Schema.SObjectField> FieldsMap = pageSettingsFieldsMap.clone();
         if(FieldsMap.containskey('lastreferenceddate')){
             FieldsMap.remove('lastreferenceddate');
         }
