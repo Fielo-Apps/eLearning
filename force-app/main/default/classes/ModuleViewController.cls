@@ -5,6 +5,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 	public static String secondaryParameters {get;set;}
 	public List<Map<String,Object>> buttonList {get;set;}
 	private ApexPages.StandardController controller;
+	private Set<String> fieldFilter = new Set<String> {'lastreferenceddate', 'lastvieweddate'};
 
 	/**
     * @brief constructor
@@ -15,17 +16,18 @@ public with sharing class ModuleViewController extends PageSettingsController {
 		Id recordId = controller.getId();
 		Set<String> fields = new Set<String>();
 
-		fields.addAll(Schema.describeSObjects(
-			new String[]{objectName})[0].fields.getMap().keySet());
+		fields.addAll(Schema.describeSObjects(new String[]{objectName})[0].fields.getMap().keySet());
+        // Cast all fieldNames to lowercase
+        for(String fieldName: fields){
+            fields.remove(fieldName);
+            if(!fieldFilter.contains(fieldName)){
+                fields.add(fieldName.toLowerCase());
+            }  
+		}
 
 		if(!Test.isRunningTest()){
             this.controller.addFields(new List<String>(fields));
         }
-        // Cast all fieldNames to lowercase
-        for(String fieldName: fields){
-			fields.remove(fieldName);
-			fields.add(fieldName.toLowerCase());
-		}
 
         record = (FieloELR__Module__c)controller.getRecord();
 
@@ -137,19 +139,26 @@ public with sharing class ModuleViewController extends PageSettingsController {
 
     public FieloPLT__PageSettings__c getPageSettings(String pageSetingsName, String defaultSection) {
 		Map<String,Schema.SObjectField> pageSettingsFieldsMap = Schema.SObjectType.FieloPLT__PageSettings__c.fields.getMap();
+        Map<String,Schema.SObjectField> FieldsMap = pageSettingsFieldsMap.clone();
+        if(FieldsMap.containskey('lastreferenceddate')){
+            FieldsMap.remove('lastreferenceddate');
+        }
+        if(FieldsMap.containskey('lastvieweddate')){
+            FieldsMap.remove('lastvieweddate');
+        }
 
-		for (String fieldName : pageSettingsFieldsMap.keySet() ) {
-			if ( !pageSettingsFieldsMap.get(fieldName).getDescribe().isAccessible() ) {
-				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'FieloPLT__PageSettings__c', fieldName}));
-			}
-		}
+        for (String fieldName : FieldsMap.keySet() ) {
+            if ( !FieldsMap.get(fieldName).getDescribe().isAccessible() ) {
+                throw new FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'FieloPLT__PageSettings__c', fieldName}));
+            }
+        }
 
         String query = 'SELECT ';
-        query += String.join(new List<String>(pageSettingsFieldsMap.keySet()), ',');
+        query += String.join(new List<String>(FieldsMap.keySet()), ',');
         query += ' FROM FieloPLT__PageSettings__c';
         query += ' WHERE Name = :pageSetingsName AND FieloPLT__IsActive__c = true' ;
         query += ' LIMIT 1';
-		List<sObject> result;
+        List<sObject> result;
 
 		if(Schema.sObjectType.FieloPLT__PageSettings__c.isAccessible()){
         	result = Database.query(query);
