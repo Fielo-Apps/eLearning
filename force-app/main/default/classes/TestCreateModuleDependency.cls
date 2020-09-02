@@ -168,7 +168,7 @@ private class TestCreateModuleDependency {
 			errorMsg = d.getMessage();
 		}
 		System.debug(errorMsg);
-		System.assert(!errorMsg.Contains('This module dependency already exists.'));
+		System.assert(errorMsg.Contains('This module dependency already exists.'));
 	}
 
 	/*	TEST-1737
