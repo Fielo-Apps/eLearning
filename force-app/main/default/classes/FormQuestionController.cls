@@ -6,7 +6,7 @@ public with sharing class FormQuestionController {
     public static Boolean cRecordRedirect{get;set;}
     public SObject cRecord {get;set;}  
     private Boolean queryRecordNotDone = true;
-
+    private Set<String> fieldFilter = new Set<String> {'lastreferenceddate', 'lastvieweddate'};
     public String fields {get{
       if ( fields == null ) {
       fields = 'Id';
@@ -186,10 +186,12 @@ public with sharing class FormQuestionController {
     public FieloPLT__PageSettings__c getPageSettings(String pageSetingsName) {
         Set<String> fields = new Set<String>();
         for(String s : new List<String>(Schema.describeSObjects(new String[]{'FieloPLT__PageSettings__c'})[0].fields.getMap().keySet())){
-            if( Schema.sObjectType.FieloPLT__PageSettings__c.fields.getMap().get(s).getDescribe().isAccessible() ){
-                fields.add(s);
-            } else {
+            if(!fieldFilter.contains(s)){  
+                if( Schema.sObjectType.FieloPLT__PageSettings__c.fields.getMap().get(s).getDescribe().isAccessible() ){
+                    fields.add(s);
+                } else {
                 throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_updateable, new List<String>{'FieloPLT__PageSettings__c', s}));
+                }
             }
         }
 

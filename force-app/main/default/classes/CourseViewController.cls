@@ -6,6 +6,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 	public List<Map<String,Object>> buttonList {get;set;}
 	private ApexPages.StandardController controller;
 	public FieloPLT__PageSettings__c cloneSettings {get; set;}
+	private Set<String> fieldFilter = new Set<String> {'lastreferenceddate', 'lastvieweddate'};
 
 	/**
     * @brief constructor
@@ -25,8 +26,10 @@ public with sharing class CourseViewController extends PageSettingsController {
         }
         // Cast all fieldNames to lowercase
         for(String fieldName: fields){
-			fields.remove(fieldName);
-			fields.add(fieldName.toLowerCase());
+            fields.remove(fieldName);
+            if(!fieldFilter.contains(fieldName)){
+                fields.add(fieldName.toLowerCase());
+            }   
 		}
 
         record = (FieloELR__Course__c)controller.getRecord();
