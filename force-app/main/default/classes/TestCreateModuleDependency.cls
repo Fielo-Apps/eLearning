@@ -159,6 +159,7 @@ private class TestCreateModuleDependency {
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module3' LIMIT 1].Id;
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module4' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
+		System.debug(listModDepen);
 
 		String errorMsg = '';
 		try{

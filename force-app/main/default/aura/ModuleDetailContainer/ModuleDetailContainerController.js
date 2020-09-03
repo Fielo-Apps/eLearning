@@ -4,6 +4,7 @@
             var currentModuleReponseId = window.localStorage.getItem('currentModuleReponseId');
             if (currentModuleReponseId) {
                 component.set('v.moduleInProgress', true);
+                component.set('v.isCollapsed', component.get('v.collapseContent'));
                 window.localStorage.setItem('currentModuleReponseId','');
             }
             helper.getConfig(component);

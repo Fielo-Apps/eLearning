@@ -42,7 +42,6 @@
                 }
                 addedFields.push(fieldName);
             });
-            console.log(JSON.stringify(filterObject, null, 2));
             component.set('v.filterObject', filterObject);
         } catch(e) {
             console.log(e);
@@ -191,6 +190,12 @@
             }
         } catch(e) {
             console.log(e);
+        }
+    },
+    setSort: function(component) {
+        var sortByClause = component.find('fielo-filter-sort-by');
+        if (sortByClause && !sortByClause.get('v.value') && sortByClause.get('v.options') && sortByClause.get('v.options').length) {
+            sortByClause.set('v.value', sortByClause.get('v.options')[0].value);
         }
     }
 })
