@@ -2,15 +2,21 @@
     doInit : function(component, event, helper) {        
         var question = component.get('v.question');        
         component.set('v.title', question.FieloELR__QuestionText__c);
+        question.FieloELR__AnswerOptions__r.records.forEach(function(option) {
+            option.bigtext = option.FieloELR__AnswerOptionText__c && option.FieloELR__AnswerOptionText__c.length > 30 ? true : false;
+        });
         component.set('v.options', question.FieloELR__AnswerOptions__r.records);        
         var type = component.get('v.type');
         if (type == 'Matching Options') {
             var matchingTextList = [];
-            var options = {};
+            var options = [];
             var i = 1;
             question.FieloELR__AnswerOptions__r.records.forEach(function(option){
-                options[i] = option.Id;
                 if (matchingTextList.indexOf(option.FieloELR__MatchingText__c) == -1) {
+                    options.push({
+                        label: option.FieloELR__MatchingText__c,
+                        value: option.FieloELR__MatchingText__c
+                    });
                     matchingTextList.push(option.FieloELR__MatchingText__c);
                 }
                 i++; 
@@ -64,14 +70,15 @@
                 });
                 component.set('v.answers', answers);
             } else if (type == 'Matching Options') {
-                answersOptions = component.find('fielo-answer-option-id');
-                var matchingText = component.find('fielo-matching-text');
-                for(var index=0; index < answersOptions.length; index++){
+                answersOptions = component.find('fielo-answer-option');
+                answersOptions.forEach(function(ao) {
+                    var optionId = ao.get('v.body')[2].get('v.body')[0];
+                    var matchingText = ao.get('v.body')[1].get('v.body')[0];
                     answers.push({
-                        'FieloELR__AnswerOption__c': answersOptions[index].get('v.value'),
-                        'FieloELR__TextValue__c': matchingText[index].get('v.value')
+                        'FieloELR__AnswerOption__c': optionId.get('v.value'),
+                        'FieloELR__TextValue__c': matchingText.get('v.value')
                     });
-                }
+                }.bind(this));
                 component.set('v.answers', answers);
             } else if (type == 'Short Answer') {
                 var textValue = component.find('fielo-answer-option');

@@ -4,6 +4,9 @@
             var action = component.get('c.getModule');
             var moduleId = component.get('v.recordId');
             var member = component.get('v.member');
+            var contentField = component.get('v.contentField') || 'FieloELR__Content__c';
+            this.requiredModuleFields.push(contentField);
+            this.requiredModuleFields = [...new Set(this.requiredModuleFields)];
             var params = {
                 'member': member,
                 'moduleId': moduleId,
@@ -25,6 +28,7 @@
 
                         component.set('v.moduleWrapper', moduleWrapper);
                         component.set('v.module', moduleWrapper.module);
+                        component.set('v.moduleContentSource', moduleWrapper.module[contentField]);
                         component.set('v.course', moduleWrapper.module.FieloELR__Course__r);
                         component.set('v.moduleResponses', moduleWrapper.moduleResponses);
                         if (moduleResponses) {
