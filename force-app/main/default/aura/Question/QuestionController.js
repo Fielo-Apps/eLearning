@@ -2,6 +2,9 @@
     doInit : function(component, event, helper) {        
         var question = component.get('v.question');        
         component.set('v.title', question.FieloELR__QuestionText__c);
+        question.FieloELR__AnswerOptions__r.records.forEach(function(option) {
+            option.bigtext = option.FieloELR__AnswerOptionText__c && option.FieloELR__AnswerOptionText__c.length > 30 ? true : false;
+        });
         component.set('v.options', question.FieloELR__AnswerOptions__r.records);        
         var type = component.get('v.type');
         if (type == 'Matching Options') {

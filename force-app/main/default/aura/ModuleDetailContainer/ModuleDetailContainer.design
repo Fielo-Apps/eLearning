@@ -9,5 +9,8 @@
     <design:attribute label="Not Passed Module Fields" name="modulefields_notpassed" description="Enter the API names of the fields you want to be displayed when a member has not yet passed the module." default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__ModuleResponse__c.FieloELR__SubmitDate__c,FieloELR__ModuleResponse__c.FieloELR__GradePercent__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
     
     <design:attribute label="Not Attempted Module Fields" name="modulefields_nottaken" description="Enter the API names of the fields you want to be displayed when a member has not yet attempted the module." default="FieloELR__ModuleResponse__c.FieloELR__Transactions__r,FieloELR__ModuleResponse__c.FieloELR__Tracker__r,FieloELR__KeyDependencies__c,FieloELR__NumberOfQuestions__c,FieloELR__ModuleResponse__c.FieloELR__NumberOfAttempt__c"/>
-    
+
+    <design:attribute label="Module Content Field" name="contentField"
+        description="Enter the API name of the field to use as source for the content."
+        default="FieloELR__Content__c"/>
 </design:component>

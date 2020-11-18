@@ -57,11 +57,11 @@
                     <div class="fielo-question--matching-options">
                         <aura:iteration items="{!v.options}" var="option" indexVar="index">
                             <aura:if isTrue="{! option.FieloELR__IsCorrect__c == true}">
-                                <lightning:layout class="fielo-matching-option-row" aura:id="fielo-answer-option">
-                                    <lightning:layoutItem>
+                                <lightning:layout class="{! option.bigtext == true ? 'fielo-matching-option-row': '' }" aura:id="fielo-answer-option" horizontalAlign="spread">
+                                    <lightning:layoutItem size="slds-size--1-of-2">
                                         <lightning:formattedRichText value="{!option.FieloELR__AnswerOptionText__c}"></lightning:formattedRichText>
                                     </lightning:layoutItem>
-                                    <lightning:layoutItem>
+                                    <lightning:layoutItem size="slds-size--1-of-2">
                                         <lightning:combobox 
                                             aura:id="fielo-answer-option-text"
                                             name="{!option.Id}"

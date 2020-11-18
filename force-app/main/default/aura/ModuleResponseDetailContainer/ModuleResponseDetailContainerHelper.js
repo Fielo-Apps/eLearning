@@ -8,6 +8,9 @@
             if (moduleResponseResult.moduleResponse.FieloELR__Module__r) {
                 moduleId = moduleResponseResult.moduleResponse.FieloELR__Module__r.Id;
             }
+            var contentField = component.get('v.contentField') || 'FieloELR__Content__c';
+            this.requiredModuleFields.push(contentField);
+            this.requiredModuleFields = [...new Set(this.requiredModuleFields)];
             if (moduleId && moduleId != '') {
                 var params = {
                     'member': member,
@@ -30,6 +33,7 @@
 
                             component.set('v.moduleWrapper', moduleWrapper);
                             component.set('v.module', moduleWrapper.module);
+                            component.set('v.moduleContentSource', moduleWrapper.module[contentField]);
                             component.set('v.course', moduleWrapper.module.FieloELR__Course__r);
                             if (moduleWrapper.module.FieloELR__Course__r) {
                                 this.getCourseStructure(component);
