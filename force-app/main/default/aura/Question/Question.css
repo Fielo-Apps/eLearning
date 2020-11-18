@@ -33,11 +33,15 @@
 }
 
 .THIS .matchingOptionsLabel{
-    vertical-align: -webkit-baseline-middle;        
+    vertical-align: -webkit-baseline-middle;
 }
 
 .THIS .slds-form-element {
     max-width: 75%;
+}
+
+.THIS .fielo-question--matching-options {
+    max-width: 753px;
 }
 
 .THIS .fielo-question--matching-options .slds-form-element {
@@ -74,4 +78,8 @@
 .THIS .slds-form-element__label{
     color: unset;
     font-size: 1rem;
+}
+
+.THIS .fielo-matching-option-row{
+    display: block !important;
 }

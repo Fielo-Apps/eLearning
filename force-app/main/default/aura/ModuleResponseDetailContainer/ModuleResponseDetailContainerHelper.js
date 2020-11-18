@@ -398,16 +398,15 @@
                         if (questionCmp.get('v.type') == 'Matching Options') {
                             var answerOptions;
                             var answerCmps;
-                            var matchingOption;
                             if (qrw.questionResponse) {
                                 if (qrw.questionResponse.FieloELR__Answers__r) {
-                                    answerOptions = questionCmp.find('fielo-matching-text');
+                                    answerOptions = questionCmp.find('fielo-answer-option');
                                     qrw.questionResponse.FieloELR__Answers__r.records.forEach(function(answer) {
                                         answerCmps = answerOptions.filter(function(ao) {
-                                            return answer.FieloELR__AnswerOption__c == ao.get('v.name');
+                                            return answer.FieloELR__AnswerOption__c == ao.get('v.body')[2].get('v.body')[0].get('v.value');
                                         });
                                         answerCmps.forEach(function(ao) {
-                                            ao.set('v.value', answer.FieloELR__TextValue__c);
+                                            ao.get('v.body')[1].get('v.body')[0].set('v.value', answer.FieloELR__TextValue__c);
                                         });
                                     });        
                                 }
