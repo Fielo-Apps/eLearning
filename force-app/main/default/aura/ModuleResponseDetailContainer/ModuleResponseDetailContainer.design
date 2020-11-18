@@ -8,4 +8,6 @@
     
     <design:attribute label="Show Question Name" name="showQuestionName" description="Check this box to display the name of the question next to the question number. (Don't worry, question text is always displayed.)" default="false"/>
     
+    <design:attribute label="Module Content Field" name="contentField"
+        description="Enter the API name of the field to use as source for the content." default="FieloELR__Content__c" />
 </design:component>

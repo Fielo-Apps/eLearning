@@ -200,6 +200,9 @@
             var incorrectQuestions = component.get('v.incorrectQuestions');
             var noMoreAttemptsQuestions = component.get('v.noMoreAttemptsQuestions');
             var questionComps = component.find('question-card');
+            if (!questionComps.length) {
+                questionComps = [questionComps];
+            }
             var questionId;
             var status;
             

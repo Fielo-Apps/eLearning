@@ -8,6 +8,9 @@
             if (moduleResponseResult.moduleResponse.FieloELR__Module__r) {
                 moduleId = moduleResponseResult.moduleResponse.FieloELR__Module__r.Id;
             }
+            var contentField = component.get('v.contentField') || 'FieloELR__Content__c';
+            this.requiredModuleFields.push(contentField);
+            this.requiredModuleFields = [...new Set(this.requiredModuleFields)];
             if (moduleId && moduleId != '') {
                 var params = {
                     'member': member,
@@ -30,6 +33,7 @@
 
                             component.set('v.moduleWrapper', moduleWrapper);
                             component.set('v.module', moduleWrapper.module);
+                            component.set('v.moduleContentSource', moduleWrapper.module[contentField]);
                             component.set('v.course', moduleWrapper.module.FieloELR__Course__r);
                             if (moduleWrapper.module.FieloELR__Course__r) {
                                 this.getCourseStructure(component);
@@ -398,16 +402,15 @@
                         if (questionCmp.get('v.type') == 'Matching Options') {
                             var answerOptions;
                             var answerCmps;
-                            var matchingOption;
                             if (qrw.questionResponse) {
                                 if (qrw.questionResponse.FieloELR__Answers__r) {
-                                    answerOptions = questionCmp.find('fielo-matching-text');
+                                    answerOptions = questionCmp.find('fielo-answer-option');
                                     qrw.questionResponse.FieloELR__Answers__r.records.forEach(function(answer) {
                                         answerCmps = answerOptions.filter(function(ao) {
-                                            return answer.FieloELR__AnswerOption__c == ao.get('v.name');
+                                            return answer.FieloELR__AnswerOption__c == ao.get('v.body')[2].get('v.body')[0].get('v.value');
                                         });
                                         answerCmps.forEach(function(ao) {
-                                            ao.set('v.value', answer.FieloELR__TextValue__c);
+                                            ao.get('v.body')[1].get('v.body')[0].set('v.value', answer.FieloELR__TextValue__c);
                                         });
                                     });        
                                 }

@@ -9,5 +9,5 @@
             <lightning:carouselImage src = "{!url}" >
             </lightning:carouselImage>
         </aura:iteration>
-    </lightning:carousel>	
+    </lightning:carousel>
 </aura:component>
