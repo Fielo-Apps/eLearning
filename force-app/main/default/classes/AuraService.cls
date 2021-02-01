@@ -7,7 +7,7 @@ public class AuraService {
 		Map<String, DescribeFieldResult> result = new Map<String, DescribeFieldResult>();
 		for(String fieldName: fieldNamesSet) {
 			if (fieldMap.containsKey(fieldName)) {
-				result.put(fieldName, fieldMap.get(fieldName).getDescribe());	
+				result.put(fieldName, fieldMap.get(fieldName).getDescribe());
 			}
 		}
 		return result;
@@ -68,7 +68,7 @@ public class AuraService {
                     fieldAttributes.put('formatter', 'currency');
                 }
                 if (fieldAttributes.get('type') == 'percent') {
-                	fieldAttributes.put('formatter', 'percent');	
+                	fieldAttributes.put('formatter', 'percent');
                	}
 				if (fieldAttributes.get('type') == 'reference') {
 					relatedObjectDescribe = fieldDescribe.getReferenceTo()[0].getDescribe();
@@ -144,6 +144,66 @@ public class AuraService {
         }
 
         return (List<Object>) images;
+	}
+
+		/**
+     * @brief       Metodo para insertar un error en la base
+     * @details     Dado una excepcion de cualquier tipo el metodo genera un nuevo registro de Error Log con todos los datos de la excepcion,
+     *              la informacion que completa es el numero de linea, mensaje del error, stack trace, el tipo de excepcion y el Id del usuario logueado.
+     * @version     10.0
+     * @param       except    excepcion que se quiere insertar
+     * @return      Void
+     * @code{.java}
+     *      try{
+     *          insert new Account(Name = 'Test Account');
+     *      }catch(Exception e){
+     *          FieloEE.ErrorService.insertError(e);
+     *      }
+     * @endcode
+     */
+    public static void insertError(Exception except){
+        FieloPLT__ErrorLog__c error = new FieloPLT__ErrorLog__c();
+
+        Set<String> fieldNamesInsert = new Set<String>();
+
+        error.FieloPLT__LineNumber__c = except.getLineNumber();
+        error.FieloPLT__Message__c = except.getMessage();
+        error.FieloPLT__StackTrace__c = except.getStackTraceString();
+        error.FieloPLT__Type__c = except.getTypeName();
+        error.FieloPLT__UserId__c = UserInfo.getUserId();
+        fieldNamesInsert.add('FieloPLT__LineNumber__c');
+        fieldNamesInsert.add('FieloPLT__Message__c');
+        fieldNamesInsert.add('FieloPLT__StackTrace__c');
+        fieldNamesInsert.add('FieloPLT__Type__c');
+        fieldNamesInsert.add('FieloPLT__UserId__c');
+
+        if(SecurityUtils.canInsert(FieloPLT__ErrorLog__c.sObjectType, new List<String>(fieldNamesInsert))){
+            insert error;
+        }
+    }
+
+    /**
+    * @details Method that insert the error log
+    */
+    public static void insertError(DMLException e){
+        FieloPLT__ErrorLog__c error = new FieloPLT__ErrorLog__c();
+
+        Set<String> fieldNamesInsert = new Set<String>();
+
+        error.FieloPLT__LineNumber__c = e.getLineNumber();
+        error.FieloPLT__Message__c = e.getDMLMessage(0);
+        error.FieloPLT__StackTrace__c = e.getStackTraceString();
+        error.FieloPLT__Type__c = e.getTypeName();
+        error.FieloPLT__UserId__c = UserInfo.getUserId();
+        fieldNamesInsert.add('FieloPLT__LineNumber__c');
+        fieldNamesInsert.add('FieloPLT__Message__c');
+        fieldNamesInsert.add('FieloPLT__StackTrace__c');
+        fieldNamesInsert.add('FieloPLT__Type__c');
+        fieldNamesInsert.add('FieloPLT__UserId__c');
+
+        if(SecurityUtils.canInsert(FieloPLT__ErrorLog__c.sObjectType, new List<String>(fieldNamesInsert))){
+            insert error;
+        }
     }
 
 	public static Map<String, String> inputTypeMap {get{
@@ -246,7 +306,7 @@ public class AuraService {
             } catch(Exception e) {
                 settings = null;
             }
-        } 
+        }
         return settings;
     }
         set;
