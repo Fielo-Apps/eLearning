@@ -3,14 +3,14 @@
  * @details    SECURITY REVIEW: Due to some of our customers business processes we had to remove the with sharing keyword
  */
 global class CourseService {
-	
+
 	private static Map<String,Schema.SObjectField> courseFieldsMap {get{
 		if (courseFieldsMap == null) {
 			courseFieldsMap = Schema.SObjectType.Course__c.fields.getMap();
 		}
 		return courseFieldsMap;
 	} set; }
-	
+
 	private static Map<String,Schema.SObjectField> courseDependencyFieldsMap {get{
 		if (courseDependencyFieldsMap == null) {
 			courseDependencyFieldsMap = Schema.SObjectType.CourseDependency__c.fields.getMap();
@@ -52,7 +52,7 @@ global class CourseService {
 		}
 		return transactionFieldsMap;
 	} set;}
-	
+
 
 	public static void activateCourses(Set<Id> courseIds){
 		Set<String> possibleStatus = new Set<String>{'Draft', 'Inactive'};
@@ -69,7 +69,7 @@ global class CourseService {
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c'}));
 		}
-			
+
 
 		SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Course__c.SObjectType});
 		for(Id courseId : courseIds){
@@ -162,7 +162,7 @@ global class CourseService {
 					if (Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__Icon__c.isAccessible() &&
 					Schema.sObjectType.FieloPLT__Model__c.fields.Name.isAccessible() &&
 					Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__Description__c.isAccessible() &&
-					Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__JSON__c.isAccessible() && 
+					Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__JSON__c.isAccessible() &&
 					Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__Type__c.isAccessible() &&
 					Schema.sObjectType.FieloPLT__Model__c.fields.FieloPLT__Category__c.isAccessible()) {
                 		selectModel = [SELECT Id, FieloPLT__Icon__c, Name, FieloPLT__Description__c, FieloPLT__JSON__c, FieloPLT__Type__c, FieloPLT__Category__c FROM FieloPLT__Model__c WHERE FieloPLT__Type__c = 'Course' AND ID = :modelId ];
@@ -172,11 +172,11 @@ global class CourseService {
 				} else {
 					throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'FieloPLT__Model__c'}));
 				}
-                
+
 				List<ExportService.MultiSegmentRelation> multiSegmentRelations = new List<ExportService.MultiSegmentRelation>();
                 SObjectUnitOfWork uow = ExportService.importData( selectModel.FieloPLT__JSON__c, multiSegmentRelations);
                 Map<String,Schema.SObjectField> fieldMap = record.getSObjectType().getDescribe().fields.getMap();
-                
+
             	// Si no vienen promotions da un error, sino le setea el name a la primera
                 if ( uow.m_newListByType.containsKey('FieloELR__Course__c') ) {
                     List<Course__c> courses = (List<Course__c>) uow.m_newListByType.get('FieloELR__Course__c');
@@ -184,7 +184,7 @@ global class CourseService {
                         for(String fieldName: record.getPopulatedFieldsAsMap().keySet()) {
                         	if (fieldName != 'Id') {
 	                    		if (String.valueOf(fieldMap.get(fieldName).getDescribe().getType()) == 'DOUBLE') {
-	                    			courses.get(0).put(fieldName, 
+	                    			courses.get(0).put(fieldName,
 	                    				record.get(fieldName) instanceof String ?
 	                    					Decimal.valueOf((String)record.get(fieldName)):
 	                    					Decimal.valueOf((Double)record.get(fieldName)));
@@ -214,7 +214,7 @@ global class CourseService {
                 throw new FieloPLT.FieloException (e.getMessage() );
             }
         } else {
-            throw new FieloPLT.FieloException (label.FieloPLT.ModelMustBeChosen);            
+            throw new FieloPLT.FieloException (label.FieloPLT.ModelMustBeChosen);
         }
     }
 
@@ -238,7 +238,7 @@ global class CourseService {
 		}
 
 		String query = 'SELECT ' + String.join(new List<String>(fields), ',') + ' FROM Course__c ';
-		// WHERE CONDITION 
+		// WHERE CONDITION
 		String whereCondition = '';
 		if (programId != null) {
 			whereCondition += 'AND Program__c =: programId ';
@@ -260,7 +260,7 @@ global class CourseService {
 				query += ' OFFSET ' + offset;
 			}
 		}
-		
+
 		// SR: CRUD Check
 		if(Schema.sObjectType.Course__c.isAccessible()) {
 			// SR: FLS Check
@@ -311,7 +311,7 @@ global class CourseService {
 			}
 			queryCourses += ' ,(SELECT ' + String.join(new List<String>(safeFieldsModule), ',') + ' FROM Modules__r WHERE IsActive__c = true ORDER BY FieloELR__Order__c) ';
 		}
-		
+
 		queryCourses += ' FROM Course__c WHERE ';
 		if (courseIds != null) {
 			queryCourses += ' Id in : courseIds ';
@@ -321,12 +321,12 @@ global class CourseService {
 			}
 			if (status.isEmpty()) {
 				status.add('Active');
-			} 
+			}
 			queryCourses += ' Status__c in :status ';
 		}
 
-		
-		
+
+
 		if (programId != null) {
 			queryCourses += ' AND Program__c =: programId ';
 		}
@@ -345,8 +345,8 @@ global class CourseService {
 				Set<String> cdStringKeys = getCDStringKeys(null, memberId);
 				queryCourses += ' AND (HasDependencies__c = false OR (HasDependencies__c = true AND KeyDependencies__c in : cdStringKeys))';
 			}
-		}	
-	
+		}
+
 		if(String.isNotBlank(dynamicFilter)){
 			queryCourses += ' AND ' + FilterService.getDynamicWhereCondition(dynamicFilter, 'FieloELR__Course__c', '');
 		}
@@ -405,7 +405,7 @@ global class CourseService {
 			}
 			queryCourseStatus += ' ,(SELECT ' + String.join(new List<String>(fieldsModuleResponse), ',') + ' FROM ModuleResponses__r WHERE Member__c =: memberId) ';
 		}
-		queryCourseStatus += ' FROM CourseStatus__c WHERE Member__c =: memberId ';		
+		queryCourseStatus += ' FROM CourseStatus__c WHERE Member__c =: memberId ';
 		if (courseIds != null) {
 			queryCourseStatus += ' AND Course__c in : courseIds ';
 		}
@@ -516,40 +516,40 @@ global class CourseService {
 	}
 
 	//active courses
-	global static List<CourseWrapper> getCoursesMap(Set<String> fieldsCourse, 
+	global static List<CourseWrapper> getCoursesMap(Set<String> fieldsCourse,
 											Set<String> fieldsCourseDependency,
 											Set<String> fieldsModule,
 											Set<String> fieldsModuleDependency,
 											Set<Id> courseIds,
-											Id programId, 
-											Id memberId, 
-												Boolean filterByDependencies, 
-												Boolean filterBySegments, 
-											Integer quantity, 
-											Integer offset, 
-											String orderBy, 
+											Id programId,
+											Id memberId,
+												Boolean filterByDependencies,
+												Boolean filterBySegments,
+											Integer quantity,
+											Integer offset,
+											String orderBy,
 											String dynamicFilter) {
-		
-		
+
+
 		return getCoursesMap(fieldsCourse,fieldsCourseDependency,fieldsModule,fieldsModuleDependency,courseIds,new Set<String>{'Active'},programId,memberId,filterByDependencies,filterBySegments,quantity,offset,orderBy,dynamicFilter);
 	}
 
 	//For Courses with desired status
-	global static List<CourseWrapper> getCoursesMap(Set<String> fieldsCourse, 
+	global static List<CourseWrapper> getCoursesMap(Set<String> fieldsCourse,
 											Set<String> fieldsCourseDependency,
 											Set<String> fieldsModule,
 											Set<String> fieldsModuleDependency,
 											Set<Id> courseIds,
 											Set<String> status,
-											Id programId, 
-											Id memberId, 
-											Boolean filterByDependencies, 
-											Boolean filterBySegments, 
-											Integer quantity, 
-											Integer offset, 
-											String orderBy, 
+											Id programId,
+											Id memberId,
+											Boolean filterByDependencies,
+											Boolean filterBySegments,
+											Integer quantity,
+											Integer offset,
+											String orderBy,
 											String dynamicFilter) {
-		
+
 		Set<String> fieldsCourseClone = new Set<String>(fieldsCourse);
 		fieldsCourseClone.add('FieloELR__Segment__c');
 		fieldsCourseClone.add('FieloELR__HasDependencies__c');
@@ -583,7 +583,7 @@ global class CourseService {
 				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Module__c',fieldName}));
 			}
 		}
-		
+
 		// SR: CRUD Check
 		List<Course__c> courses;
 		Map<Id, Module__c> moduleMap;
@@ -614,7 +614,7 @@ global class CourseService {
 		}
 
 		for(CourseStatus__c cs : getCourseStatus(fieldsCourseStatus, fieldsModuleResponse, new Map<Id,Course__c>(courses).keySet(), memberId, null, null, null)){
-			coursesStatusMap.put(cs.Course__c, cs);		
+			coursesStatusMap.put(cs.Course__c, cs);
 		}
 
 		List<CourseWrapper> courseWrappers = new List<CourseWrapper>();
@@ -723,7 +723,7 @@ global class CourseService {
 			}
 			courseWrappers.add(cw);
 		}
-		
+
 		return courseWrappers;
 	}
 
@@ -792,7 +792,7 @@ global class CourseService {
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'ModuleDependency__c,ModuleResponse__c,Module__c'}));
 		}
-		
+
 
 		Set<String> mdStringKeys = new Set<String>();
 		for(Id moduleId : mdKeysByCourse.keySet()){
@@ -865,7 +865,7 @@ global class CourseService {
 			}
 
 			String programPointTypesQuery = 'SELECT Id, FieloPLT__Program__c, FieloPLT__PointType__r.FieloPLT__TransactionBalanceField__c FROM FieloPLT__ProgramPointType__c WHERE FieloPLT__Program__c in :programIds';
-			
+
 			List<FieloPLT__ProgramPointType__c> ppts;
 			// SR: CRUD Check
 			if (Schema.sObjectType.FieloPLT__ProgramPointType__c.isAccessible() && Schema.sObjectType.FieloPLT__PointType__c.isAccessible()) {
@@ -932,7 +932,7 @@ global class CourseService {
 			String moduleResponseQuery = 'SELECT Id, FieloELR__Module__c, FieloELR__CourseStatus__c, FieloELR__CourseStatus__r.FieloELR__Course__c, FieloELR__CourseStatus__r.FieloELR__Course__r.FieloELR__Program__c, (SELECT Id, ' + String.join(new List<String>(transactionPointFields), ',') + ' FROM FieloELR__Transactions__r WHERE FieloPLT__IsReverted__c = false AND FieloPLT__IsProcessed__c = true), (SELECT Id,' + String.join(new List<String>(trackerPointFields), ',') + ' FROM FieloELR__Trackers__r WHERE FieloPLT__IsReverted__c = false AND FieloPLT__IsProcessed__c = true) FROM FieloELR__ModuleResponse__c WHERE FieloELR__CourseStatus__c in :courseStatusIds';
 
 			List<ModuleResponse__c> moduleResponses;
-			
+
 			// SR: CRUD Check
 			if (Schema.sObjectType.ModuleResponse__c.isAccessible() && Schema.sObjectType.CourseStatus__c.isAccessible() && Schema.sObjectType.Course__c.isAccessible() && Schema.sObjectType.FieloPLT__Transaction__c.isAccessible() && Schema.sObjectType.FieloPLT__Tracker__c.isAccessible()) {
 				// SR: FLS Check
@@ -1012,42 +1012,34 @@ global class CourseService {
 
 						for(FieloPLT__Transaction__c t: mr.FieloELR__Transactions__r) {
 							for(String fieldName: transactionPointFields) {
-								if (!singleModulePointMap.containsKey(fieldName)) {
-									if (t.get(fieldName) != null) {
+								if (t.get(fieldName) != null) {
+									if (!singleModulePointMap.containsKey(fieldName)) {
 										singleModulePointMap.put(fieldName, (Decimal)t.get(fieldName));
-									}
-								} else {
-									if (t.get(fieldName) != null) {
+									} else {
 										singleModulePointMap.put(fieldName, (Decimal)singleModulePointMap.get(fieldName) + (Decimal)t.get(fieldName));
 									}
-								}
-								if (!pointMap.containsKey(fieldName)) {
-									pointMap.put(fieldName, (Decimal) t.get(fieldName));
-								} else {
-									pointMap.put(fieldName, (Decimal) pointMap.get(fieldName) + (Decimal) t.get(fieldName));
+									if (!pointMap.containsKey(fieldName)) {
+										pointMap.put(fieldName, (Decimal) t.get(fieldName));
+									} else {
+										pointMap.put(fieldName, (Decimal) pointMap.get(fieldName) + (Decimal) t.get(fieldName));
+									}
 								}
 							}
 						}
 						for(FieloPLT__Tracker__c tracker: mr.FieloELR__Trackers__r) {
 							for(String fieldName: transactionPointFields) {
-								if (!singleModulePointMap.containsKey(fieldName)) {
-                                    if (tracker.FieloPLT__Transaction__r != null && tracker.FieloPLT__Transaction__r.get(fieldName) != null) {
-                                        singleModulePointMap.put(fieldName, (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
-                                    }
-								} else {
-                                    if (tracker.FieloPLT__Transaction__r != null && tracker.FieloPLT__Transaction__r.get(fieldName) != null) {
-									    singleModulePointMap.put(fieldName, (Decimal)singleModulePointMap.get(fieldName) + (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
-                                    }    
-								}
-								// accumulate at course
-								if (!pointMap.containsKey(fieldName)) {
-                                    if (tracker.FieloPLT__Transaction__r != null && tracker.FieloPLT__Transaction__r.get(fieldName) != null) {
-                                        pointMap.put(fieldName, (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
-                                    }
-								} else {
-                                    if (tracker.FieloPLT__Transaction__r != null && tracker.FieloPLT__Transaction__r.get(fieldName) != null) {
-									    pointMap.put(fieldName, (Decimal)pointMap.get(fieldName) + (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
-                                    }
+								if (tracker?.FieloPLT__Transaction__r?.get(fieldName) != null) {
+									if (!singleModulePointMap.containsKey(fieldName)) {
+										singleModulePointMap.put(fieldName, (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
+									} else {
+										singleModulePointMap.put(fieldName, (Decimal)singleModulePointMap.get(fieldName) + (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
+									}
+									// accumulate at course
+									if (!pointMap.containsKey(fieldName)) {
+										pointMap.put(fieldName, (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
+									} else {
+										pointMap.put(fieldName, (Decimal)pointMap.get(fieldName) + (Decimal)tracker.FieloPLT__Transaction__r.get(fieldName));
+									}
 								}
 							}
 						}
@@ -1092,7 +1084,7 @@ global class CourseService {
 			throw e;
 		}
 	}
-	
+
 	public static void testTemporalTriggers(){
 		try{
 			if(Schema.sObjectType.AnswerOption__c.isCreateable()){

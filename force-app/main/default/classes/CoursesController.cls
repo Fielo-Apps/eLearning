@@ -21,7 +21,7 @@ public with sharing class CoursesController {
 				if (!fieldAttributes.containsKey('isRanged')) {
 					fieldAttributes.put('isRanged', (Object) String.valueOf(rangedFieldSet.contains(String.valueOf(fieldAttributes.get('name')))));
 					if (rangeLabel.containsKey(String.valueOf(fieldAttributes.get('type')))) {
-						fieldAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldAttributes.get('type')))));	
+						fieldAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldAttributes.get('type')))));
 					} else {
 						fieldAttributes.put('rangeLabel', (Object) Label.RangeSuffix);
 					}
@@ -46,19 +46,21 @@ public with sharing class CoursesController {
 			objectInfo.put('fields', (Object) newfieldsInfo);
             return JSON.serialize(objectInfo);
         } catch (DmlException e) {
+			AuraService.insertError(e);
             throw new AuraHandledException(e.getDmlMessage(0));
         } catch (Exception e) {
+			AuraService.insertError(e);
             throw new AuraHandledException(e.getMessage());
         }
         return null;
 	}
-    
+
     @AuraEnabled
     public static String getCourses(FieloPLT__Member__c member, List<String> coursesFieldset, List<String> modulesFieldset, Integer quantity, Integer offset, String status, String sortByClause, String dynamicFilter){
         try{
 			Map<String,Schema.SObjectField> moduleFieldsMap = Schema.SObjectType.Module__c.fields.getMap();
 			Map<String,Schema.SObjectField> courseFieldsMap = Schema.SObjectType.Course__c.fields.getMap();
-            Set<String> fieldsCourse = new Set<String>(coursesFieldset); 
+            Set<String> fieldsCourse = new Set<String>(coursesFieldset);
             Set<String> fieldsModule = new Set<String>(modulesFieldset);
             Set<String> fieldsCourseStatus = new Set<String>{'Name'};
             Set<String> fieldsModuleResponse = new Set<String>{'Name'};
@@ -107,7 +109,7 @@ public with sharing class CoursesController {
 					}
 				}
 			}
-			
+
 			List<FieloELR__Course__c> courses;
 			List<CourseService.CourseWrapper> courseWrappers;
 			// SR: CRUD Check
@@ -121,7 +123,7 @@ public with sharing class CoursesController {
 				// SR: FLS Check
 				if ( Schema.sObjectType.Course__c.fields.SubscriptionMode__c.isAccessible() && Schema.sObjectType.Course__c.fields.Status__c.isAccessible() && Schema.sObjectType.Module__c.fields.Name.isAccessible() && Schema.sObjectType.CourseDependency__c.fields.Name.isAccessible() && Schema.sObjectType.ModuleDependency__c.fields.Name.isAccessible() && Schema.sObjectType.Course__c.fields.LastModifiedDate.isAccessible()) {
 					courses = CourseService.getCourses(
-													courseFieldsToQuery, 
+													courseFieldsToQuery,
 													new Set<String>{'Id','Name'},
 													fieldsModule,
 													null,
@@ -137,7 +139,7 @@ public with sharing class CoursesController {
 													dynamicFilter != null && dynamicFilter != '' ? dynamicFilter : '');
 
 					Set<Id> courseIds = new Map<Id, FieloELR__Course__c>(courses).keyset();
-					
+
 					courseWrappers = CourseService.getCoursesMap(
 													new Set<String>{'Id','FieloELR__SubscriptionMode__c','FieloELR__Status__c'},
 													new Set<String>{'Id','Name'},
@@ -148,8 +150,8 @@ public with sharing class CoursesController {
 													memberId,
 													false,
 													false,
-													quantity, 
-													offset, 
+													quantity,
+													offset,
 													sortByClause != null && sortByClause != '' ? sortByClause : 'LastModifiedDate DESC',
 													dynamicFilter != null && dynamicFilter != '' ? dynamicFilter : '');
 				} else {
@@ -164,8 +166,10 @@ public with sharing class CoursesController {
 				'wrappers' => courseWrappers
 			});
        	} catch(DMLException e) {
-           throw new AuraHandledException(e.getDMLMessage(0));
+			AuraService.insertError(e);
+			throw new AuraHandledException(e.getDMLMessage(0));
         } catch(Exception e){
+			AuraService.insertError(e);
              throw new AuraHandledException(e.getMessage());
         }
     }
@@ -199,10 +203,12 @@ public with sharing class CoursesController {
 			lcConfig.put('communityURL', baseURL);
 
             return JSON.serialize(lcConfig);
-       } catch(DMLException e) {
-           throw new AuraHandledException(e.getDMLMessage(0));
+       	} catch(DMLException e) {
+			AuraService.insertError(e);
+			throw new AuraHandledException(e.getDMLMessage(0));
         } catch(Exception e){
-             throw new AuraHandledException(e.getMessage());
+			AuraService.insertError(e);
+			throw new AuraHandledException(e.getMessage());
         }
 	}
 
@@ -211,8 +217,10 @@ public with sharing class CoursesController {
 		try{
             return AuraService.getFieldData(objectName,fieldNames);
         } catch (DmlException e) {
+			AuraService.insertError(e);
             throw new AuraHandledException(e.getDmlMessage(0));
         } catch (Exception e) {
+			AuraService.insertError(e);
             throw new AuraHandledException(e.getMessage());
         }
         return null;
@@ -327,7 +335,7 @@ public with sharing class CoursesController {
 					}
 				}
 			}
-			
+
 			fieldsModule.add('FieloELR__Order__c');
 
 			// SR: Dynamic FLS Check
@@ -336,14 +344,14 @@ public with sharing class CoursesController {
 					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Module__c',fieldName}));
 				}
 			}
-            
+
 			List<FieloELR__Course__c> courses;
 
 			// SR: CRUD Check
 			if (Schema.sObjectType.Course__c.isAccessible() && Schema.sObjectType.CourseDependency__c.isAccessible() && Schema.sObjectType.Module__c.isAccessible()) {
 				if (Schema.sObjectType.CourseDependency__c.fields.Name.isAccessible() && Schema.sObjectType.Course__c.fields.LastModifiedDate.isAccessible()) {
 					courses = CourseService.getCourses(
-													courseFieldsToQuery, 
+													courseFieldsToQuery,
 													new Set<String>{'Id','Name'},
 													fieldsModule,
 													courseIds,
@@ -380,8 +388,8 @@ public with sharing class CoursesController {
 													member.Id,
 													false,
 													false,
-													quantity, 
-													offset, 
+													quantity,
+													offset,
 													sortByClause != null && sortByClause != '' ? sortByClause : 'LastModifiedDate DESC',
 													dynamicFilter != null && dynamicFilter != '' ? dynamicFilter : '');
 				} else {
@@ -392,7 +400,7 @@ public with sharing class CoursesController {
 			}
 
 			String coursesPoints = CourseService.getCoursePoints(courseIds, member.Id);
-			
+
 			Map<String, Object> result = new Map<String, Object>{
 				'courses' => (Object) courses,
 				'wrappers' => (Object) courseWrappers,
@@ -400,10 +408,12 @@ public with sharing class CoursesController {
 				'coursePoints' => coursesPoints != null ? JSON.deserializeUntyped(coursesPoints) : ''
 			};
             return JSON.serialize(result);
-       } catch(DMLException e) {
-           throw new AuraHandledException(e.getDMLMessage(0));
+       	} catch(DMLException e) {
+			AuraService.insertError(e);
+        	throw new AuraHandledException(e.getDMLMessage(0));
         } catch(Exception e){
-             throw new AuraHandledException(e.getMessage());
+			AuraService.insertError(e);
+        	throw new AuraHandledException(e.getMessage());
         }
 	}
 }
