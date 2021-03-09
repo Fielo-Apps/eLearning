@@ -52,7 +52,6 @@ public with sharing class CoursesController {
 			AuraService.insertError(e);
             throw new AuraHandledException(e.getMessage());
         }
-        return null;
 	}
 
     @AuraEnabled
@@ -223,7 +222,6 @@ public with sharing class CoursesController {
 			AuraService.insertError(e);
             throw new AuraHandledException(e.getMessage());
         }
-        return null;
 	}
 
 	@AuraEnabled
