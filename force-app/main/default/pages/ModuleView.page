@@ -1,4 +1,4 @@
-<apex:page tabStyle="Course__c" sidebar="false" standardController="Module__c" extensions="ModuleViewController" docType="html-5.0">
+<apex:page tabStyle="Course__c" sidebar="false" standardController="Module__c" extensions="ModuleViewController" docType="html-5.0" lightningStylesheets="true">
 <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <head>
     <link rel="stylesheet" href="{!URLFOR($Resource.FieloPLT__FieloSalesforce_Backend, 'lightning/styles/salesforce-lightning-design-system-vf.min.css')}"></link>
@@ -40,14 +40,14 @@
 		</apex:panelGroup>
 
 		<!--
-		<c:PhotoUpload record="{!record}" 
-          folderName="FieloPLT__FieloImages" 
-          fieldName="FieloELR__Image__c" 
-          externalURLName="FieloELR__ExternalURL__c" 
+		<c:PhotoUpload record="{!record}"
+          folderName="FieloPLT__FieloImages"
+          fieldName="FieloELR__Image__c"
+          externalURLName="FieloELR__ExternalURL__c"
           sObjectName="{!objectName}"
         />
 		-->
-		
+
 		<apex:repeat value="{!relatedSettings}" var="rel">
         <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloELR__Question__c'}">
           <c:RelatedList namespace="FieloELR" heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
@@ -77,8 +77,8 @@
 	        	/>
             	</apex:panelGroup>
             </apex:repeat>
-            
-            <c:FormQuestionManage namespace="FieloELR" 
+
+            <c:FormQuestionManage namespace="FieloELR"
         		formId="FieloELR__Question__cFormManage"
 				heading="Manage {!$ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
 				sObjectName="{!objectName}"
@@ -91,7 +91,7 @@
         </apex:panelGroup>
 
         <apex:panelGroup rendered="{!rel.FieloPLT__TargetObject__c = 'FieloELR__ModuleDependency__c'}">
-          <c:RelatedList namespace="FieloELR" 
+          <c:RelatedList namespace="FieloELR"
           	relatedId="FieloELR__ModuleDependency__cRelatedList"
           	heading="{! $ObjectType[rel.FieloPLT__TargetObject__c].labelPlural}"
             icon="{!URLFOR($Resource.FieloSalesforce_Backend)}/lightning/icons/standard-sprite/svg/symbols.svg#product"
