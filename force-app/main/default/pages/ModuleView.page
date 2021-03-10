@@ -159,32 +159,32 @@
 	    <apex:repeat value="{!relatedStandard}" var="relatedName">
 	      <apex:panelGroup rendered="{!relatedName == 'ProcessSteps'}">
 	        <c:RelatedWrapper heading="Approval History" icon="action-sprite/svg/symbols.svg#submit_for_approval" >
-	          <apex:relatedList list="ProcessSteps" />
+	          <apex:relatedList list="ProcessSteps" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	      <apex:panelGroup rendered="{!relatedName == 'CombinedAttachments'}">
 	        <c:RelatedWrapper heading="Notes & Attachments" icon="action-sprite/svg/symbols.svg#new_note">
-	          <apex:relatedList list="CombinedAttachments" />
+	          <apex:relatedList list="CombinedAttachments" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	      <apex:panelGroup rendered="{!relatedName == 'ActivityHistories'}">
 	        <c:RelatedWrapper heading="Activity History" icon="action-sprite/svg/symbols.svg#log_event">
-	          <apex:relatedList list="ActivityHistories" />
+	          <apex:relatedList list="ActivityHistories" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	      <apex:panelGroup rendered="{!relatedName == 'OpenActivities'}">
 	        <c:RelatedWrapper heading="Open Activities" icon="action-sprite/svg/symbols.svg#new_event">
-	          <apex:relatedList list="OpenActivities" />
+	          <apex:relatedList list="OpenActivities" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	      <apex:panelGroup rendered="{!relatedName == 'AttachedContentDocuments'}">
 	        <c:RelatedWrapper heading="Files" icon="standard-sprite/svg/symbols.svg#file">
-	          <apex:relatedList list="AttachedContentDocuments" />
+	          <apex:relatedList list="AttachedContentDocuments" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	      <apex:panelGroup rendered="{!relatedName == 'RelatedContentDistributionList'}">
 	        <c:RelatedWrapper heading="Content Deliveries" icon="standard-sprite/svg/symbols.svg#share_file">
-	          <apex:relatedList list="RelatedContentDistributionList" />
+	          <apex:relatedList list="RelatedContentDistributionList" pageSize="10"/>
 	        </c:RelatedWrapper>
 	      </apex:panelGroup>
 	    </apex:repeat>

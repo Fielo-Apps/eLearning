@@ -351,6 +351,12 @@
       if (saveAsModelForm) {
         saveAsModelForm.FieloForm.endRetrieve = this.fixJSON.bind(this);
       }
+
+      // Removing broken SF buttons
+      var relatedListButtons = document.querySelectorAll('.bRelatedList');
+      relatedListButtons.forEach(function(rel) {
+        $(rel.querySelector('.pShowMore')).toggle(false);
+      });
     }
   };
 
