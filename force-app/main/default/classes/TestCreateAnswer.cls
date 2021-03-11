@@ -1,6 +1,6 @@
 @isTest
 private class TestCreateAnswer{
-	
+
 	private static List<FieloPLT__Program__c> listProg;
 	private static List<FieloPLT__Segment__c> listSeg;
 	private static List<FieloELR__Course__c> listCourse;
@@ -9,15 +9,14 @@ private class TestCreateAnswer{
 	private static List<FieloELR__Question__c> listQuest = new List<FieloELR__Question__c>();
 	private static List<FieloELR__AnswerOption__c> listAnsOpt = new List<FieloELR__AnswerOption__c>();
 
-	private static FieloELR__AnswerOption__c answers1 = new FieloELR__AnswerOption__c();
-	private static FieloELR__AnswerOption__c answers2 = new FieloELR__AnswerOption__c();
-	private static FieloELR__AnswerOption__c answers3 = new FieloELR__AnswerOption__c();
-	private static FieloELR__AnswerOption__c answers4 = new FieloELR__AnswerOption__c();
-	private static FieloELR__AnswerOption__c answers5 = new FieloELR__AnswerOption__c();
-	private static FieloELR__AnswerOption__c answers6 = new FieloELR__AnswerOption__c();
+	private static FieloELR__AnswerOption__c answers1;
+	private static FieloELR__AnswerOption__c answers2;
+	private static FieloELR__AnswerOption__c answers3;
+	private static FieloELR__AnswerOption__c answers4;
+	private static FieloELR__AnswerOption__c answers5;
+	private static FieloELR__AnswerOption__c answers6;
 
-	@testSetup static void setup(){
-
+	static {
 		//////PROGRAMS
 		listProg = MockUpFactory.createPrograms('program', 1);
 
@@ -35,7 +34,7 @@ private class TestCreateAnswer{
 		insert listCourse;
 
 		listMember = MockUpFactory.createMembers(listProg.get(0).Id,1);
-		
+
 		insert listMember;
 
 		insert new FieloPLT__MemberSegment__c(
@@ -126,29 +125,35 @@ private class TestCreateAnswer{
 		insert listQuest;
 
 		//////ANSWERS
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = question2.Id;
 		answers1.FieloELR__IsCorrect__c = true;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta y activa';
 		listAnsOpt.add(answers1);
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = question7.Id;
 		answers2.FieloELR__AnswerOptionText__c = 'Esta es incorrecta y de Statement';
 		listAnsOpt.add(answers2);
 
+		answers3 = new AnswerOption__c();
 		answers3.FieloELR__Question__c = question7.Id;
 		answers3.FieloELR__AnswerOptionText__c = 'Esta es la segunda incorrecta y de Statement';
 		listAnsOpt.add(answers3);
 
+		answers4 = new AnswerOption__c();
 		answers4.FieloELR__Question__c = question8.Id;
 		answers4.FieloELR__IsCorrect__c = true;
 		answers4.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		listAnsOpt.add(answers4);
 
+		answers5 = new AnswerOption__c();
 		answers5.FieloELR__Question__c = question9.Id;
 		answers5.FieloELR__IsCorrect__c = true;
 		answers5.FieloELR__AnswerOptionText__c = 'Esta es correcta y del segundo Statement';
 		listAnsOpt.add(answers5);
 
+		answers6 = new AnswerOption__c();
 		answers6.FieloELR__Question__c = question9.Id;
 		answers6.FieloELR__AnswerOptionText__c = 'Esta es incorrecta y del segundo Statement';
 		listAnsOpt.add(answers6);
@@ -166,17 +171,18 @@ private class TestCreateAnswer{
 		- Related question type is “Multiple Choice” (OK)
 	*/
 	@isTest	static void ELR_0006_FB(){
-
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'multiple choice 1' LIMIT 1].Id;
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers2.FieloELR__Question__c = answers1.FieloELR__Question__c;
 		answers2.FieloELR__Order__c = 2;
 		answers2.FieloELR__IsCorrect__c = true;
-		listAnsOpt.add(answers2);
+
+		listAnsOpt = new List<AnswerOption__c>{answers1,answers2};
 
 		insert listAnsOpt;
 
@@ -190,10 +196,11 @@ private class TestCreateAnswer{
 		- Related question type is “Single Choice” and no other answer option was defined as correct (OK)
 	*/
 	@isTest	static void ELR_0006_FA9(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'single choice 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'No tiene respuesta';
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
 
@@ -208,7 +215,7 @@ private class TestCreateAnswer{
 		- Related question type is “Statement” with already another answer option defined as correct (NOK)
 	*/
 	@isTest static void ELR_0006_FA8(){
-
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__IsCorrect__c = true;
@@ -216,6 +223,7 @@ private class TestCreateAnswer{
 
 		insert answers1;
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'statement 1' LIMIT 1].Id;
 		answers2.FieloELR__AnswerOptionText__c = 'Esta tambien es correcta';
 		answers2.FieloELR__IsCorrect__c = true;
@@ -235,10 +243,11 @@ private class TestCreateAnswer{
 		- Related question type is “Statement” without no other answer option defined as correct (OK)
 	*/
 	@isTest static void ELR_0006_FA7(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
 
@@ -253,21 +262,23 @@ private class TestCreateAnswer{
 		- Related question type is “Statement” with already two answer options (NOK)
 	*/
 	@isTest static void ELR_0006_FA6(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = true;
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers2.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers2.FieloELR__Order__c = 1;
 		answers2.FieloELR__IsCorrect__c = false;
 
-		listAnsOpt.add(answers1);
-		listAnsOpt.add(answers2);
+		listAnsOpt = new List<AnswerOption__c>{answers1,answers2};
 
 		insert listAnsOpt;
-		
+
+		answers3 = new AnswerOption__c();
 		answers3.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers3.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers3.FieloELR__Order__c = 1;
@@ -287,11 +298,12 @@ private class TestCreateAnswer{
 		- Related question type is “Statement” without its two answer options (OK)
 	*/
 	@isTest static void ELR_0006_FA5(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = true;
-		listAnsOpt.add(answers1);
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
 
@@ -304,12 +316,13 @@ private class TestCreateAnswer{
 		Create Answer Option - The Order field is null (OK)
 	*/
 	@isTest static void ELR_0006_FA4(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta respuesta esta de mas';
-		listAnsOpt.add(answers1);
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
-		
+
 		listAnsOpt = [SELECT Id FROM FieloELR__AnswerOption__c WHERE FieloELR__Question__c = : answers1.FieloELR__Question__c];
 
 		System.assertEquals(1, listAnsOpt.size());
@@ -321,14 +334,16 @@ private class TestCreateAnswer{
 		- The Answer Option Text is null (NOK)
 	*/
 	@isTest static void ELR_0006_FA3(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'statement 1' LIMIT 1].Id;
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
+
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		try {
 			insert listAnsOpt;
 		} catch (Exception e) {}
-		
+
 		listAnsOpt = [SELECT Id FROM FieloELR__AnswerOption__c WHERE FieloELR__Question__c = : answers1.FieloELR__Question__c];
 
 		System.assertEquals(0, listAnsOpt.size());
@@ -340,21 +355,22 @@ private class TestCreateAnswer{
 		- Set correct answer option for question Type “Statement” when another answer option is defined as correct (NOK)
 	*/
 	@isTest static void ELR_0006_FA22() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = true;
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers2.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers2.FieloELR__Order__c = 1;
 		answers2.FieloELR__IsCorrect__c = false;
 
-		listAnsOpt.add(answers1);
-		listAnsOpt.add(answers2);
+		listAnsOpt = new List<AnswerOption__c>{answers1,answers2};
 
 		insert listAnsOpt;
-		
+
 		answers2.FieloELR__IsCorrect__c = true;
 
 		try{
@@ -371,21 +387,22 @@ private class TestCreateAnswer{
 		- Set correct answer option for question Type “Statement” when no other answer option is defined as correct (OK)
 	*/
 	@isTest static void ELR_0006_FA21() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = false;
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='statement 1' LIMIT 1].Id;
 		answers2.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers2.FieloELR__Order__c = 1;
 		answers2.FieloELR__IsCorrect__c = false;
 
-		listAnsOpt.add(answers1);
-		listAnsOpt.add(answers2);
+		listAnsOpt = new List<AnswerOption__c>{answers1,answers2};
 
 		insert listAnsOpt;
-		
+
 		answers1.FieloELR__IsCorrect__c = true;
 
 		update answers1;
@@ -406,7 +423,7 @@ private class TestCreateAnswer{
 		FieloELR__Question__c question = [Select Id, Name From FieloELR__Question__c Where FieloELR__Module__r.Name = 'module2' AND Name = 'short answer 1' LIMIT 1];
 
 		course.FieloELR__Status__c = 'Active';
-		
+
 		Courses.validateAdminFields = false;
 
 		update course;
@@ -474,7 +491,7 @@ private class TestCreateAnswer{
 		FieloELR__Question__c question = [Select Id, Name From FieloELR__Question__c Where FieloELR__Module__r.Name = 'module2' AND Name = 'short answer 1' LIMIT 1];
 
 		course.FieloELR__Status__c = 'Active';
-		
+
 		Courses.validateAdminFields = false;
 
 		update course;
@@ -511,6 +528,7 @@ private class TestCreateAnswer{
 		update module;
 		Modules.validateAdminFields = true;
 
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = question.Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
@@ -534,7 +552,7 @@ private class TestCreateAnswer{
 		FieloELR__Question__c question = [Select Id, Name From FieloELR__Question__c Where FieloELR__Module__r.Name = 'module2' AND Name = 'short answer 1' LIMIT 1];
 
 		course.FieloELR__Status__c = 'Active';
-		
+
 		Courses.validateAdminFields = false;
 
 		update course;
@@ -614,7 +632,7 @@ private class TestCreateAnswer{
 		FieloELR__Question__c question = [Select Id, Name From FieloELR__Question__c Where FieloELR__Module__r.Name = 'module2' AND Name = 'short answer 1' LIMIT 1];
 
 		course.FieloELR__Status__c = 'Active';
-		
+
 		Courses.validateAdminFields = false;
 
 		update course;
@@ -678,7 +696,7 @@ private class TestCreateAnswer{
 		FieloELR__Question__c question = [Select Id, Name From FieloELR__Question__c Where FieloELR__Module__r.Name = 'module2' AND Name = 'short answer 1' LIMIT 1];
 
 		course.FieloELR__Status__c = 'Active';
-		
+
 		Courses.validateAdminFields = false;
 
 		update course;
@@ -711,6 +729,7 @@ private class TestCreateAnswer{
 		- Related question “Type” is “Matching Options” and “Matching Text” field is null (NOK)
 	*/
 	@isTest static void ELR_0006_FA14() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='matching options 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
@@ -733,11 +752,13 @@ private class TestCreateAnswer{
 		- Related question type is “Matching Options” and there is not a matching pair (OK)
 	*/
 	@isTest static void ELR_0006_FA13() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='matching options 1' LIMIT 1].Id;
 		answers1.FieloELR__MatchingText__c = 'Esta es correcta';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = true;
-		listAnsOpt.add(answers1);
+
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
 
@@ -751,12 +772,14 @@ private class TestCreateAnswer{
 		- Related question “Type” is “Matching Options” and there is a matching pair (OK)
 	*/
 	@isTest static void ELR_0006_FA12() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='matching options 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'A';
 		answers1.FieloELR__MatchingText__c = 'Matches With A';
 		answers1.FieloELR__Order__c = 1;
 		answers1.FieloELR__IsCorrect__c = true;
-		listAnsOpt.add(answers1);
+
+		listAnsOpt = new List<AnswerOption__c>{answers1};
 
 		insert listAnsOpt;
 
@@ -770,12 +793,12 @@ private class TestCreateAnswer{
 		- Related question type is “Short Answer” (OK)
 	*/
 	@isTest static void ELR_0006_FA11() {
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='short answer 2' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'this is correct';
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
 
-		insert listAnsOpt;
+		insert answers1;
 
 		listAnsOpt = [SELECT Id FROM FieloELR__AnswerOption__c WHERE FieloELR__Question__c = :answers1.FieloELR__Question__c];
 
@@ -789,13 +812,15 @@ private class TestCreateAnswer{
 	*/
 	@isTest
 	static void ELR_0006_FA10(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='single choice 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'this is correct';
 		answers1.FieloELR__IsCorrect__c = true;
 		answers1.FieloELR__Order__c = 1;
-		
+
 		insert answers1;
 
+		answers2 = new AnswerOption__c();
 		answers2.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name ='single choice 1' LIMIT 1].Id;
 		answers2.FieloELR__AnswerOptionText__c = 'this is also correct';
 		answers2.FieloELR__IsCorrect__c = true;
@@ -816,15 +841,15 @@ private class TestCreateAnswer{
 		- The related module is active (NOK)
 	*/
 	@isTest	static void ELR_0006_FA1(){
+		answers1 = new AnswerOption__c();
 		answers1.FieloELR__Question__c = [SELECT Id FROM FieloELR__Question__c WHERE Name = 'multiple choice 1' LIMIT 1].Id;
 		answers1.FieloELR__AnswerOptionText__c = 'Esta es incorrecta';
 		answers1.FieloELR__Order__c = 1;
-		listAnsOpt.add(answers1);
 
 		try{
-    		insert listAnsOpt;
-		}catch(System.DmlException d){
-			System.assert(d.getMessage().Contains('Active modules cannot have changes in their set of answer options.'));
+    		insert answers1;
+		}catch(System.DmlException e){
+			System.assertEquals(Label.ValidateAnswerActiveModules, e.getMessage(), 'Wrong error message');
 		}
 	}
 }
