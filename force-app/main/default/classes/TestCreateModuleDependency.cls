@@ -9,7 +9,7 @@ private class TestCreateModuleDependency {
 
 	private static FieloELR__ModuleDependency__c modDepen1 = new FieloELR__ModuleDependency__c();
 
-	@testSetup static void setup() {
+	static void setup() {
 		//////PROGRAMS
 		listProg = MockUpFactory.createPrograms('program', 1);
 
@@ -60,17 +60,23 @@ private class TestCreateModuleDependency {
 		insert listMod;
 
 		//////MODULE DEPENDENCIES
-		modDepen1.FieloELR__Module__c = listMod.get(2).Id;
-		modDepen1.FieloELR__Predecessor__c = listMod.get(3).Id;
+		modDepen1.FieloELR__Module__c = module3.Id;
+		modDepen1.FieloELR__Predecessor__c = module4.Id;
 		listModDepen.add(modDepen1);
 
 		insert listModDepen;
+
+		CourseService.enableAdminPermission(false);
+		listModDepen = new List<FieloELR__ModuleDependency__c>();
+		listMod = new List<FieloELR__Module__c>();
 	}
-	
+
 	/*	TEST-1731
 		Create Module Dependency - (OK)
 	*/
 	@isTest static void ELR_0004_FB() {
+		setup();
+		modDepen1 = new FieloELR__ModuleDependency__c();
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module1' LIMIT 1].Id;
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module2' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
@@ -81,29 +87,33 @@ private class TestCreateModuleDependency {
 
 		System.assertEquals(1, listModDepen.size());
 	}
-	
+
 	/*	TEST-1732
 		Create Module Dependency
 		- Validations
 		- Module field is null (NOK)
 	*/
 	@isTest static void ELR_0004_FA1() {
+		setup();
+		modDepen1 = new ModuleDependency__c();
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module2' LIMIT 1].Id;
-		listModDepen.add(modDepen1);
+		listModDepen = new List<ModuleDependency__c>{modDepen1};
 
 		try{
     		insert listModDepen;
 		}catch(System.DmlException d){
-			System.assert(d.getMessage().Contains('Both modules must belong to the same course.'));
+			System.assert(d.getMessage().contains('Both modules must belong to the same course.'), 'Wrong error message: ' + d.getMessage());
 		}
 	}
-	
+
 	/*	TEST-1733
 		Create Module Dependency
 		- Validations
 		- Predecessor field is null (NOK)
 	*/
 	@isTest static void ELR_0004_FA2() {
+		setup();
+		modDepen1 = new FieloELR__ModuleDependency__c();
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module2' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
 
@@ -120,6 +130,8 @@ private class TestCreateModuleDependency {
 		- Module and Predecessor are the same (NOK)
 	*/
 	@isTest static void ELR_0004_FA3() {
+		setup();
+		modDepen1 = new FieloELR__ModuleDependency__c();
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module1' LIMIT 1].Id;
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module1' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
@@ -137,6 +149,8 @@ private class TestCreateModuleDependency {
 		- Module and Predecessor are not related to the same course (NOK)
 	*/
 	@isTest static void ELR_0004_FA4(){
+		setup();
+		modDepen1 = new FieloELR__ModuleDependency__c();
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module1' LIMIT 1].Id;
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module3' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
@@ -156,19 +170,20 @@ private class TestCreateModuleDependency {
 		- There is already a module dependency with the same modules (NOK)
 	*/
 	@isTest static void ELR_0004_FA5() {
+		setup();
+		modDepen1 = new FieloELR__ModuleDependency__c();
 		modDepen1.FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module3' LIMIT 1].Id;
 		modDepen1.FieloELR__Predecessor__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module4' LIMIT 1].Id;
 		listModDepen.add(modDepen1);
-		System.debug(listModDepen);
 
 		String errorMsg = '';
 		try{
+			CourseService.enableAdminPermission(false);
     		insert listModDepen;
 		}catch(System.DmlException d){
 			errorMsg = d.getMessage();
 		}
-		System.debug(errorMsg);
-		System.assert(errorMsg.Contains('This module dependency already exists.'));
+		System.assert(errorMsg.Contains('This module dependency already exists.'), 'Wrong error message: ' + errorMsg);
 	}
 
 	/*	TEST-1737
@@ -176,6 +191,7 @@ private class TestCreateModuleDependency {
 		- Edit a module dependency (OK)
 	*/
 	@isTest static void ELR_0004_FA6(){
+		setup();
 		listModDepen = [SELECT Id, FieloELR__Module__c FROM FieloELR__ModuleDependency__c WHERE FieloELR__Module__r.Name = 'module3' LIMIT 1];
 		listModDepen.get(0).FieloELR__Module__c = [SELECT Id FROM FieloELR__Module__c WHERE Name = 'module5' LIMIT 1].Id;
 

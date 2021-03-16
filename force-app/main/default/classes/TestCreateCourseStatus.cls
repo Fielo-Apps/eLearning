@@ -17,7 +17,7 @@ private class TestCreateCourseStatus{
 
 	private static FieloELR__CourseStatus__c courseStatus = new FieloELR__CourseStatus__c();
 
-	@testSetup static void setup(){
+	static{
 		//////PROGRAMS
 		listProg = MockUpFactory.createPrograms('program', 5);
 		insert listProg;
@@ -255,6 +255,7 @@ private class TestCreateCourseStatus{
     	listCourse = [SELECT Id, FieloELR__SubscriptionMode__c FROM FieloELR__Course__c WHERE Name = 'Course 0' LIMIT 1];
     	listMemb = [SELECT Id FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
 
+		courseStatus = new CourseStatus__c();
 		courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
 		courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -278,6 +279,7 @@ private class TestCreateCourseStatus{
 
     	System.assertNotEquals('Active', listCourse.get(0).FieloELR__Status__c);
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -299,6 +301,7 @@ private class TestCreateCourseStatus{
 
     	System.assertEquals('Automatic', listCourse.get(0).FieloELR__SubscriptionMode__c);
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -315,6 +318,7 @@ private class TestCreateCourseStatus{
 		- The Member field is null (NOK)
     */
     @isTest static void ELR_0013_FA4(){
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = [SELECT Id FROM FieloELR__Course__c WHERE Name = 'Course 0' LIMIT 1].Id;
 
     	try{
@@ -335,6 +339,7 @@ private class TestCreateCourseStatus{
 
     	delete listMemb.get(0).FieloPLT__MembersSegments__r;
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -356,6 +361,7 @@ private class TestCreateCourseStatus{
 
     	System.assertNotEquals(listCourse.get(0).FieloELR__Program__c, listMemb.get(0).FieloPLT__Program__c);
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -375,6 +381,7 @@ private class TestCreateCourseStatus{
     	listCourse = [SELECT Id FROM FieloELR__Course__c WHERE Name = 'Course 5' LIMIT 1];
 		listMemb = [SELECT Id FROM FieloPLT__Member__c WHERE Name = 'Member 3' LIMIT 1];
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 
@@ -394,6 +401,7 @@ private class TestCreateCourseStatus{
     	listCourse = [SELECT Id FROM FieloELR__Course__c WHERE Name = 'Course 6' LIMIT 1];
     	listMemb = [SELECT Id FROM FieloPLT__Member__c WHERE Name = 'Member 4' LIMIT 1];
 
+		courseStatus = new CourseStatus__c();
     	courseStatus.FieloELR__Course__c = listCourse.get(0).Id;
     	courseStatus.FieloELR__Member__c = listMemb.get(0).Id;
 

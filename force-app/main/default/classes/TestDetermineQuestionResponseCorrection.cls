@@ -2,15 +2,12 @@
 private class TestDetermineQuestionResponseCorrection{
     private static String errorMsg;
 
-    @testSetup static void setup(){
-        MockUpFactory.InsertTestData();
-    }
-
     /*	TEST-1814
     	Determine Question Response Correction
     	- Question from type Single Choice is correct (OK)
     */
     @isTest static void ELR_0011_FB() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -44,6 +41,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Single Choice is not correct (OK)
     */
     @isTest static void ELR_0011_FA1() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -77,6 +75,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Multiple Choice is correct (OK)
     */
     @isTest static void ELR_0011_FA2() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -110,6 +109,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Multiple Choice is not correct (OK)
     */
     @isTest static void ELR_0011_FA3() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -143,6 +143,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Short Answer is correct (OK)
     */
     @isTest static void ELR_0011_FA4() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -176,6 +177,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Short Answer is not correct (OK)
     */
     @isTest static void ELR_0011_FA5() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -209,6 +211,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Statement is correct (OK)
     */
     @isTest static void ELR_0011_FA6() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -242,6 +245,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Statement is not correct (OK)
     */
     @isTest static void ELR_0011_FA7() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -275,6 +279,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Matching Options is correct (OK)
     */
     @isTest static void ELR_0011_FA8() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -310,6 +315,7 @@ private class TestDetermineQuestionResponseCorrection{
     	- Question from type Matching Options is not correct (OK)
     */
     @isTest static void ELR_0011_FA9() {
+        MockUpFactory.InsertTestData();
     	Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';

@@ -272,7 +272,6 @@ global class CourseService {
 		}else{
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c'}));
 		}
-		return null;
 	}
 
 	global static List<Course__c> getCourses(Set<String> fieldsCourse, Set<String> fieldsCourseDependency, Set<String> fieldsModule, Set<Id> courseIds, Id programId, Id memberId, Boolean filterByDependencies,  Boolean filterBySegments, Boolean filterByNotTaken, Integer quantity, Integer offset, String orderBy, String dynamicFilter) {

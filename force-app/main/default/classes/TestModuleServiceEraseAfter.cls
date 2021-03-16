@@ -1,13 +1,9 @@
 @isTest
 public with sharing class TestModuleServiceEraseAfter {
-	@testSetup static void setup(){
-        MockUpFactory.InsertTestData();
-		
-    }
-
 	@isTest
 	static void TestModuleServiceEraseAfter() {
-		
+		MockUpFactory.InsertTestData();
+
 		List<FieloPLT__Program__c> programs = [SELECT Id FROM FieloPLT__Program__c];
 
 		List<FieloELR__Module__c> modules = [SELECT Id, IsActive__c FROM Module__c];
@@ -26,7 +22,7 @@ public with sharing class TestModuleServiceEraseAfter {
 		courses.get(0).Status__c = 'Active';
 		courses.get(0).Segment__c = null;
 		update courses;
-		
+
 		System.assertEquals('Active', courses.get(0).Status__c);
 
  		//Members

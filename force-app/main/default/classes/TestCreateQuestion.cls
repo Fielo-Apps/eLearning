@@ -2,14 +2,11 @@
 private class TestCreateQuestion{
     private static String errorMsg;
 
-    @testSetup static void setup(){
-        MockUpFactory.InsertTestData();
-    }
-
     /*  TEST-1738
         Create Question - Question type is “Single Choice” (OK)
     */
     @isTest static void ELR_0005_FB() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -42,6 +39,7 @@ private class TestCreateQuestion{
         - The related module is active (NOK)
     */
     @isTest static void ELR_0005_FA1() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
@@ -66,6 +64,7 @@ private class TestCreateQuestion{
         - The “Question Text” field is null (NOK)
     */
     @isTest static void ELR_0005_FA3() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -88,6 +87,7 @@ private class TestCreateQuestion{
         - Order field is null (OK)
     */
     @isTest static void ELR_0005_FA4() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -99,7 +99,7 @@ private class TestCreateQuestion{
         questions = [SELECT Id, Name, Module__c, Type__c, QuestionText__c, Order__c, IncorrectWeight__c, PenaltyPerAttempt__c, CorrectWeight__c FROM Question__c WHERE Id = :questions[0].Id];
 
         System.assertEquals(1,questions.size());
-        
+
         //There are already 5 questions in the module.
 
         System.assertEquals(6, questions[0].Order__c);
@@ -111,6 +111,7 @@ private class TestCreateQuestion{
         - The related module has module response (NOK)
     */
     @isTest static void ELR_0005_FA2() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -151,6 +152,7 @@ private class TestCreateQuestion{
         - “Correct Weight” field is greater than one and “Question Pool” of related module is not null (OK)
     */
     @isTest static void ELR_0005_FA5() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         module.QuestionPool__c = 3;
@@ -178,6 +180,7 @@ private class TestCreateQuestion{
         - The “Correct Weight” field is negative and “Weighted Questions” of related module is true (NOK)
     */
     @isTest static void ELR_0005_FA6() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         module.WeightedQuestions__c = true;
@@ -208,6 +211,7 @@ private class TestCreateQuestion{
         - “Correct Weight” field is greater than one and “Weighted Questions” of related module is false (OK)
     */
     @isTest static void ELR_0005_FA7() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         module.WeightedQuestions__c = true;
@@ -233,6 +237,7 @@ private class TestCreateQuestion{
         - “Incorrect Weight” field is null (OK)
     */
     @isTest static void ELR_0005_FA8() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -253,12 +258,13 @@ private class TestCreateQuestion{
         - “Penalty per Attempt” field is null (OK)
     */
     @isTest static void ELR_0005_FA9() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
 
         List<FieloELR__Question__c> questions = MockUpFactory.createQuestions(module.Id, questionsMap);
-        
+
         System.assert(questions[0].PenaltyPerAttempt__c == null);
 
         insert questions;
@@ -276,6 +282,7 @@ private class TestCreateQuestion{
         - “Penalty per Attempt” field is invalid (NOK)
     */
     @isTest static void ELR_0005_FA10() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -283,12 +290,12 @@ private class TestCreateQuestion{
         List<FieloELR__Question__c> questions = MockUpFactory.createQuestions(module.Id, questionsMap);
 
         questions[0].PenaltyPerAttempt__c = 150;
-        
+
         System.assert(questions[0].PenaltyPerAttempt__c != null);
 
         errorMsg = '';
         try {
-            insert questions;    
+            insert questions;
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
@@ -306,6 +313,7 @@ private class TestCreateQuestion{
         - The question “Type” field is null (NOK)
     */
     @isTest static void ELR_0005_FA11() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{'Which one is the LEAST popular programming language?' => 'Single Choice'};
@@ -313,12 +321,12 @@ private class TestCreateQuestion{
         List<FieloELR__Question__c> questions = MockUpFactory.createQuestions(module.Id, questionsMap);
 
         questions[0].Type__c = null;
-        
+
         System.assert(questions[0].Type__c == null);
 
         errorMsg = '';
         try {
-            insert questions;    
+            insert questions;
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
@@ -335,6 +343,7 @@ private class TestCreateQuestion{
         - Question type is “Statement” (OK)
     */
     @isTest static void ELR_0005_FA12() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{
@@ -369,6 +378,7 @@ private class TestCreateQuestion{
         - Question type is “Multiple Choice” (OK)
     */
     @isTest static void ELR_0005_FA13() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{
@@ -404,6 +414,7 @@ private class TestCreateQuestion{
         - Question type is “Short Answer” (OK)
     */
     @isTest static void ELR_0005_FA14() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{
@@ -438,6 +449,7 @@ private class TestCreateQuestion{
         - Question type is “Matching Options” (OK)
     */
     @isTest static void ELR_0005_FA15() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         Map<String, String> questionsMap = new Map<String, String>{
@@ -472,6 +484,7 @@ private class TestCreateQuestion{
         - Delete question when related module is inactive and does not have module response (OK)
     */
     @isTest static void ELR_0005_FA16() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         Module__c module = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic'];
@@ -499,6 +512,7 @@ private class TestCreateQuestion{
         - Delete question when related module is active (NOK)
     */
     @isTest static void ELR_0005_FA18() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         Module__c module = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic'];
@@ -526,6 +540,7 @@ private class TestCreateQuestion{
         - Edit question when related module is inactive and does not have module response (OK)
     */
     @isTest static void ELR_0005_FA22() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         Module__c module = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic'];
@@ -555,6 +570,7 @@ private class TestCreateQuestion{
         - Edit question when related module is active (NOK)
     */
     @isTest static void ELR_0005_FA21() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         Module__c module = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic'];
@@ -580,6 +596,7 @@ private class TestCreateQuestion{
         - Edit question when “Question Pool” of related module is different from null (OK)
     */
     @isTest static void ELR_0005_FA28() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         module.QuestionPool__c = 4;
@@ -605,6 +622,7 @@ private class TestCreateQuestion{
         - Edit question type (NOK)
     */
     @isTest static void ELR_0005_FA19() {
+        MockUpFactory.InsertTestData();
         Module__c module = [SELECT Id FROM Module__c WHERE Name = 'Basic'];
 
         List<Question__c> questions = [SELECT Id, CorrectWeight__c, Type__c FROM Question__c WHERE Module__c = :module.Id AND Type__c = 'Single Choice'];
@@ -633,6 +651,7 @@ private class TestCreateQuestion{
         - Delete question when related module is inactive and has module response (NOK)
     */
     @isTest static void ELR_0005_FA17() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -678,6 +697,7 @@ private class TestCreateQuestion{
         - Edit the related module (NOK)
     */
     @isTest static void ELR_0005_FA20() {
+        MockUpFactory.InsertTestData();
         List<Module__c> modules = [SELECT Id FROM Module__c ORDER BY Name];
         /**
          *  ORDER BY Name
@@ -709,6 +729,7 @@ private class TestCreateQuestion{
         - Edit Question Name when related module is inactive and has module response (OK)
     */
     @isTest static void ELR_0005_FA23() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -748,6 +769,7 @@ private class TestCreateQuestion{
         - Edit Question Text when related module is inactive and has module response (OK)
     */
     @isTest static void ELR_0005_FA24() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -788,6 +810,7 @@ private class TestCreateQuestion{
         - Edit Correct Weight when related module is inactive and has module response (NOK)
     */
     @isTest static void ELR_0005_FA25() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -831,6 +854,7 @@ private class TestCreateQuestion{
         - Edit Penalty per Attempt when related module is inactive and has module response (NOK)
     */
     @isTest static void ELR_0005_FA26() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -874,6 +898,7 @@ private class TestCreateQuestion{
         - Edit Incorrect Weight when related module is inactive and has module response (NOK)
     */
     @isTest static void ELR_0005_FA27() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
