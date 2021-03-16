@@ -1,14 +1,12 @@
 @isTest
 private class TestCreateModuleResponse {
     private static List<FieloELR__ModuleResponse__c> moduleRespList = new List<FieloELR__ModuleResponse__c>();
-    
-    @testSetup static void setup(){
-        MockUpFactory.InsertTestData();
-    }
+
     /*  TEST-1779
         Create Module Response
     */
-    @isTest static void ELR_0007_FB() { 
+    @isTest static void ELR_0007_FB() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -47,6 +45,7 @@ private class TestCreateModuleResponse {
         - Module field is null (NOK)
     */
     @isTest static void ELR_0007_FA1() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -66,7 +65,7 @@ private class TestCreateModuleResponse {
         );
         String errorMsg = '';
         try{
-            insert mr;    
+            insert mr;
         } catch (Exception e) {
             errorMsg = e.getMessage();
         }
@@ -82,6 +81,7 @@ private class TestCreateModuleResponse {
         - Related module is not active (NOK)
     */
     @isTest static void ELR_0007_FA2() {
+        MockUpFactory.InsertTestData();
         delete [SELECT Id From ModuleDependency__c];
 
         Module__c module = [SELECT Id, Course__c From Module__c WHERE Name = 'Intermediate'];
@@ -109,11 +109,11 @@ private class TestCreateModuleResponse {
                 new Set<String> {'Id', 'FieloELR__AttemptsAllowed__c'},
                 new Set<String> {'FieloELR__QuestionText__c'},
                 new Set<String> {'FieloELR__AnswerOptionText__c','FieloELR__MatchingText__c','FieloELR__IsCorrect__c'}
-            );    
+            );
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.assert(errorMsg.contains('The related module must be active'));
     }
 
@@ -123,6 +123,7 @@ private class TestCreateModuleResponse {
         - Member field is null (NOK)
     */
     @isTest static void ELR_0007_FA3() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -141,7 +142,7 @@ private class TestCreateModuleResponse {
         );
         String errorMsg = '';
         try{
-            insert mr;    
+            insert mr;
         } catch (Exception e) {
             errorMsg = e.getMessage();
         }
@@ -157,6 +158,7 @@ private class TestCreateModuleResponse {
         - Member is not approved in the predecessors modules (NOK)
     */
     @isTest static void ELR_0007_FA7() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -176,7 +178,7 @@ private class TestCreateModuleResponse {
         );
         String errorMsg = '';
         try{
-            insert mr;    
+            insert mr;
         } catch (Exception e) {
             errorMsg = e.getMessage();
         }
@@ -192,6 +194,7 @@ private class TestCreateModuleResponse {
         - The date of the response is not within the period of the course (NOK)
     */
     @isTest static void ELR_0007_FA8() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.StartDate__c = System.today();
@@ -252,6 +255,7 @@ private class TestCreateModuleResponse {
         - The Number of Attempt is equal to the “Attempts Allowed” of the related module (OK)
     */
     @isTest static void ELR_0007_FA9() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -302,6 +306,7 @@ private class TestCreateModuleResponse {
         - The Number of Attempt is greater than the “Attempts Allowed” of the related module (NOK)
     */
     @isTest static void ELR_0007_FA10() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -366,6 +371,7 @@ private class TestCreateModuleResponse {
         - The related course subscription mode is manual and the related course status does not exist (NOK)
     */
     @isTest static void ELR_0007_FA11() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -381,7 +387,7 @@ private class TestCreateModuleResponse {
                 new Set<String> {'Id', 'FieloELR__AttemptsAllowed__c'},
                 new Set<String> {'FieloELR__QuestionText__c'},
                 new Set<String> {'FieloELR__AnswerOptionText__c','FieloELR__MatchingText__c','FieloELR__IsCorrect__c'}
-            );    
+            );
         } catch (Exception e) {
             errorMsg = e.getMessage();
         }
@@ -397,6 +403,7 @@ private class TestCreateModuleResponse {
         Create Module Response - The related course subscription mode is automatic and the related course status already exists (OK)
     */
     @isTest static void ELR_0007_FA12() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -442,6 +449,7 @@ private class TestCreateModuleResponse {
         - The related course subscription mode is automatic and the related course status does not exist (OK)
     */
     @isTest static void ELR_0007_FA13() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -478,6 +486,7 @@ private class TestCreateModuleResponse {
         Create Module Response - The administrator sets the “IsApproved” field to “true” (OK)
     */
     @isTest static void ELR_0007_FA14() {
+        MockUpFactory.InsertTestData();
         MockUpFactory.activateCourse();
 
         FieloPLT__Member__c member = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c WHERE Name = 'Member 0' LIMIT 1];
@@ -512,6 +521,7 @@ private class TestCreateModuleResponse {
         - Delete a module response not submitted (OK)
     */
     @isTest static void ELR_0007_FA15() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -551,6 +561,7 @@ private class TestCreateModuleResponse {
         - Delete a module response already submitted (OK)
     */
     @isTest static void ELR_0007_FA16() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -592,6 +603,7 @@ private class TestCreateModuleResponse {
         - Edit the course status of a module response not submitted (NOK)
     */
     @isTest static void ELR_0007_FA17() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -646,6 +658,7 @@ private class TestCreateModuleResponse {
         - Edit a module response already submitted (NOK)
     */
     @isTest static void ELR_0007_FA21() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -701,6 +714,7 @@ private class TestCreateModuleResponse {
         - Member does not belong to the program of the related course (NOK)
     */
     @isTest static void ELR_0007_FA4() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -736,7 +750,7 @@ private class TestCreateModuleResponse {
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.debug(errorMsg);
 
         System.assert(errorMsg.contains('The member should belong to the course\'s program'));
@@ -750,6 +764,7 @@ private class TestCreateModuleResponse {
         - Member does not belong to any of the segments of the related course (NOK)
     */
     @isTest static void ELR_0007_FA5() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -760,8 +775,8 @@ private class TestCreateModuleResponse {
 
         MockUpFactory.activateCourse();
 
-        List<FieloPLT__Member__c> members = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Member__c ORDER BY Name];
-        List<FieloELR__Module__c> modules = [SELECT Id, Course__c FROM Module__c ORDER BY Name];
+        List<FieloPLT__Member__c> members = [SELECT Id, FieloPLT__RelatedSegments__c, FieloPLT__Program__c FROM FieloPLT__Member__c ORDER BY Name];
+        List<FieloELR__Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Course__r.Name = 'Course 0' ORDER BY Name];
 
         /**
          *  Order By Name:
@@ -772,6 +787,11 @@ private class TestCreateModuleResponse {
          *  member[1] - Member 1 - Program Default 1
          *  member[2] - Member 2 - Program Default 0
         **/
+
+        members.get(0).FieloPLT__RelatedSegments__c = null;
+        update members;
+
+        System.assert(String.isBlank(members.get(0).FieloPLT__RelatedSegments__c), 'Related Segments should be empty: ' + members.get(0).FieloPLT__RelatedSegments__c);
 
         Test.startTest();
 
@@ -787,10 +807,10 @@ private class TestCreateModuleResponse {
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.debug(errorMsg);
 
-        System.assert(errorMsg.contains('The member does not apply to the course\'s segment'));
+        System.assert(errorMsg.contains('The member does not apply to the course\'s segment'), 'Wrong message: ' + errorMsg);
 
         Test.stopTest();
     }
@@ -801,6 +821,7 @@ private class TestCreateModuleResponse {
         - Related course is not active (NOK)
     */
     @isTest static void ELR_0007_FA6() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -820,11 +841,11 @@ private class TestCreateModuleResponse {
                 new Set<String> {'Id', 'FieloELR__AttemptsAllowed__c'},
                 new Set<String> {'FieloELR__QuestionText__c'},
                 new Set<String> {'FieloELR__AnswerOptionText__c','FieloELR__MatchingText__c','FieloELR__IsCorrect__c'}
-            );    
+            );
         } catch (Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.debug(errorMsg);
 
         System.assert(errorMsg.contains('Course Status must be related to a Course with the Status Active') || errorMsg.contains('The related course must be active'));
@@ -837,6 +858,7 @@ private class TestCreateModuleResponse {
         - Edit the member of a module response not submitted (NOK)
     */
     @isTest static void ELR_0007_FA18() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -877,7 +899,7 @@ private class TestCreateModuleResponse {
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.debug(errorMsg);
 
         System.assert(errorMsg.contains('The member cannot be changed'));
@@ -890,6 +912,7 @@ private class TestCreateModuleResponse {
         - Edit the module of a module response not submitted (NOK)
     */
     @isTest static void ELR_0007_FA19() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -926,7 +949,7 @@ private class TestCreateModuleResponse {
         } catch(Exception e) {
             errorMsg = e.getMessage();
         }
-        
+
         System.debug(errorMsg);
 
         System.assert(errorMsg.contains('The module cannot be changed'));
@@ -939,6 +962,7 @@ private class TestCreateModuleResponse {
         - Edit the date of a module response not submitted (OK)
     */
     @isTest static void ELR_0007_FA20() {
+        MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
         course.SubscriptionMode__c = 'Automatic';
@@ -970,7 +994,7 @@ private class TestCreateModuleResponse {
             Id = moduleWrapper.moduleResponse.Id,
             Date__c = System.today().addDays(1)
         );
-        
+
         ModuleResponse__c mr = [SELECT Id, Date__c FROM ModuleResponse__c WHERE Id = :moduleWrapper.moduleResponse.Id];
 
         System.assertEquals(mr.Date__c, System.today().addDays(1));

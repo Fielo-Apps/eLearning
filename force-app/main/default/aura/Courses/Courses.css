@@ -98,7 +98,7 @@
 }
 
 .THIS .FieloELRListView .grid .slds-grid div:first-child .subcomponent {
-    padding: 0px;   
+    padding: 0px;
 }
 
 .THIS .grid .slds-card__body {
@@ -121,7 +121,7 @@
 }
 
 
-/* Product Design Driven Modifications */ 
+/* Product Design Driven Modifications */
 
 .THIS .FieloELRCardItem .slds-card {
     border-radius: 0.5rem;
@@ -197,7 +197,7 @@
 .THIS .grid .fielo-section-layout{
     display:grid;
     grid-template-columns: repeat(12, 1fr);
-	width: 100%;    
+	width: 100%;
 }
 
 .THIS .fielo-section__field:first-child{
@@ -219,7 +219,7 @@
 
 .THIS .table .fielo-section-layout{
     display: grid;
-    grid-template-columns: repeat(10, 1fr );
+    grid-template-columns: repeat(6, 1fr );
     grid-gap: 0.5em;
     width: 100%;
 }

@@ -1,27 +1,34 @@
 {
   "orgName": "Fielo ELR",
-    "edition": "Developer",
-    "settings": {
-        "lightningExperienceSettings": {
-            "enableS1DesktopEnabled": true
+  "edition": "Developer",
+  "settings": {
+      "chatterSettings": {
+          "enableChatter": true
         },
-        "languageSettings": {
-            "enableTranslationWorkbench": true
-        },
-        "communitiesSettings": {
-            "enableNetworksEnabled": true
-        },
-        "experienceBundleSettings": {
-            "enableExperienceBundleMetadata": true
-        },
-        "mobileSettings": {
-            "enableS1EncryptedStoragePref2": false
-        }
-    },
-    "features": [
-        "AuthorApex",
-        "Communities"
-    ],
-    "language": "en_US",
-    "country": "US"
+      "lightningExperienceSettings": {
+          "enableS1DesktopEnabled": true
+      },
+      "languageSettings": {
+          "enableTranslationWorkbench": true
+      },
+      "communitiesSettings": {
+          "enableNetworksEnabled": true
+      },
+      "experienceBundleSettings": {
+          "enableExperienceBundleMetadata": true
+      },
+      "mobileSettings": {
+          "enableS1EncryptedStoragePref2": false
+      },
+      "apexSettings": {
+          "enableAggregateCodeCoverageOnly": true
+      }
+  },
+  "features": [
+      "AuthorApex",
+      "Communities"
+  ],
+  "hasSampleData": true,
+  "language": "en_US",
+  "country": "US"
 }

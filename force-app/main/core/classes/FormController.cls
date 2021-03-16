@@ -80,7 +80,7 @@ public with sharing class FormController {
 
     }
 
-    private void loadSections () {      
+    private void loadSections () {
         if ( !String.isBlank(cFieldset)  ) {
             fields = 'Id';
             // Si empieza con [ es un valor seteado en una visual force => lo tiene que modificar para que sea json
@@ -91,7 +91,7 @@ public with sharing class FormController {
             sections = (List<Section>) JSON.deserialize( cFieldset, List<FormController.Section>.class );
             } catch( JSONException e ) {
             system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
-            return;       
+            return;
             }
             List<FormField> fieldsToUpdate = new List<FormField>();
             Map<String, String> parameters = ApexPages.currentPage().getParameters();
@@ -101,10 +101,10 @@ public with sharing class FormController {
                 for ( FormField f :r ) {
                 if ( !String.isBlank(f.Name) ) {
                     // default value
-                    if (cRecord != null){  
-                    if (queryRecordNotDone ) { 
+                    if (cRecord != null){
+                    if (queryRecordNotDone ) {
                         fieldsToUpdate.add(f);
-                    } else {             
+                    } else {
                         f.Value = String.valueOf(cRecord.get(f.Name));
                     }
                     } else if (f.Value == null) {
@@ -117,7 +117,7 @@ public with sharing class FormController {
                     if(!setFields.contains(', '  + f.Name.toLowerCase())){
                     fields += ', '  + f.Name;
                     setFields.add(', '  + f.Name.toLowerCase());
-                    }         
+                    }
                 }
                 }
             }
@@ -125,7 +125,7 @@ public with sharing class FormController {
             if ( !fieldsToUpdate.isEmpty() ) {
             for ( FormField f: fieldsToUpdate ) {
                 f.Value = String.valueOf(recordObject.get(f.Name));
-            }          
+            }
             }
         } else {
             sections = new List<Section>();
@@ -178,12 +178,12 @@ public with sharing class FormController {
     } set;}
 
     private static String getDependentOptions( List<Schema.PicklistEntry> ctrl_ple, List<Schema.PicklistEntry> dep_ple ){
-        Map<String, List<String>> objResults =  new Map<String, List<String>>();      
+        Map<String, List<String>> objResults =  new Map<String, List<String>>();
         //iterate through the values and get the ones valid for the controlling field name
         FormController.Bitset objBitSet = new FormController.Bitset();
         //set up the results
         if(ctrl_ple != null){
-        for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){           
+        for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){
             Schema.PicklistEntry ctrl_entry = ctrl_ple[pControllingIndex];
             String pControllingLabel = ctrl_entry.getValue();
             objResults.put(pControllingLabel,new List<String>());
@@ -196,17 +196,17 @@ public with sharing class FormController {
         //objResults.put('',new List<String>());
         //objResults.put(null,new List<String>());
         //check the dependent values
-        for(Integer pDependentIndex=0; pDependentIndex<dep_ple.size(); pDependentIndex++){          
+        for(Integer pDependentIndex=0; pDependentIndex<dep_ple.size(); pDependentIndex++){
             //get the pointer to the dependent index
             Schema.PicklistEntry dep_entry = dep_ple[pDependentIndex];
             //get the valid for
             String pEntryStructure = JSON.serialize(dep_entry);
             FormController.TPicklistEntry objDepPLE;
-            try {              
+            try {
                 objDepPLE = (FormController.TPicklistEntry)JSON.deserialize(pEntryStructure, FormController.TPicklistEntry.class);
             } catch( JSONException e ) {
                 system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + pEntryStructure);
-                return null;       
+                return null;
             }
             //if valid for is empty, skip
             if (objDepPLE.validFor == null || objDepPLE.validFor == ''){
@@ -214,8 +214,8 @@ public with sharing class FormController {
             }
             //iterate through the controlling values
             if(ctrl_ple != null){
-            for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){    
-                if (objBitSet.testBit(objDepPLE.validFor,pControllingIndex)){                   
+            for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){
+                if (objBitSet.testBit(objDepPLE.validFor,pControllingIndex)){
                     //get the value
                     String pControllingLabel = ctrl_ple[pControllingIndex].getValue();
                     objResults.get(pControllingLabel).add(objDepPLE.value);
@@ -231,9 +231,9 @@ public with sharing class FormController {
             }
         }
         String validFor = '';
-        for(String key: objResults.keySet()){  
+        for(String key: objResults.keySet()){
         if(objResults.get(key).size() > 0){
-            validFor += ', "' +  key.replace('\'', '\\\'') + '": [ "' + String.join( objResults.get(key), '","' ).replace('\'', '\\\'')  +  '"]';          
+            validFor += ', "' +  key.replace('\'', '\\\'') + '": [ "' + String.join( objResults.get(key), '","' ).replace('\'', '\\\'')  +  '"]';
         }else{
             validFor += ', "' +  key.replace('\'', '\\\'') + '": []';
         }
@@ -242,7 +242,7 @@ public with sharing class FormController {
             validFor = '{' + validFor.substring(1) + '}';
         }
         return validFor;
-    }   
+    }
 
     private void initPicklistMaps () {
         mapPicklistOptions = new Map<String, List<PicklistController.Entry>>();
@@ -263,7 +263,7 @@ public with sharing class FormController {
                 List<Schema.PicklistEntry> pickListValues = describe.getPickListValues();
                 for (Schema.PicklistEntry a : pickListValues) {
                     options.add( new PicklistController.Entry(a.getValue(), a.getLabel() ));
-                }             
+                }
                 if(describe.isDependentPicklist()){
                     Schema.DescribeFieldResult describeController = describe.getController().getDescribe();
                     if(describeController.getType().name() == 'PICKLIST' || describeController.getType().name() == 'MULTIPICKLIST'){
@@ -295,10 +295,10 @@ public with sharing class FormController {
                     } else {
                         throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{ describe.getReferenceTo().get(0).getDescribe().getName() }));
                     }
-                }            
+                }
                 mapPicklistController.put(f.Name, controllerField);
                 mapPicklistValidFor.put(f.Name, validFor);
-                mapPicklistOptions.put( f.Name , options);            
+                mapPicklistOptions.put( f.Name , options);
             }
             }
         }
@@ -336,7 +336,7 @@ public with sharing class FormController {
             Map<String, Schema.SObjectField> fieldsMap = sObjectDescribe.fields.getMap();
             sp = Database.setSavepoint();
             for ( String f :nullFields ) {
-                if ( f != 'sObjectType' ) {
+                if ( f != 'sObjectType' && f != 'Id') {
                     if (fieldsMap.get(f).getDescribe().isCreateable() && fieldsMap.get(f).getDescribe().isUpdateable()) {
                         record.put(f, null );
                     } else {
@@ -359,7 +359,7 @@ public with sharing class FormController {
             }
 
             upsert record;
-            
+
             //TODO Crear Label DataSavedSuccessfully
             result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
             result.redirectURL = '/' + record.Id;
@@ -401,14 +401,14 @@ public with sharing class FormController {
         query += ' WHERE ID = :recordId' ;
         query += ' LIMIT 1';
         List<sObject> result;
-        
+
         // SR: CRUD Check
         if ( Schema.describeSObjects(new String[]{objectName})[0].isAccessible() ) {
             result = Database.query(query);
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{ objectName}));
         }
-        
+
         if ( result.size() > 0 ) {
             return result.get(0);
         }
@@ -426,7 +426,7 @@ public with sharing class FormController {
             AlphaNumCharCodes = new Map<String,Integer>{
                 'A'=>65,'B'=>66,'C'=>67,'D'=>68,'E'=>69,'F'=>70,'G'=>71,'H'=>72,'I'=>73,'J'=>74,
                 'K'=>75,'L'=>76,'M'=>77,'N'=>78,'O'=>79,'P'=>80,'Q'=>81,'R'=>82,'S'=>83,'T'=>84,
-                'U'=>85,'V'=> 86,'W'=>87,'X'=>88,'Y'=>89,'Z'=>90    
+                'U'=>85,'V'=> 86,'W'=>87,'X'=>88,'Y'=>89,'Z'=>90
             };
             Base64CharCodes = new Map<String, Integer>();
             //lower case
@@ -456,9 +456,9 @@ public with sharing class FormController {
             if (bytesBeingUsed <= 1)
                 return false;
             //calculate the target bit for comparison
-            Integer bit = 7 - (Math.mod(n,8)); 
+            Integer bit = 7 - (Math.mod(n,8));
             //calculate the octet that has in the target bit
-            Integer targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed); 
+            Integer targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
             //the number of bits to shift by until we find the bit to compare for true or false
             Integer shiftBits = (targetOctet * 8) + bit;
             //get the base64bytes
@@ -478,7 +478,7 @@ public with sharing class FormController {
             return  tBitVal == 1;
         }
     }
-            
+
     /*
     * @Summary: Entity to represent a json version of a picklist entry
     * so that the validFor property becomes exposed
@@ -490,7 +490,7 @@ public with sharing class FormController {
         public string value {get;set;}
         public string validFor {get;set;}
         public TPicklistEntry(){
-            
+
         }
-    } 
+    }
 }

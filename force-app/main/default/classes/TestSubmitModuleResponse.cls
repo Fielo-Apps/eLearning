@@ -7,13 +7,13 @@ private class TestSubmitModuleResponse {
     private static List<FieloELR__Question__c> questions = new List<FieloELR__Question__c>();
     private static List<FieloELR__CourseStatus__c> courseStatus = new List<FieloELR__CourseStatus__c>();
 
-	@testSetup static void setup(){
-        List<FieloELR__Course__c> courses = new List<FieloELR__Course__c>();            
+    static void setup(){
+        List<FieloELR__Course__c> courses = new List<FieloELR__Course__c>();
         List<FieloPLT__Member__c> members = new List<FieloPLT__Member__c>();
         List<FieloPLT__Program__c> programs;
         List<FieloPLT__Segment__c> segments;
         List<FieloELR__Module__c> modules = new List<FieloELR__Module__c>();
-        List<FieloELR__AnswerOption__c> answersOpList = new List<FieloELR__AnswerOption__c>();            
+        List<FieloELR__AnswerOption__c> answersOpList = new List<FieloELR__AnswerOption__c>();
         List<FieloELR__Answer__c> answersList = new List<FieloELR__Answer__c>();
 
         programs = MockUpFactory.createPrograms('Default', 1);
@@ -110,12 +110,13 @@ private class TestSubmitModuleResponse {
 
         insert questionResponses;
 	}
-	
+
     /*  TEST-1830
         Submit Module Response
         - Module response is approved when there are unsubmitted related question responses and the Question Pool is “null” (OK)
     */
 	@isTest static void ELR_0010_FB() {
+        setup();
 		moduleResponses = [SELECT Id, Module__r.QuestionPool__c FROM ModuleResponse__c WHERE Module__r.Name = 'Basic' LIMIT 1];
 		courseStatus = [SELECT Id, ApprovedModules__c, Progress__c FROM CourseStatus__c LIMIT 1];
 
@@ -138,7 +139,7 @@ private class TestSubmitModuleResponse {
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
         System.assert(moduleResponses.get(0).NumberofApprove__c > 0);
 
-        System.assertEquals(1, courseStatus.get(0).ApprovedModules__c);        
+        System.assertEquals(1, courseStatus.get(0).ApprovedModules__c);
 
         System.assert(courseStatus.get(0).ApprovedModules__c > 0);
         System.assert(courseStatus.get(0).Progress__c != 0);
@@ -149,6 +150,7 @@ private class TestSubmitModuleResponse {
         - Module response is approved when all the related question responses were submitted and the Question Pool is “null” (OK)
     */
     @isTest static void ELR_0010_FA1() {
+        setup();
         moduleResponses = [SELECT Id FROM ModuleResponse__c WHERE Module__r.Name = 'Basic' LIMIT 1];
         courseStatus = [SELECT Id FROM CourseStatus__c WHERE Course__r.Name = 'Course 0'];
 
@@ -168,13 +170,13 @@ private class TestSubmitModuleResponse {
         }
 
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         Decimal totalValue = moduleResponses.get(0).Module__r.QuestionPool__c == null ? moduleResponses.get(0).Module__r.TotalValue__c : moduleResponses.get(0).Module__r.QuestionPool__c;
 
         System.assertEquals(moduleResponses.get(0).GradePercent__c, ((moduleResponses.get(0).GradeValue__c / totalValue) * 100).setScale(2));
-        
+
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         System.assert(courseStatus.get(0).ApprovedModules__c > 0);
 
         System.assert(courseStatus.get(0).Progress__c != 0);
@@ -185,6 +187,7 @@ private class TestSubmitModuleResponse {
         - Module response is not approved when there are unsubmitted related question responses and the Question Pool is “null” (OK)
     */
     @isTest static void ELR_0010_FA2() {
+        setup();
         moduleResponses = [SELECT Id, Module__c FROM ModuleResponse__c WHERE Module__r.Name = 'Basic' LIMIT 1];
         questionResponses = [SELECT Id, Question__c FROM QuestionResponse__c WHERE ModuleResponse__r.Id =: moduleResponses.get(0).id];
         courseStatus = [SELECT Id FROM CourseStatus__c WHERE Course__r.Name = 'Course 0'];
@@ -237,6 +240,7 @@ private class TestSubmitModuleResponse {
         - Module response is approved when there are unsubmitted related question responses and the Question Pool is not “null” (OK)
     */
     @isTest static void ELR_0010_FA3() {
+        setup();
         Test.startTest();
         // Adding Question Pool
         List<Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic' LIMIT 1];
@@ -264,7 +268,7 @@ private class TestSubmitModuleResponse {
         modules.get(0).QuestionPool__c = 4;
 
         update modules;
-        
+
         modules.get(0).IsActive__c = true;
         courses.get(0).Status__c = 'Active';
 
@@ -328,13 +332,13 @@ private class TestSubmitModuleResponse {
         }
 
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         Decimal totalValue = moduleResponses.get(0).Module__r.QuestionPool__c == null ? moduleResponses.get(0).Module__r.TotalValue__c : moduleResponses.get(0).Module__r.QuestionPool__c;
 
         System.assertEquals(moduleResponses.get(0).GradePercent__c, ((moduleResponses.get(0).GradeValue__c / totalValue) * 100).setScale(2));
-        
+
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         System.assert(courseStatus.get(0).ApprovedModules__c > 0);
 
         System.assert(courseStatus.get(0).Progress__c != 0);
@@ -346,6 +350,7 @@ private class TestSubmitModuleResponse {
         - Module response is not approved when there are unsubmitted related question responses and the Question Pool is not “null” (OK)
     */
     @isTest static void ELR_0010_FA4() {
+        setup();
         // Adding Question Pool
         List<Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic' LIMIT 1];
         List<Course__c> courses = [SELECT Id FROM Course__c WHERE Id = :modules.get(0).Course__c LIMIT 1];
@@ -372,7 +377,7 @@ private class TestSubmitModuleResponse {
         modules.get(0).QuestionPool__c = 4;
 
         update modules;
-        
+
         modules.get(0).IsActive__c = true;
         courses.get(0).Status__c = 'Active';
 
@@ -438,6 +443,7 @@ private class TestSubmitModuleResponse {
         - Module response is not approved when all the related question responses were submitted and the Question Pool is “null” (OK)
     */
     @isTest static void ELR_0010_FA5() {
+        setup();
         moduleResponses = [SELECT Id FROM FieloELR__ModuleResponse__c WHERE FieloELR__Module__r.Name = 'Basic' LIMIT 1];
         questionResponses = [SELECT Id FROM FieloELR__QuestionResponse__c WHERE FieloELR__ModuleResponse__r.Id =: moduleResponses.get(0).id];
         courseStatus = [SELECT Id FROM FieloELR__CourseStatus__c WHERE FieloELR__Course__r.Name = 'Course 1'];
@@ -475,6 +481,7 @@ private class TestSubmitModuleResponse {
         - Module response is approved when all the related question responses were submitted and the Question Pool is not “null” (OK)
     */
     @isTest static void ELR_0010_FA6() {
+        setup();
         moduleResponses = [SELECT Id FROM ModuleResponse__c WHERE Module__r.Name = 'Basic' LIMIT 1];
         courseStatus = [SELECT Id FROM CourseStatus__c WHERE Course__r.Name = 'Course 0'];
         questionResponses = [SELECT Id, IsSubmitted__c, PartialGradeValue__c FROM QuestionResponse__c WHERE ModuleResponse__r.Id =: moduleResponses.get(0).id];
@@ -500,13 +507,13 @@ private class TestSubmitModuleResponse {
         }
 
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         Decimal totalValue = moduleResponses.get(0).Module__r.QuestionPool__c == null ? moduleResponses.get(0).Module__r.TotalValue__c : moduleResponses.get(0).Module__r.QuestionPool__c;
 
         System.assertEquals(moduleResponses.get(0).GradePercent__c, ((moduleResponses.get(0).GradeValue__c / totalValue) * 100).setScale(2));
-        
+
         System.assertEquals(true, moduleResponses.get(0).IsApproved__c);
-        
+
         System.assert(courseStatus.get(0).ApprovedModules__c > 0);
 
         System.assert(courseStatus.get(0).Progress__c != 0);
@@ -517,6 +524,7 @@ private class TestSubmitModuleResponse {
         - Module response is not approved when all the related question responses were submitted and the Question Pool is not “null” (OK)
     */
     @isTest static void ELR_0010_FA7() {
+        setup();
         // Adding Question Pool
         List<Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic' LIMIT 1];
         List<Course__c> courses = [SELECT Id FROM Course__c WHERE Id = :modules.get(0).Course__c LIMIT 1];
@@ -543,7 +551,7 @@ private class TestSubmitModuleResponse {
         modules.get(0).QuestionPool__c = 4;
 
         update modules;
-        
+
         modules.get(0).IsActive__c = true;
         courses.get(0).Status__c = 'Active';
 
@@ -609,6 +617,7 @@ private class TestSubmitModuleResponse {
         - Related course is not active (NOK)
     */
     @isTest static void ELR_0010_FA8() {
+        setup();
         //Inactivate Course
         List<Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic' LIMIT 1];
         List<Course__c> courses = [SELECT Id FROM Course__c WHERE Id = :modules.get(0).Course__c LIMIT 1];
@@ -651,6 +660,7 @@ private class TestSubmitModuleResponse {
         - Related module is not active (NOK)
     */
     @isTest static void ELR_0010_FA9() {
+        setup();
         //Inactivate Course
         List<Module__c> modules = [SELECT Id, Course__c FROM Module__c WHERE Name = 'Basic' LIMIT 1];
         List<Course__c> courses = [SELECT Id FROM Course__c WHERE Id = :modules.get(0).Course__c LIMIT 1];

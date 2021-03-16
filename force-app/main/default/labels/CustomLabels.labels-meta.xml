@@ -449,6 +449,14 @@
         <value>Cancel</value>
     </labels>
     <labels>
+        <fullName>CannotAccessRecords</fullName>
+        <categories>ModulesSelector.cls</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Records: No Access</shortDescription>
+        <value>Records cannot be accessed</value>
+    </labels>
+    <labels>
         <fullName>CannotChangeAnsweredModules</fullName>
         <categories>AnswerOptions.cls</categories>
         <language>en_US</language>
@@ -471,6 +479,14 @@
         <protected>false</protected>
         <shortDescription>CannotDeleteRecords</shortDescription>
         <value>You cannot delete these records.</value>
+    </labels>
+    <labels>
+        <fullName>CannotInsertRecords</fullName>
+        <categories>SObjectUnitOfWork.cls</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Records: No Insert</shortDescription>
+        <value>Records cannot be inserted</value>
     </labels>
     <labels>
         <fullName>CannotInsertUpdateRecords</fullName>
@@ -1612,15 +1628,15 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Havent Select Member</shortDescription>
-        <value>You haven&#39;t selected any member.</value>
+        <value>You haven&apos;t selected any member.</value>
     </labels>
     <labels>
         <fullName>HaventSelectedMember</fullName>
         <categories>MemberAddExistingExtension.cls</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Haven&#39;t Selected Member</shortDescription>
-        <value>You haven&#39;t selected any member.</value>
+        <shortDescription>Haven&apos;t Selected Member</shortDescription>
+        <value>You haven&apos;t selected any member.</value>
     </labels>
     <labels>
         <fullName>Help</fullName>
@@ -1772,8 +1788,8 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Info: Create Member from Account</shortDescription>
-        <value>Choose the Program where the Account will belong to. 
-If it is a CRM Business Account, a Fielo Organization Member account is created. 
+        <value>Choose the Program where the Account will belong to.
+If it is a CRM Business Account, a Fielo Organization Member account is created.
 If it is a CRM Person Account, a Fielo Individual Member account is created.</value>
     </labels>
     <labels>
@@ -1798,7 +1814,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Info No Members Add</shortDescription>
-        <value>There aren&#39;t any members to add.</value>
+        <value>There aren&apos;t any members to add.</value>
     </labels>
     <labels>
         <fullName>InfoRedemptionApproval</fullName>
@@ -1812,7 +1828,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Info: Create Redemption from backend</shortDescription>
-        <value>Enter the Member&#39;s name below.</value>
+        <value>Enter the Member&apos;s name below.</value>
     </labels>
     <labels>
         <fullName>InfoRewarItemLoadInserted</fullName>
@@ -1906,7 +1922,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>InvalidConditionField</shortDescription>
-        <value>Invalid &#39;Condition Field&#39; for object</value>
+        <value>Invalid &apos;Condition Field&apos; for object</value>
     </labels>
     <labels>
         <fullName>InvalidDateField</fullName>
@@ -1914,7 +1930,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>InvalidDateField</shortDescription>
-        <value>Invalid &#39;Date&#39; field for object</value>
+        <value>Invalid &apos;Date&apos; field for object</value>
     </labels>
     <labels>
         <fullName>InvalidLogicalExpression</fullName>
@@ -1930,7 +1946,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>InvalidLookupFromTracker</shortDescription>
-        <value>Invalid &#39;Lookup from Tracker&#39; field for object</value>
+        <value>Invalid &apos;Lookup from Tracker&apos; field for object</value>
     </labels>
     <labels>
         <fullName>InvalidLookupFromTransaction</fullName>
@@ -1938,7 +1954,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>InvalidLookupFromTransaction</shortDescription>
-        <value>Invalid &#39;Lookup from Transaction&#39; field for object</value>
+        <value>Invalid &apos;Lookup from Transaction&apos; field for object</value>
     </labels>
     <labels>
         <fullName>InvalidMember</fullName>
@@ -2079,7 +2095,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LookupFromTrackerNotEmpty</shortDescription>
-        <value>&#39;Lookup from Tracker&#39; cannot be empty because there are Missions related to this record</value>
+        <value>&apos;Lookup from Tracker&apos; cannot be empty because there are Missions related to this record</value>
     </labels>
     <labels>
         <fullName>LookupFromTransactionNotEmpty</fullName>
@@ -2087,7 +2103,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LookupFromTransactionNotEmpty</shortDescription>
-        <value>&#39;Lookup from Transaction&#39; cannot be empty because there are rules related to this record</value>
+        <value>&apos;Lookup from Transaction&apos; cannot be empty because there are rules related to this record</value>
     </labels>
     <labels>
         <fullName>LookupsMandatoryRuleTrigger</fullName>
@@ -2095,7 +2111,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LookupsMandatoryRuleTrigger</shortDescription>
-        <value>At least &#39;Lookup from Transaction&#39; or &#39;Lookup from Tracker&#39; must be completed.</value>
+        <value>At least &apos;Lookup from Transaction&apos; or &apos;Lookup from Tracker&apos; must be completed.</value>
     </labels>
     <labels>
         <fullName>Manage</fullName>
@@ -2166,7 +2182,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>MemberDoesntApplyToCourseSegment</shortDescription>
-        <value>The member does not apply to the course&#39;s segment</value>
+        <value>The member does not apply to the course&apos;s segment</value>
     </labels>
     <labels>
         <fullName>MemberExist</fullName>
@@ -2222,7 +2238,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>MemberShouldBelongToCourseProgram</shortDescription>
-        <value>The member should belong to the course&#39;s program.</value>
+        <value>The member should belong to the course&apos;s program.</value>
     </labels>
     <labels>
         <fullName>MembersInvalid</fullName>
@@ -2278,7 +2294,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionCriterionMissingDateValue</shortDescription>
-        <value>There is at least a Criterion of a Mission with Field Type &#39;Date&#39; and Operators &#39;equals&#39; or &#39;not equals&#39; that has no Date Value.</value>
+        <value>There is at least a Criterion of a Mission with Field Type &apos;Date&apos; and Operators &apos;equals&apos; or &apos;not equals&apos; that has no Date Value.</value>
     </labels>
     <labels>
         <fullName>MissionCriterionMissingFieldName</fullName>
@@ -2302,7 +2318,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionCriterionMissingNumberValue</shortDescription>
-        <value>There is at least a Criterion of a Mission with Field Type &#39;Number&#39; and Operators &#39;equals&#39; or &#39;not equals&#39; that has no Number Value.</value>
+        <value>There is at least a Criterion of a Mission with Field Type &apos;Number&apos; and Operators &apos;equals&apos; or &apos;not equals&apos; that has no Number Value.</value>
     </labels>
     <labels>
         <fullName>MissionCriterionMissingOperator</fullName>
@@ -2326,7 +2342,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionCriterionMissingValues2</shortDescription>
-        <value>There is at least a Criterion of a Mission with Field Type &#39;List&#39; that has no Values.</value>
+        <value>There is at least a Criterion of a Mission with Field Type &apos;List&apos; that has no Values.</value>
     </labels>
     <labels>
         <fullName>MissionInvalidFieldToAggregate</fullName>
@@ -2358,7 +2374,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionWithoutFieldToAggregate</shortDescription>
-        <value>There is at least a Mission with Objective Type &#39;Summary&#39;, &#39;Average&#39; or &#39;Max Value&#39; that has no Field to Aggregate.</value>
+        <value>There is at least a Mission with Objective Type &apos;Summary&apos;, &apos;Average&apos; or &apos;Max Value&apos; that has no Field to Aggregate.</value>
     </labels>
     <labels>
         <fullName>MissionWithoutObjectiveField</fullName>
@@ -2366,7 +2382,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionWithoutObjectiveField</shortDescription>
-        <value>There is at least a Mission type &#39;With Objective&#39; that has Field checked and has no Objective Field.</value>
+        <value>There is at least a Mission type &apos;With Objective&apos; that has Field checked and has no Objective Field.</value>
     </labels>
     <labels>
         <fullName>MissionWithoutObjectiveType</fullName>
@@ -2382,7 +2398,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MissionWithoutObjectiveValue</shortDescription>
-        <value>There is at least a Mission type &#39;With Objective&#39; that has no Objective Value.</value>
+        <value>There is at least a Mission type &apos;With Objective&apos; that has no Objective Value.</value>
     </labels>
     <labels>
         <fullName>Mode</fullName>
@@ -3124,7 +3140,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Error: Invalid field</shortDescription>
-        <value>Invalid field &#39;{0}&#39; for object &#39;{1}&#39;.</value>
+        <value>Invalid field &apos;{0}&apos; for object &apos;{1}&apos;.</value>
     </labels>
     <labels>
         <fullName>QueryErrorInvalidFieldSet</fullName>
@@ -3371,6 +3387,13 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <value>Reload</value>
     </labels>
     <labels>
+        <fullName>Remove</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Remove</shortDescription>
+        <value>Remove</value>
+    </labels>
+    <labels>
         <fullName>Replace</fullName>
         <language>en_US</language>
         <protected>false</protected>
@@ -3557,7 +3580,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleCriterionWithoutDateValue</shortDescription>
-        <value>There is at least a Criterion of a Rule with Field Type &#39;Date&#39; and Operators &#39;equals&#39; or &#39;not equals&#39; that has no Date Value.</value>
+        <value>There is at least a Criterion of a Rule with Field Type &apos;Date&apos; and Operators &apos;equals&apos; or &apos;not equals&apos; that has no Date Value.</value>
     </labels>
     <labels>
         <fullName>RuleCriterionWithoutFieldName</fullName>
@@ -3581,7 +3604,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleCriterionWithoutNumberValue</shortDescription>
-        <value>There is at least a Criterion of a Rule with Field Type &#39;Number&#39; and Operators &#39;equals&#39; or &#39;not equals&#39; that has no Number Value.</value>
+        <value>There is at least a Criterion of a Rule with Field Type &apos;Number&apos; and Operators &apos;equals&apos; or &apos;not equals&apos; that has no Number Value.</value>
     </labels>
     <labels>
         <fullName>RuleCriterionWithoutOperator</fullName>
@@ -3605,7 +3628,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleCriterionWithoutValues2</shortDescription>
-        <value>There is at least a Criterion of a Rule with Field Type &#39;List&#39; that has no Values.</value>
+        <value>There is at least a Criterion of a Rule with Field Type &apos;List&apos; that has no Values.</value>
     </labels>
     <labels>
         <fullName>RuleInvalidBadgeFieldName</fullName>
@@ -3669,7 +3692,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutBadgeFieldName</shortDescription>
-        <value>There is at least a Rule with Badge Mode &#39;Specified by Field&#39; that has no Badge Field Name.</value>
+        <value>There is at least a Rule with Badge Mode &apos;Specified by Field&apos; that has no Badge Field Name.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutConversionValue</fullName>
@@ -3677,7 +3700,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutConversionValue</shortDescription>
-        <value>There is at least a Rule with Transaction Conversion Mode &#39;Factor&#39; or &#39;Multiplier&#39; that has no Conversion Value.</value>
+        <value>There is at least a Rule with Transaction Conversion Mode &apos;Factor&apos; or &apos;Multiplier&apos; that has no Conversion Value.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutInstantBadge</fullName>
@@ -3685,7 +3708,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutInstantBadge</shortDescription>
-        <value>There is at least a Rule with Badge Mode &#39;Fixed Value&#39; that has no Instant Badge.</value>
+        <value>There is at least a Rule with Badge Mode &apos;Fixed Value&apos; that has no Instant Badge.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutInstantReward</fullName>
@@ -3693,7 +3716,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutInstantReward</shortDescription>
-        <value>There is at least a Rule with Reward Mode &#39;Fixed Value&#39; that has no Instant Reward.</value>
+        <value>There is at least a Rule with Reward Mode &apos;Fixed Value&apos; that has no Instant Reward.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutPointType</fullName>
@@ -3709,7 +3732,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutRewardFieldName</shortDescription>
-        <value>There is at least a Rule with Reward Mode &#39;Specified by Field&#39; that has no Reward Field Name.</value>
+        <value>There is at least a Rule with Reward Mode &apos;Specified by Field&apos; that has no Reward Field Name.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutTransactionFieldName</fullName>
@@ -3717,7 +3740,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RuleWithoutTransactionFieldName</shortDescription>
-        <value>There is at least a Rule with Transaction Conversion Mode &#39;Factor&#39; or &#39;Multiplier&#39; that has no Transaction Field Name.</value>
+        <value>There is at least a Rule with Transaction Conversion Mode &apos;Factor&apos; or &apos;Multiplier&apos; that has no Transaction Field Name.</value>
     </labels>
     <labels>
         <fullName>RuleWithoutType</fullName>
@@ -4391,7 +4414,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>ValidateModuleResponseMemberApproved</shortDescription>
-        <value>The member didn&#39;t approve the dependent Modules</value>
+        <value>The member didn&apos;t approve the dependent Modules</value>
     </labels>
     <labels>
         <fullName>ValidateModuleResponseRegisteredMember</fullName>
@@ -4455,7 +4478,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ValidationChallengeTableType</shortDescription>
-        <value>Challenges with Position Table Type &#39;Mission Table&#39; and a Mission with objective must have an End Date.</value>
+        <value>Challenges with Position Table Type &apos;Mission Table&apos; and a Mission with objective must have an End Date.</value>
     </labels>
     <labels>
         <fullName>ValidationChallengeTableType2</fullName>
@@ -4463,7 +4486,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ValidationChallengeTableType2</shortDescription>
-        <value>Challenges with one Mission with objective must have Position Table Type &#39;Time Table&#39; or &#39;Singular&#39;</value>
+        <value>Challenges with one Mission with objective must have Position Table Type &apos;Time Table&apos; or &apos;Singular&apos;</value>
     </labels>
     <labels>
         <fullName>ValidationChallengeTableType3</fullName>
@@ -4471,7 +4494,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ValidationChallengeTableType3</shortDescription>
-        <value>Challenges with more than one Mission with objective must have Position Table Type &#39;Time Table&#39;, &#39;Singular&#39;, &#39;Mission Table&#39; or &#39;Level Table&#39;.</value>
+        <value>Challenges with more than one Mission with objective must have Position Table Type &apos;Time Table&apos;, &apos;Singular&apos;, &apos;Mission Table&apos; or &apos;Level Table&apos;.</value>
     </labels>
     <labels>
         <fullName>ValidationChallengeTableType4</fullName>
@@ -4479,7 +4502,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ValidationChallengeTableType4</shortDescription>
-        <value>Challenges with one Mission without objective must have Position Table Type &#39;Position Range&#39; or &#39;Value Range&#39;.</value>
+        <value>Challenges with one Mission without objective must have Position Table Type &apos;Position Range&apos; or &apos;Value Range&apos;.</value>
     </labels>
     <labels>
         <fullName>ValidationChallengeTableTypeSingular</fullName>
@@ -4487,7 +4510,7 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ValidationChallengeTableTypeSingular</shortDescription>
-        <value>Challenges with Position Table Type &#39;Singular&#39; can only have one Challenge Reward.</value>
+        <value>Challenges with Position Table Type &apos;Singular&apos; can only have one Challenge Reward.</value>
     </labels>
     <labels>
         <fullName>ValidationChallengeWithoutObjective</fullName>
@@ -4703,19 +4726,19 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <value>Total</value>
     </labels>
     <labels>
-        <fullName>CannotAccessRecords</fullName>
-        <categories>ModulesSelector.cls</categories>
+        <fullName>Select</fullName>
+        <categories>LookupSearch.cmp</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Records: No Access</shortDescription>
-        <value>Records cannot be accessed</value>
+        <shortDescription>Select</shortDescription>
+        <value>Select</value>
     </labels>
     <labels>
-        <fullName>CannotInsertRecords</fullName>
-        <categories>SObjectUnitOfWork.cls</categories>
+        <fullName>Results</fullName>
+        <categories>LookupSearch.cmp</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Records: No Insert</shortDescription>
-        <value>Records cannot be inserted</value>
+        <shortDescription>Results</shortDescription>
+        <value>Results</value>
     </labels>
 </CustomLabels>

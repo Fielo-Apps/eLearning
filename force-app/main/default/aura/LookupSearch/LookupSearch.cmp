@@ -9,23 +9,23 @@
     <aura:attribute type="String" name="whereClause"/>
     <aura:attribute type="String" name="searchValue"/>
     <aura:attribute type="String" name="header"/>
-    
-    
+
+
     <!-- PAGINADOR -->
     <aura:attribute name="paging" type="Boolean" />
     <aura:attribute name="quantity" type="Integer"/>
     <aura:handler name="paging" event="c:PaginatorEvent" action="{!c.paginator}" default="false"/>
     <!-- PAGINADOR -->
-    
+
     <aura:method name="show" action="{!c.show}" />
     <aura:method name="hide" action="{!c.hide}" />
-    
+
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
-    
+
     <aura:handler event="c:FilterRecords" name="filterRecords" action="{!c.filterResults}"/>
     <aura:handler event="c:SelectRecord" name="selectOption" action="{!c.optionSelected}"/>
     <aura:registerEvent name="selectOption" type="c:SelectRecord"/>
-    
+
     <div class="fielo-lookup-search">
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="{!v.modalClass}" data-object-name="{!v.sObjectName}">
             <div class="slds-modal__container">

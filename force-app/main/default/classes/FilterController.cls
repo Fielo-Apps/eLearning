@@ -20,7 +20,7 @@ public class FilterController {
 				if (!fieldAttributes.containsKey('isRanged')) {
 					fieldAttributes.put('isRanged', (Object) String.valueOf(rangedFieldSet.contains(String.valueOf(fieldAttributes.get('name')))));
 					if (rangeLabel.containsKey(String.valueOf(fieldAttributes.get('type')))) {
-						fieldAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldAttributes.get('type')))));	
+						fieldAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldAttributes.get('type')))));
 					} else {
 						fieldAttributes.put('rangeLabel', (Object) Label.RangeSuffix);
 					}
@@ -39,13 +39,13 @@ public class FilterController {
 					fieldToAttributes.put('name', (Object) String.valueOf(String.valueOf(fieldToAttributes.get('name') + '-to')));
 					fieldToAttributes.put('label', (Object) '');
 					fieldToMeta.put('attributes', (Object) fieldToAttributes);
-					
+
 					if (rangeLabel.containsKey(String.valueOf(fieldToAttributes.get('type')))) {
-						fieldToAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldToAttributes.get('type')))));	
+						fieldToAttributes.put('rangeLabel', (Object) String.valueOf(rangeLabel.get(String.valueOf(fieldToAttributes.get('type')))));
 					} else {
 						fieldToAttributes.put('rangeLabel', (Object) Label.RangeSuffix);
 					}
-					
+
 					newfieldsInfo.add(fieldToMeta);
 				}
 			}
@@ -56,7 +56,6 @@ public class FilterController {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
-        return null;
 	}
 
 	public static Map<String, String> rangeLabel {get{
