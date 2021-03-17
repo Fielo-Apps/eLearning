@@ -36,7 +36,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByIdActive(Set<Id> moduleIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format(
                 'SELECT {0} ' +
                   'FROM {1} ' +
@@ -51,11 +51,11 @@ public with sharing class ModulesSelector extends SObjectSelector {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Module__c'}));
         }
         return listModule;
-    }  
+    }
 
     public List<Module__c> selectByIdWithQuestions(Set<Id> moduleIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.Question__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.Question__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format(
                 'SELECT {0} ' +
                   ', (SELECT Id, ' +
@@ -81,7 +81,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByIdHavingModuleResponses(Set<Id> moduleIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format(
                 'SELECT {0} ' +
                   ', (SELECT Id ' +
@@ -102,7 +102,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByIdActiveHavingModuleResponses(Set<Id> moduleIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleResponse__c.isAccessible()){
             listModule =  (List<Module__c>) Database.query(String.format(
                     'SELECT {0} ' +
                     ', (SELECT Id ' +
@@ -126,7 +126,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByIdHavingQuestions(Set<Id> moduleIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.Question__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.Question__c.isAccessible()){
             listModule =  (List<Module__c>) Database.query(String.format(
                     'SELECT {0} ' +
                         ', (SELECT Id ' +
@@ -172,7 +172,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByCoursesHavingPredecessor(Set<Id> courseIds, Set<String> moduleDependencyFields) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleDependency__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleDependency__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format('SELECT {0} ' +
                     ', (SELECT {1} FROM PredecessorModules__r) ' +
                     'FROM {2} ' +
@@ -194,11 +194,11 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByIdHavingCourses(Set<Id> recordIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format(
-                    'SELECT {0} ' +               
+                    'SELECT {0} ' +
                     'FROM {1} ' +
-                    'WHERE Course__c IN :recordIds' , 
+                    ( recordIds?.isEmpty() == false ? 'WHERE Course__c IN :courseIds ' : '' ) ,
                     new List<String> {
                         getFieldListString(),
                         getSObjectName(),
@@ -206,7 +206,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
                     }
                 )
             );
-            
+
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Module__c'}));
         }
@@ -216,7 +216,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
     public List<AggregateResult> selectByCourseGroupByCourse(Set<Id> courseIds) {
         List<AggregateResult> listModule;
 
-        if(Schema.sObjectType.Module__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible()){
             listModule = [SELECT MAX(Order__c) orderNumber, Course__c FROM Module__c WHERE Course__c in : courseIds GROUP BY Course__c];
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Module__c'}));
@@ -226,9 +226,9 @@ public with sharing class ModulesSelector extends SObjectSelector {
 
     public List<Module__c> selectByPredecessor(Set<Id> recordIds) {
         List<Module__c> listModule;
-        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleDependency__c.isAccessible()){	
+        if(Schema.sObjectType.Module__c.isAccessible() && Schema.sObjectType.ModuleDependency__c.isAccessible()){
             listModule = (List<Module__c>) Database.query(String.format(
-                    'SELECT {0} ' +               
+                    'SELECT {0} ' +
                     'FROM {1} ' +
                     'WHERE Id IN (SELECT Module__c FROM ModuleDependency__c WHERE Predecessor__c IN :recordIds)' +
                     'ORDER BY {2}',
