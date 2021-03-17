@@ -24,8 +24,8 @@ Set<String> statuses = new Set<String>{
     'Completed'
 };
 
-Id programId = 'a0k0x000006GAKIAA4';
-Id memberId = 'a0Y0x000004gcqOEAQ';
+Id programId = 'a0l3F000004mLb6QAE';
+Id memberId = 'a0Z3F000002QcLRUA0';
 String dynamicFilter = '[{"field":"FieloELR__StartDate__c","value":"THIS_YEAR","operator":"equals","andOrOperator":""},{"field":"FieloELR__EndDate__c","value":"THIS_YEAR","operator":"equals","andOrOperator":"or"}]';
 
 List<FieloELR.CourseService.CourseWrapper> courseWrappers =
