@@ -8,12 +8,12 @@
     
     <div aura:id="image-container" class="fielo-course-content">
         <aura:if isTrue="{!v.record.FieloELR__Image__c != null}">
-            <img src="{!v.imageURL}" title="{!v.record.Name}"/>
+            <img src="{!v.imageURL}" title="{!v.record.Name}" alt="{!v.record.Name}" aria-hidden="true"/>
             <aura:set attribute="else">
                 <aura:if isTrue="{!v.record.FieloELR__ExternalURL__c != null}">
-                    <img src="{!v.record.FieloELR__ExternalURL__c}" title="{!v.record.Name}"/>
+                    <img src="{!v.record.FieloELR__ExternalURL__c}" title="{!v.record.Name}"  alt="{!v.record.Name}" aria-hidden="true"/>
                     <aura:set attribute="else">
-                        <img class="fielo-no-content-image" src="{!$Resource.images + '/coruseWithNoContent.jpg'}" title="{!$Label.c.NoContent}"/>
+                        <img class="fielo-no-content-image" src="{!$Resource.images + '/coruseWithNoContent.jpg'}" title="{!$Label.c.NoContent}" alt="{!$Label.c.NoContent}" aria-hidden="true"/>
                     </aura:set>
                 </aura:if>
             </aura:set>
