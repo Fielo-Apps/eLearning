@@ -45,6 +45,21 @@
     overflow: auto;
 }
 
+@media only screen and (max-width: 768px){
+    .THIS .fielo-section-layout{
+        overflow: hidden;
+        display: block;
+        height: 100%;
+    }
+
+    .THIS .fielo-section__field,
+    .THIS .fielo-section__field .slds-form-element__label {
+        display: block;
+        width: 100%;
+        padding: 0;
+    }
+}
+
 .THIS .slds-popover__body{
     height: 300px;
     overflow-y: auto;

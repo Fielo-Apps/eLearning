@@ -45,6 +45,12 @@
     display: inline-block;
 }
 
+@media only screen and (max-width: 768px){
+    .THIS .fielo-module-card .slds-rich-text-editor__output span {
+        width: 100%;
+    }
+}
+
 .THIS .fielo-module-content-container header{
     padding-right: 0px;
 }
