@@ -27,7 +27,7 @@
 
 .THIS .fielo-date-value-output {
     width: 138.5px;
-    
+
 }
 
 .THIS .fielo-circle-container {
@@ -53,6 +53,12 @@
 
 .THIS .fielo-dates-center{
     min-width: 277px;
+}
+
+@media only screen and (max-width: 768px){
+    .THIS .fielo-dates-center {
+        min-width: 100%;
+    }
 }
 
 .THIS .fielo-font--warning {
