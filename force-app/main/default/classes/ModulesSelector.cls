@@ -198,7 +198,7 @@ public with sharing class ModulesSelector extends SObjectSelector {
             listModule = (List<Module__c>) Database.query(String.format(
                     'SELECT {0} ' +
                     'FROM {1} ' +
-                    ( recordIds?.isEmpty() == false ? 'WHERE Course__c IN :courseIds ' : '' ) ,
+                    ( recordIds?.isEmpty() == false ? 'WHERE Course__c IN :recordIds ' : '' ) ,
                     new List<String> {
                         getFieldListString(),
                         getSObjectName(),
