@@ -291,7 +291,7 @@ private class SecurityUtilsTest {
 
 	@isTest
 	static void sysadmin_objectAndField_access() {
-		User testUser = getUser();
+		User testUser = setupTestUser('System Administrator');
 		System.runAs(testUser){
 			SecurityUtils.checkInsert(
 				Account.SObjectType,
