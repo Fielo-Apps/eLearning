@@ -75,32 +75,35 @@ public class SObjectDescribe {
     }
     private static Map<String, Map<ID, Schema.RecordTypeInfo>> mapGlobalRecordTypes { get {
         if ( mapGlobalRecordTypes == null ) {
-            mapGlobalRecordTypes = new Map<String, Map<ID, Schema.RecordTypeInfo>>(); 
+            mapGlobalRecordTypes = new Map<String, Map<ID, Schema.RecordTypeInfo>>();
         }
         return mapGlobalRecordTypes;
-    } set; }  
+    } set; }
 
     private static Map<String, Schema.SObjectType> mapGlobalDescribe{
         get{
             if(mapGlobalDescribe == null){
                 mapGlobalDescribe = Schema.getGlobalDescribe();
-            }   
+            }
             return mapGlobalDescribe;
         }
         set;
     }
     private static Set<String> fieloObjects{
-        get{
-            if(fieloObjects == null){
-                fieloObjects = new Set<String>();
-                for(EntityDefinition ed : [SELECT QualifiedApiName FROM EntityDefinition where (NOT QualifiedApiName Like '%__history%') and  NamespacePrefix = 'FieloPLT']){
-                    fieloObjects.add(ed.QualifiedApiName.toLowercase().removeStart('fieloplt__'));
-                }
-            }
-            return fieloObjects;
-        }
-        set;
-    }
+		get{
+			if(fieloObjects == null){
+				fieloObjects = new Set<String>{'action__c','action__share','action__tag','action__changeevent','adminpermission__c','adminpermission__tag','adminpermission__changeevent','agreement__c','agreement__history','agreement__tag','agreement__changeevent','auditpermission__c','auditpermission__tag','auditpermission__changeevent','badgemember__c','badgemember__tag','badgemember__changeevent','badge__c','badge__tag','badge__changeevent','capdomain__c','capdomain__share','capdomain__tag','capdomain__changeevent','cap__c','cap__share','cap__tag','cap__changeevent','challengemember__c','challengemember__tag','challengemember__changeevent','challengereward__c','challengereward__tag','challengereward__changeevent','challenge__c','challenge__history','challenge__tag','challenge__changeevent','consent__c','consent__share','consent__tag','consent__changeevent','criteriongroup__c','criteriongroup__share','criteriongroup__tag','criteriongroup__changeevent','criterion__c','criterion__share','criterion__tag','criterion__changeevent','emailalert__c','emailalert__share','emailalert__tag','emailalert__changeevent','emailcampaign__c','emailcampaign__share','emailcampaign__tag','emailcampaign__changeevent','emailtemplate__c','emailtemplate__share','emailtemplate__tag','emailtemplate__changeevent','errorlog__c','errorlog__share','errorlog__tag','errorlog__changeevent','event__c','event__tag','event__changeevent','kpidomain__c','kpidomain__share','kpidomain__tag','kpidomain__changeevent','kpi__c','kpi__share','kpi__tag','kpi__changeevent','levelmember__c','levelmember__tag','levelmember__changeevent','level__c','level__history','level__tag','level__changeevent','library__c','library__share','library__tag','library__changeevent','memberagreement__c','memberagreement__tag','memberagreement__changeevent','memberconsent__c','memberconsent__tag','memberconsent__changeevent','membersegment__c','membersegment__tag','membersegment__changeevent','member__c','member__share','member__tag','member__changeevent','missionmember__c','missionmember__share','missionmember__tag','missionmember__changeevent','mission__c','mission__share','mission__tag','mission__changeevent','model__c','model__share','model__tag','model__changeevent','pagesettings__c','pagesettings__share','pagesettings__tag','pagesettings__changeevent','pointtype__c','pointtype__tag','pointtype__changeevent','point__c','point__tag','point__changeevent','pointsusage__c','pointsusage__tag','pointsusage__changeevent','programassignment__c','programassignment__tag','programassignment__changeevent','programconsent__c','programconsent__tag','programconsent__changeevent','programpointtype__c','programpointtype__tag','programpointtype__changeevent','program__c','program__tag','program__changeevent','promotion__c','promotion__share','promotion__history','promotion__tag','promotion__changeevent','providerorder__c','providerorder__share','providerorder__tag','providerorder__changeevent','publicsettings__c','publicsettings__tag','publicsettings__changeevent','restsettings__c','restsettings__tag','restsettings__changeevent','redemptionitem__c','redemptionitem__tag','redemptionitem__changeevent','redemption__c','redemption__tag','redemption__changeevent','rewarditem__c','rewarditem__history','rewarditem__tag','rewarditem__changeevent','reward__c','reward__history','reward__tag','reward__changeevent','ruletrigger__c','ruletrigger__tag','ruletrigger__changeevent','rule__c','rule__history','rule__tag','rule__changeevent','segment__c','segment__history','segment__tag','segment__changeevent','settings__c','settings__tag','settings__changeevent','tracker__c','tracker__tag','tracker__changeevent','transaction__c','transaction__share','transaction__tag','transaction__changeevent','triggers__c','triggers__tag','triggers__changeevent'};
+				/*for(Schema.SObjectType objType : mapGlobalDescribe.values()) {
+					if(!objType.getDescribe().getName().contains('__history') && objType.getDescribe().getName().toLowercase().startsWith('fieloplt__')) {
+						fieloObjects.add(objType.getDescribe().getName().toLowercase().removeStart('fieloplt__'));
+					}
+				}*/
+
+        	}
+			return fieloObjects;
+		}
+		set;
+	}
 
     private SObjectDescribe(Schema.SObjectType token){
         if(token == null)
