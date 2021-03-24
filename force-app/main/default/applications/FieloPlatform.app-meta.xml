@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>standard-home</defaultLandingTab>
-    <label>Fielo Platform</label>
-    <tabs>FieloPLT__Incentives</tabs>
-    <tabs>FieloPLT__Member__c</tabs>
-    <tabs>FieloPLT__Reward__c</tabs>
-    <tabs>FieloPLT__Redemption__c</tabs>
-    <tabs>FieloPLT__Libraries</tabs>
-    <tabs>FieloPLT__Programs</tabs>
+    <label>Fielo eLearning</label>
     <tabs>FieloELR__Course__c</tabs>
 </CustomApplication>
