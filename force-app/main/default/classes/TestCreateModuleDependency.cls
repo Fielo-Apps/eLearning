@@ -66,7 +66,7 @@ private class TestCreateModuleDependency {
 
 		insert listModDepen;
 	}
-	
+
 	/*	TEST-1731
 		Create Module Dependency - (OK)
 	*/
@@ -81,7 +81,7 @@ private class TestCreateModuleDependency {
 
 		System.assertEquals(1, listModDepen.size());
 	}
-	
+
 	/*	TEST-1732
 		Create Module Dependency
 		- Validations
@@ -97,7 +97,7 @@ private class TestCreateModuleDependency {
 			System.assert(d.getMessage().Contains('Both modules must belong to the same course.'));
 		}
 	}
-	
+
 	/*	TEST-1733
 		Create Module Dependency
 		- Validations
@@ -168,7 +168,7 @@ private class TestCreateModuleDependency {
 			errorMsg = d.getMessage();
 		}
 		System.debug(errorMsg);
-		System.assert(errorMsg.Contains('This module dependency already exists.'));
+		System.assert(errorMsg.Contains('This module dependency already exists.'), 'Wrong error msg: ' + errorMsg);
 	}
 
 	/*	TEST-1737
