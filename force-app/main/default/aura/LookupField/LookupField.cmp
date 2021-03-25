@@ -8,21 +8,21 @@
     <aura:attribute type="String" name="inputValue"/>
     <aura:attribute type="String" name="autocomplete" default="off"/>
     <aura:attribute type="SObject[]" name="options" />
-    
+
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
     <aura:handler event="c:SelectRecord" name="selectOption" action="{!c.optionSelected}"/>
-    
+
     <aura:registerEvent name="lookupRegister" type="c:RegisterComponent"/>
     <aura:registerEvent name="fieldUpdate" type="c:FieldUpdate"/>
-    
-    <aura:method name="pickRecord" action="{!c.pickRecord}"> 
+
+    <aura:method name="pickRecord" action="{!c.pickRecord}">
         <aura:attribute type="String" name="recordId"/>
     </aura:method>
-    
-    <aura:method name="setRecord" action="{!c.setRecord}"> 
+
+    <aura:method name="setRecord" action="{!c.setRecord}">
         <aura:attribute type="sObject" name="record"/>
     </aura:method>
-    
+
     <div class="slds-form-element" title="{!v.field.attributes.tooltip}" oninput="{!c.filterRecords}">
         <aura:if isTrue="{!v.showLabel}">
             <label class="slds-form-element__label" for="combobox-id-2">{!v.field.attributes.label}</label>
@@ -42,9 +42,9 @@
                                     <span class="slds-assistive-text">Account</span>
                                 </span>
                                 <input aura:id="fielo-lookup-input" data-record-id="{!v.selectedRecord.Id}" type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="combobox-id-5" aria-controls="listbox-id-2" autocomplete="off" role="textbox" placeholder="Select an Option" readonly="true" value="{!v.selectedRecord.Name}" title="{!v.selectedRecord.Name}" />
-                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="{!$Label.c.Remove}" onclick="{!c.removeRecord}">
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Remove" onclick="{!c.removeRecord}">
                                     <lightning:icon iconName="utility:close" size="x-small" alternativeText="Record"/>
-                                    <span class="slds-assistive-text">{!$Label.c.Remove}</span>
+                                    <span class="slds-assistive-text">Remove</span>
                                 </button>
                             </aura:set>
                         </aura:if>

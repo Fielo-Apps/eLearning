@@ -9,7 +9,10 @@ sfdx force:package:install --package 04t2J0000003vOK -w 60 &&
 # Push Source
 sfdx force:source:push -w 60 &&
 
-# Assign the permission set to the user
+# Assign the FieloPLT permission set to the user
+sfdx force:user:permset:assign --permsetname FieloPLTAdmin &&
+
+# Assign the FieloELR permission set to the user
 sfdx force:user:permset:assign --permsetname FieloELRAdmin &&
 
 # DEPLOY Unpackaged folder
