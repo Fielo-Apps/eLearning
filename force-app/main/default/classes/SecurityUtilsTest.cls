@@ -35,7 +35,7 @@ private class SecurityUtilsTest {
 		}catch(Exception e){
 			uniqueness += e.getStackTraceString(); //includes the top level test method name without having to pass it
 		}
-		List<Profile> ps = Database.query('SELECT id, Name FROM Profile WHERE Name = :profileName');
+		List<Profile> ps = Database.query('SELECT Id, Name FROM Profile WHERE Name = :profileName');
 
 		if (ps.isEmpty()) return null;
 
@@ -51,19 +51,35 @@ private class SecurityUtilsTest {
 			timezonesidkey='America/Los_Angeles'
 		);
 		insert result;
-		return result;
+
+		Id userId = result.Id;
+
+		return (User) Database.query('SELECT Profile.Name, ' +
+			String.join(new List<String>(Schema.sObjectType.User.fields.getMap().keySet()), ', ')
+		 + ' FROM User WHERE Id = :userId')?.get(0);
 	}
 
-	@isTest
-	static void minimum_access_field_access() {
+	static User getUser() {
 		String profileName = 'Minimum Access - Salesforce';
 
 		User testUser = setupTestUser(profileName);
 
 		if (testUser == null) {
 			profileName = 'Read Only';
-			testUser = setupTestUser('Read Only');
+			testUser = setupTestUser(profileName);
+
+			if (testUser == null) {
+				profileName = 'Force.com - Free User';
+				testUser = setupTestUser(profileName);
+			}
 		}
+
+		return testUser;
+	}
+
+	@isTest
+	static void minimum_access_field_access() {
+		User testUser = getUser();
 
 		System.runAs(testUser){
 			{
@@ -73,7 +89,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to insert Account.Name');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to insert Account.Name');
 				System.assert(ex instanceof SecurityUtils.FlsException, 'Expected an FlsException, got '+ex.getTypeName());
 			}
 			{
@@ -85,12 +101,12 @@ private class SecurityUtilsTest {
 					ex = e;
 					message = e?.getMessage();
 				}
-				if (profileName == 'Read Only') {
-					System.assertEquals(null, ex, profileName + ' profile should be able to read Contact.LastName');
+				if (testUser.Profile.Name == 'Read Only') {
+					System.assertEquals(null, ex, testUser.Profile.Name + ' profile should be able to read Contact.LastName');
 				} else {
 					System.assert(
 						message.contains(String.format(Label.security_error_field_not_readable, new List<String>{'Contact','LastName'})),
-						profileName + ': Wrong error message: ' + message
+						testUser.Profile.Name + ': Wrong error message: ' + message
 					);
 				}
 			}
@@ -101,7 +117,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to update Lead.Company');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to update Lead.Company');
 				System.assert(ex instanceof SecurityUtils.FlsException, 'Expected an FlsException, got '+ex.getTypeName());
 			}
 
@@ -116,14 +132,7 @@ private class SecurityUtilsTest {
 
 	@isTest
 	static void minimum_access_object_access() {
-		String profileName = 'Minimum Access - Salesforce';
-
-		User testUser = setupTestUser(profileName);
-
-		if (testUser == null) {
-			profileName = 'Read Only';
-			testUser = setupTestUser('Read Only');
-		}
+		User testUser = getUser();
 
 		System.runAs(testUser){
 			{
@@ -133,7 +142,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to insert Account');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to insert Account');
 				System.assert(ex instanceof SecurityUtils.CrudException, 'Expected an CrudException, got '+ex.getTypeName());
 			}
 			{
@@ -145,12 +154,12 @@ private class SecurityUtilsTest {
 					ex = e;
 					message = e.getMessage();
 				}
-				if (profileName == 'Read Only') {
-					System.assertEquals(null, ex, profileName + ' profile should be able to read Contact');
+				if (testUser.Profile.Name == 'Read Only') {
+					System.assertEquals(null, ex, testUser.Profile.Name + ' profile should be able to read Contact');
 				} else {
 					System.assert(
 						message.contains(String.format(Label.security_error_object_not_readable, new List<String>{'Contact'})),
-						profileName + ': Wrong error message: ' + message
+						testUser.Profile.Name + ': Wrong error message: ' + message
 					);
 				}
 			}
@@ -161,7 +170,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' should not be able to update Lead');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' should not be able to update Lead');
 				System.assert(ex instanceof SecurityUtils.CrudException, 'Expected an CrudException, got '+ex.getTypeName());
 			}
 			{
@@ -171,7 +180,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to delete Opportunity');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to delete Opportunity');
 				System.assert(ex instanceof SecurityUtils.CrudException, 'Expected an CrudException, got '+ex.getTypeName());
 			}
 
@@ -187,14 +196,7 @@ private class SecurityUtilsTest {
 
 	@isTest
 	static void minimum_access_objectAndField_access() {
-		String profileName = 'Minimum Access - Salesforce';
-
-		User testUser = setupTestUser(profileName);
-
-		if (testUser == null) {
-			profileName = 'Read Only';
-			testUser = setupTestUser('Read Only');
-		}
+		User testUser = getUser();
 
 		System.runAs(testUser){
 			{
@@ -211,7 +213,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to insert Account');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to insert Account');
 				System.assert(ex instanceof SecurityUtils.CrudException, 'Expected an CrudException, got '+ex.getTypeName());
 			}
 			{
@@ -230,12 +232,12 @@ private class SecurityUtilsTest {
 					ex = e;
 					message = e.getMessage();
 				}
-				if (profileName == 'Read Only') {
-					System.assertEquals(null, ex, profileName + ' profile should be able to read Contact');
+				if (testUser.Profile.Name == 'Read Only') {
+					System.assertEquals(null, ex, testUser.Profile.Name + ' profile should be able to read Contact');
 				} else {
 					System.assert(
 						message.contains(String.format(Label.security_error_object_not_readable, new List<String>{'Contact'})),
-						profileName + ': Wrong error message: ' + message
+						testUser.Profile.Name + ': Wrong error message: ' + message
 					);
 				}
 			}
@@ -253,7 +255,7 @@ private class SecurityUtilsTest {
 				}catch(SecurityUtils.SecurityException e){
 					ex = e;
 				}
-				System.assertNotEquals(null, ex, profileName + ' profile should not be able to update Lead');
+				System.assertNotEquals(null, ex, testUser.Profile.Name + ' profile should not be able to update Lead');
 				System.assert(ex instanceof SecurityUtils.CrudException, 'Expected an CrudException, got '+ex.getTypeName());
 			}
 
