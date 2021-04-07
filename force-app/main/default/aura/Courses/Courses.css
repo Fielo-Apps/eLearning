@@ -195,6 +195,13 @@
     height: 58px;
 }
 
+@media only screen and (max-width: 768px){
+    .THIS .slds-card .fielo-section-layout {
+        height: auto;
+        padding:5px 0;
+    }
+}
+
 .THIS .fielo-section__field-value{
     font-size: 18px;
 }

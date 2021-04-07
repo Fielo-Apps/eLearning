@@ -149,9 +149,14 @@
         grid-column: 2;
     }
 
-    .FieloELRCourseDetails .fielo-section__field:nth-child(3){
+    .THIS .fielo-section__field:nth-child(3){
         grid-column: 3/4;
     }
+
+    .THIS .FieloELRCardItem .fielo-section-layout{
+        height: auto;
+    }
+
 }
 
 .THIS .slds-progress-bar_large{
