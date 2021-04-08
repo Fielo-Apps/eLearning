@@ -43,7 +43,6 @@
 }
 .THIS .fielo-section__field-value, .THIS .slds-form-element__label {
     font-size: 0.8rem;
-    
 }
 
 .THIS .slds-rich-text-editor__output span {
@@ -52,4 +51,10 @@
     overflow: hidden;
     width: 75%;
     display: inline-block;
+}
+
+@media only screen and (max-width: 768px){
+    .THIS .fielo-module-card .slds-rich-text-editor__output span {
+        width: 100%;
+    }
 }
