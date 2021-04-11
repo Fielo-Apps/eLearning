@@ -43,8 +43,19 @@
     text-align: left;
 }
 
+@media only screen and (max-width: 768px){
+    .THIS .fielo-section__field-value{
+        display: block;
+    }
+
+    .THIS .fielo-progress-value{
+        display: block;
+        font-size: 12px;
+    }
+}
+
 .THIS .fielo-progress-container {
-    width: 100%;    
+    width: 100%;
 }
 
 .THIS .fielo-progress-container .fielo-progress-bar{

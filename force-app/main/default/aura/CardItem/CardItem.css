@@ -13,7 +13,7 @@
     font-size: 14px;
 }
 
-.THIS .slds-card{    
+.THIS .slds-card{
     color: #54698D;
 }
 
@@ -35,6 +35,12 @@
 .THIS .slds-card__footer .fielo-output{
     display: inline-block;
     margin-left: 10px;
+}
+
+@media only screen and (max-width: 768px){
+    .THIS .slds-card__footer .fielo-output{
+        margin: 10px auto;
+    }
 }
 
 .THIS .slds-card img{
