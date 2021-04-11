@@ -4,7 +4,7 @@
 sfdx force:org:open -p /lightning/setup/DeployStatus/home &&
 
 # Install FieloPLT
-sfdx force:package:install --package 04t2J0000003vOK -w 60 &&
+sfdx force:package:install --package 04t2J000000gggI -w 60 &&
 
 # Push Source
 sfdx force:source:push -w 60 &&
@@ -16,4 +16,7 @@ sfdx force:user:permset:assign --permsetname FieloPLTAdmin &&
 sfdx force:user:permset:assign --permsetname FieloELRAdmin &&
 
 # DEPLOY Unpackaged folder
-sfdx force:source:deploy -p ./unpackaged/
+sfdx force:source:deploy -p ./unpackaged/ &&
+
+# Push Source again to refresh org reference
+sfdx force:source:push -w 60
