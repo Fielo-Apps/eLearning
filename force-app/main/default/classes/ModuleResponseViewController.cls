@@ -5,6 +5,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 	public static String secondaryParameters {get;set;}
 	public List<Map<String,Object>> buttonList {get;set;}
 	private ApexPages.StandardController controller;
+	private Set<String> fieldFilter = new Set<String> {'lastreferenceddate', 'lastvieweddate'};
 
 	/**
     * @brief constructor
@@ -24,7 +25,9 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
         // Cast all fieldNames to lowercase
         for(String fieldName: fields){
 			fields.remove(fieldName);
-			fields.add(fieldName.toLowerCase());
+			if(!fieldFilter.contains(fieldName)){
+                fields.add(fieldName.toLowerCase());
+            }
 		}
 
         record = (FieloELR__ModuleResponse__c)controller.getRecord();
@@ -33,7 +36,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 
 		if(!buttonList.isEmpty()){
             buttonString = JSON.serialize(buttonList);
-            buttonString = buttonString.substring(1,buttonString.length()-1);    
+            buttonString = buttonString.substring(1,buttonString.length()-1);
         }
 
         String standardTools = '';
@@ -48,7 +51,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 			if(settings.FieloPLT__TargetObject__c == 'FieloELR__QuestionResponse__c') {
 					settings.FieloPLT__Buttons__c = !String.IsBlank(settings.FieloPLT__Buttons__c) ?
 																	settings.FieloPLT__Buttons__c :
-																	'';	
+																	'';
 			}
 		}
 
@@ -63,9 +66,9 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 					objectName
 				}
 			);
-			
+
 			// SR: CRUD Check
-			if ( Schema.sObjectType.ModuleResponse__c.isAccessible() ) {	
+			if ( Schema.sObjectType.ModuleResponse__c.isAccessible() ) {
 				// SR: FLS Check
 				for (String f : fields) {
 					if (fieldsMap.containsKey(f.trim()) && !fieldsMap.get(f.trim()).getDescribe().isAccessible() ) {
@@ -90,7 +93,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 
 		for (String f : fieldSet ) {
 			if (fieldsMap.containsKey(f.trim()) && !fieldsMap.get(f.trim()).getDescribe().isAccessible() ) {
-				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{ objectName, f.trim()})); 
+				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{ objectName, f.trim()}));
 			} else {
 				fieldList.add(f.trim());
 			}
@@ -106,9 +109,9 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 		if ( objectDescribe.isAccessible() ) {
 		 	result = Database.query(query);
 		} else {
-			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{ objectDescribe.getName() })); 
+			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{ objectDescribe.getName() }));
 		}
-		 
+
 		return result.get(0);
 	}
 
