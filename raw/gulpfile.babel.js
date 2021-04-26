@@ -236,10 +236,10 @@ gulp.task('clean', () => del([
 // Copy vendor files
 gulp.task('vendor', ['cleanVendor'], () => {
   return gulp.src(
-      ['resources/FieloPlt_Backend/vendor/**/*'], {
+      ['resources/FieloElr_Backend/vendor/**/*'], {
         dot: true
       })
-    .pipe(gulp.dest('../plt/main/core/staticresources/FieloSalesforce_Backend/'))
+    .pipe(gulp.dest('../force-app/main/core/staticresources/FieloSalesforce_Backend/'))
     .pipe($.size({
       title: 'copy'
     }));
@@ -247,10 +247,10 @@ gulp.task('vendor', ['cleanVendor'], () => {
 
 // Clean Vendor
 gulp.task('cleanVendor', () => del([
-  '../plt/main/core/staticresources/FieloSalesforce_Backend/**',
-  '!../plt/main/core/staticresources/FieloSalesforce_Backend/',
-  '!../plt/main/core/staticresources/FieloSalesforce_Backend/fielo/**',
-  '!../plt/main/core/staticresources/FieloSalesforce_Backend/images/**'
+  '../force-app/main/core/staticresources/FieloSalesforce_Backend/**',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/fielo/**',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/images/**'
 ], {
   dot: true,
   force: true
