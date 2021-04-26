@@ -1,4 +1,4 @@
-public with sharing class ModuleViewController extends PageSettingsController {
+global with sharing class ModuleViewController extends PageSettingsController {
 	public Module__c record {get;set;}
 	public String buttonString {get;set;}
 	public String toolsString {get;set;}
@@ -22,7 +22,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
             fields.remove(fieldName);
             if(!fieldFilter.contains(fieldName)){
                 fields.add(fieldName.toLowerCase());
-            }  
+            }
 		}
 
 		if(!Test.isRunningTest()){
@@ -52,7 +52,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 
 		if(!buttonList.isEmpty()){
             buttonString = JSON.serialize(buttonList);
-            buttonString = buttonString.substring(1,buttonString.length()-1);    
+            buttonString = buttonString.substring(1,buttonString.length()-1);
         }
 
         String standardTools = '';
@@ -97,7 +97,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 					objectName
 				}
 			);
-			
+
 			// SR: Dynamic FLS Check
 			Map<String, Schema.SObjectField> moduleFieldsMap = Schema.SObjectType.Module__c.fields.getMap();
 			for (String fieldName : fields) {
@@ -105,7 +105,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Module__c',fieldName}));
 				}
 			}
-			
+
 			if ( Schema.sObjectType.FieloELR__Module__c.isAccessible() ) {
 				record = Database.query(query);
 				setRecord(record);
@@ -165,7 +165,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'FieloPLT__PageSettings__c'}));
 		}
-		
+
 		if (result.isEmpty()) {
 			return new FieloPLT__PageSettings__c(
 				FieloPLT__Sections__c = defaultSection
@@ -188,7 +188,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
     }set;}
 
 	@RemoteAction
-  	public static RemoteActionResult save( Module__c record, List<String> nullFields) {
+  	global static RemoteActionResult save( Module__c record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> fieldsMap = Schema.sObjectType.Module__c.fields.getMap();
@@ -216,7 +216,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
           	} else {
 				throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{'Module__c'}));
           	}
-        	
+
 			//TODO Crear Label DataSavedSuccessfully
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 			result.redirectURL = '/' + record.Id;
@@ -229,7 +229,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveQuestion(SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveQuestion(SObject record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> fieldsMap = Schema.sObjectType.Question__c.fields.getMap();
@@ -269,7 +269,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveModuleDependency(SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveModuleDependency(SObject record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> fieldsMap = Schema.sObjectType.ModuleDependency__c.fields.getMap();
@@ -282,7 +282,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 			}
 
 			if (Schema.sObjectType.ModuleDependency__c.isUpdateable() && Schema.sObjectType.ModuleDependency__c.isCreateable()){
-				upsert (ModuleDependency__c) record;            	
+				upsert (ModuleDependency__c) record;
           	} else {
             	throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{'ModuleDependency__c'}));
           	}
@@ -296,7 +296,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 					throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_insertable, new List<String>{'ModuleDependency__c',f}));
 				}
 			}
-     
+
 			//TODO Crear Label DataSavedSuccessfully
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 			result.redirectURL = '/' + ((ModuleDependency__c)record).Module__c;
@@ -309,7 +309,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-	public static sObject retrieve( String objectName, String recordId, String fields ){
+	global static sObject retrieve( String objectName, String recordId, String fields ){
 		Map<String, Schema.SObjectField> fieldsMap = Schema.describeSObjects(new String[]{objectName})[0].fields.getMap();
 
 		for (String fieldName : fields.split(',') ) {
@@ -333,7 +333,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-  	public static RemoteActionResult activate( Id recordId ){
+  	global static RemoteActionResult activate( Id recordId ){
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			Module__c record = new Module__c ( Id = recordId);
@@ -357,7 +357,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-  	public static RemoteActionResult inactivate( Id recordId ){
+  	global static RemoteActionResult inactivate( Id recordId ){
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			Module__c record = new Module__c ( Id = recordId);
@@ -384,7 +384,7 @@ public with sharing class ModuleViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-  	public static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause ) {
+  	global static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause ) {
 		Map<String, Schema.SObjectField> fieldsMap = Schema.describeSObjects(new String[]{objectName})[0].fields.getMap();
 
 		for (String fieldName : fields.split(',') ) {
@@ -395,8 +395,8 @@ public with sharing class ModuleViewController extends PageSettingsController {
 
 		String query = 'SELECT Id, ' + fields;
 		query += ' FROM ' + objectName;
-		query += getWhereCondition( dataFilters ); 
-		// ORDER BY       
+		query += getWhereCondition( dataFilters );
+		// ORDER BY
 		if ( orderBy == null ) {
 			orderBy = 'LastModifiedDate DESC';
 		}
@@ -416,28 +416,28 @@ public with sharing class ModuleViewController extends PageSettingsController {
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{objectName}));
 		}
-				
+
 		return listObjects;
 	}
 
 	private static String getWhereCondition( String filterJson ) {
 		String whereCondition = '';
-		if (filterJson != null ) { 
+		if (filterJson != null ) {
 			try {
 				Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped( filterJson);
 		  		for ( String k :filter.keySet() ) {
 			    	String value = (String) filter.get(k);
 		    		if ( value.startsWith('!') ) {
-			      		whereCondition += ' AND ' + k + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';            
+			      		whereCondition += ' AND ' + k + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';
 		    		} else {
 			      		whereCondition += ' AND ' + k + ' = \'' +  String.escapeSingleQuotes(value) + '\'';
 		    		}
 		  		}
-				if ( whereCondition != '') {          
+				if ( whereCondition != '') {
 				    whereCondition = ' WHERE ' + whereCondition.substring(4);
 		  		}
 			} catch( JSONException e ) {
-				system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + filterJson );        
+				system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + filterJson );
 			}
 		}
 		return whereCondition;

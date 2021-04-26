@@ -1,7 +1,7 @@
 /**
 * @description Class to Control the Incentives Landing Page.
 */
-public with sharing class CourseLandingController extends PageSettingsSetController {
+global with sharing class CourseLandingController extends PageSettingsSetController {
 
     public String currentView {get;set;}
     public FieloPLT__PageSettings__c newCourse {get;set;}
@@ -99,7 +99,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
     }
 
     @RemoteAction
-    public static List<FieloELR__Course__c> getCourses( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage, String whereClause ) {
+    global static List<FieloELR__Course__c> getCourses( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage, String whereClause ) {
         Set<String> fieldset = new Set<String> { 'Name', 'SubscriptionMode__c', 'Status__c', 'Program__r.Name' };
         Map<String,Object> jsonObject = (Map<String, Object>) JSON.deserializeUntyped( filter);
         Id programId = (String)jsonObject.get('Program__c');
@@ -129,7 +129,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
         Create Courses Method
     */
     @RemoteAction
-    public static RemoteActionResult createCourse(sObject objectRecord, List<String> nullFields, String modelId, List<String> segments) {
+    global static RemoteActionResult createCourse(sObject objectRecord, List<String> nullFields, String modelId, List<String> segments) {
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> objectFieldsMap = Schema.sObjectType.Course__c.fields.getMap();
@@ -199,7 +199,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
     }
 
     @RemoteAction
-    public static List<SObject> getSegments( String programId ) {
+    global static List<SObject> getSegments( String programId ) {
         List<SObject> records;
         if ( Schema.sObjectType.FieloPLT__Segment__c.isAccessible() ) {
             if ( Schema.sObjectType.FieloPLT__Segment__c.fields.Name.isAccessible() ) {

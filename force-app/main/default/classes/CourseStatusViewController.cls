@@ -1,4 +1,4 @@
-public with sharing class CourseStatusViewController extends PageSettingsController {
+global with sharing class CourseStatusViewController extends PageSettingsController {
 	public CourseStatus__c record {get;set;}
 	public String buttonString {get;set;}
 	// public String toolsString {get;set;}
@@ -15,7 +15,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
 		Id recordId = controller.getId();
 		Set<String> fields = new Set<String>();
 
-		
+
 		fields.addAll(Schema.describeSObjects(
 			new String[]{objectName})[0].fields.getMap().keySet());
 
@@ -27,7 +27,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
             fields.remove(fieldName);
             if(!fieldFilter.contains(fieldName)){
                 fields.add(fieldName.toLowerCase());
-            }  
+            }
 		}
 
         record = (FieloELR__CourseStatus__c)controller.getRecord();
@@ -36,7 +36,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
 
 		if(!buttonList.isEmpty()){
             buttonString = JSON.serialize(buttonList);
-            buttonString = buttonString.substring(1,buttonString.length()-1);    
+            buttonString = buttonString.substring(1,buttonString.length()-1);
         }
 
         String standardTools = '';
@@ -51,7 +51,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
 			if(settings.FieloPLT__TargetObject__c == 'FieloELR__ModuleResponse__c') {
 					settings.FieloPLT__Buttons__c = !String.IsBlank(settings.FieloPLT__Buttons__c) ?
 																	settings.FieloPLT__Buttons__c :
-																	'';	
+																	'';
 			}
 		}
 
@@ -86,7 +86,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
 	}
 
   	@RemoteAction
-	public static sObject retrieve( String objectName, String recordId, String fields ){
+	global static sObject retrieve( String objectName, String recordId, String fields ){
 		Schema.DescribeSobjectResult[] objectsDescribe = Schema.describeSObjects(new List<String>{objectName});
 		Map<String,Schema.SObjectField> objectFieldsMap = objectsDescribe[0].fields.getMap();
 
@@ -114,7 +114,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
 
 
 	@RemoteAction
-  	public static RemoteActionResult save( CourseStatus__c record, List<String> nullFields) {
+  	global static RemoteActionResult save( CourseStatus__c record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> courseStatusFieldsMap = Schema.SObjectType.CourseStatus__c.fields.getMap();
@@ -142,7 +142,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
             } else {
 				throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{'CourseStatus__c'}));
 			}
-        	
+
 			//TODO Crear Label DataSavedSuccessfully
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 			result.redirectURL = '/' + record.Id;
@@ -161,7 +161,7 @@ public with sharing class CourseStatusViewController extends PageSettingsControl
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveModuleResponse( SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveModuleResponse( SObject record, List<String> nullFields) {
 		Map<String,Schema.SObjectField> objectFieldsMap = Schema.SObjectType.CourseStatus__c.fields.getMap();
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();

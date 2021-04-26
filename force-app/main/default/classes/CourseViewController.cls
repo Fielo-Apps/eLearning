@@ -1,4 +1,4 @@
-public with sharing class CourseViewController extends PageSettingsController {
+global with sharing class CourseViewController extends PageSettingsController {
 	public Course__c record {get;set;}
 	public String buttonString {get;set;}
 	// public String toolsString {get;set;}
@@ -171,7 +171,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-	public static Course__c retrieve( String objectName, String recordId, String fields ){
+	global static Course__c retrieve( String objectName, String recordId, String fields ){
 		Map<String,Schema.SObjectField> objectFieldsMap = Schema.sObjectType.Course__c.fields.getMap();
 
 		String query = 'SELECT FieloELR__Segment__r.FieloPLT__RelatedSegments__c,' + String.escapeSingleQuotes(fields);
@@ -218,7 +218,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-  	public static RemoteActionResult save( Course__c record, List<String> nullFields, List<String> segments) {
+  	global static RemoteActionResult save( Course__c record, List<String> nullFields, List<String> segments) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		try{
@@ -277,7 +277,7 @@ public with sharing class CourseViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult clone( Course__c record, List<String> nullFields, List<String> segments) {
+  	global static RemoteActionResult clone( Course__c record, List<String> nullFields, List<String> segments) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> courseFieldsMap = Schema.SObjectType.Course__c.fields.getMap();
@@ -359,7 +359,7 @@ public with sharing class CourseViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveModule( SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveModule( SObject record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		try{
@@ -409,7 +409,7 @@ public with sharing class CourseViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveCourseDependency( SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveCourseDependency( SObject record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		try{
@@ -455,7 +455,7 @@ public with sharing class CourseViewController extends PageSettingsController {
   	}
 
   	@RemoteAction
-    public static List<SObject> getSegments( String programId ) {
+    global static List<SObject> getSegments( String programId ) {
         List<SObject> records;
         if ( Schema.sObjectType.FieloPLT__Segment__c.isAccessible() ) {
             if ( Schema.sObjectType.FieloPLT__Segment__c.fields.Name.isAccessible() ) {
@@ -501,7 +501,7 @@ public with sharing class CourseViewController extends PageSettingsController {
     }
 
     @RemoteAction
-  	public static RemoteActionResult activate( Id recordId ){
+  	global static RemoteActionResult activate( Id recordId ){
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			CourseService.activateCourses(new Set<Id>{recordId});
@@ -519,7 +519,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 	}
 
 	@RemoteAction
-  	public static RemoteActionResult inactivate( Id recordId ){
+  	global static RemoteActionResult inactivate( Id recordId ){
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			CourseService.inactivateCourses(new Set<Id>{recordId});

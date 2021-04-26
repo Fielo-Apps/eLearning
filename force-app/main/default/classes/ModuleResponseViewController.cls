@@ -1,4 +1,4 @@
-public with sharing class ModuleResponseViewController extends PageSettingsController {
+global with sharing class ModuleResponseViewController extends PageSettingsController {
 	public ModuleResponse__c record {get;set;}
 	public String buttonString {get;set;}
 	// public String toolsString {get;set;}
@@ -85,7 +85,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 	}
 
   	@RemoteAction
-	public static sObject retrieve( String objectName, String recordId, String fields ){
+	global static sObject retrieve( String objectName, String recordId, String fields ){
 		DescribeSObjectResult objectDescribe = Schema.describeSObjects(new String[]{objectName})[0];
 		Map<String, sObjectField> fieldsMap = objectDescribe.fields.getMap();
 		Set<String> fieldSet = new Set<String>(fields.split(','));
@@ -117,7 +117,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
 
 
 	@RemoteAction
-  	public static RemoteActionResult save(ModuleResponse__c record, List<String> nullFields) {
+  	global static RemoteActionResult save(ModuleResponse__c record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> fieldsMap = Schema.sObjectType.ModuleResponse__c.fields.getMap();
@@ -167,7 +167,7 @@ public with sharing class ModuleResponseViewController extends PageSettingsContr
   	}
 
   	@RemoteAction
-  	public static RemoteActionResult saveQuestionResponse(SObject record, List<String> nullFields) {
+  	global static RemoteActionResult saveQuestionResponse(SObject record, List<String> nullFields) {
 		Savepoint sp;
 		RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> fieldsMap = Schema.sObjectType.QuestionResponse__c.fields.getMap();

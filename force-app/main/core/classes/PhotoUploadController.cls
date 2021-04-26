@@ -1,7 +1,7 @@
 /**
 * @brief Class Used to upload a photo as attach to a specific record
 */
-public with sharing class PhotoUploadController {
+global with sharing class PhotoUploadController {
 
 
 /* Manejo del Folder */
@@ -49,9 +49,9 @@ public with sharing class PhotoUploadController {
         }
         return existingDocuments;
     } set;}
-    
-    //component attributes  
-    public SObject recordObject {get; set; }   
+
+    //component attributes
+    public SObject recordObject {get; set; }
     public String fieldNameObject {get; set;}
     public String externalURLNameObject {get; set;}
     public String getEncImage(){
@@ -98,7 +98,7 @@ public with sharing class PhotoUploadController {
     status: internal, external, existing
 */
     @RemoteAction
-    public static RemoteActionResult save( sObject record, String folderId, String objectName, String fieldName, String externalURLField, String status, String photoBase64, String instance){
+    global static RemoteActionResult save( sObject record, String folderId, String objectName, String fieldName, String externalURLField, String status, String photoBase64, String instance){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
         try{
@@ -108,9 +108,9 @@ public with sharing class PhotoUploadController {
             Map<String, Schema.SObjectField> fieldsMap = objectDescribe.fields.getMap();
             Map<String, Schema.SObjectField> recordFieldsDescribe = recordObjectDescribe.fields.getMap();
             Map<String, Schema.SObjectField> documentFieldsMap = Schema.sObjectType.Document.fields.getMap();
-            
+
             String documentId = null;
-        
+
             if ( status == 'external' || status == 'existing' ) {
                 // SR: CRUD Check
                 if (recordObjectDescribe.isUpdateable() && recordObjectDescribe.isCreateable() ) {
@@ -169,7 +169,7 @@ public with sharing class PhotoUploadController {
                         }
 
                         List<SObject> whereIsUsed;
-                        
+
                         // SR: CRUD Check
                         if ( objectDescribe.isAccessible() ) {
                             // SR: FLS Check
@@ -189,7 +189,7 @@ public with sharing class PhotoUploadController {
                         }
                     }
                 }
-                
+
                 // Si uso Croppper reemplazo el Body
                 if(!String.isBlank(photoBase64)) {
                     Integer firstComma = photoBase64.indexOf(',');
@@ -240,7 +240,7 @@ public with sharing class PhotoUploadController {
 
                 result.redirectURL = createURL(currentDocument, instance);
                 record.put( externalURLField, result.redirectURL);
-                
+
                 // SR: FLS Check
                 for ( String f : record.getPopulatedFieldsAsMap().keySet() ) {
                     if ( f != 'Id' && !recordFieldsDescribe.get(f).getDescribe().isUpdateable() ) {
@@ -281,7 +281,7 @@ public with sharing class PhotoUploadController {
 
 
     @RemoteAction
-    public static RemoteActionResult remove( sObject record, String fieldName, String externalURLField){
+    global static RemoteActionResult remove( sObject record, String fieldName, String externalURLField){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
         try{
@@ -300,7 +300,7 @@ public with sharing class PhotoUploadController {
                     throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_insertable, new List<String>{recordObjectDescribe.getName(), f}));
                 }
             }
-            
+
             // SR: CRUD Check
             if ( !recordObjectDescribe.isUpdateable() ) {
                 throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{recordObjectDescribe.getName()}));

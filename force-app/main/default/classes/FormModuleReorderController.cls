@@ -1,10 +1,10 @@
-public with sharing class FormModuleReorderController {
+global with sharing class FormModuleReorderController {
 
   /*****  Datos  *****/
     public String csObjectName{get;set;}
     public String cFilter{get;set;}
     public static Boolean cRecordRedirect{get;set;}
-    public SObject cRecord {get;set;}  
+    public SObject cRecord {get;set;}
     private Boolean queryRecordNotDone = true;
 
     public String fields {get{
@@ -22,7 +22,7 @@ public with sharing class FormModuleReorderController {
         }
     return fields;
     }set;}
-  
+
   public SObject recordObject{get{
     if (queryRecordNotDone ) {
       queryRecordNotDone = false;
@@ -34,7 +34,7 @@ public with sharing class FormModuleReorderController {
               String query = 'SELECT  ' + fields;
               query += ' FROM ' + csObjectName;
               query += ' WHERE Id = : recordId ';
-                
+
                 if( Schema.describeSObjects(new List<String>{csObjectName})[0].isAccessible() ){
 					recordObject = Database.query(query)[0];
 				} else {
@@ -136,7 +136,7 @@ public with sharing class FormModuleReorderController {
                                     query += ' WHERE ' + f.WhereCondition.replace('/', '\'') ;
                                 }
                                 query += ' LIMIT 500';
-                                
+
                                 // SR: CRUD Check
                                 if (describe.getReferenceTo().get(0).getDescribe().isAccessible()) {
                                     // SR: FLS Check
@@ -163,7 +163,7 @@ public with sharing class FormModuleReorderController {
 
   /*****  Metodos Remote para Save y Retrieve *****/
     @RemoteAction
-    public static RemoteActionResult reorder( List<sObject> records){
+    global static RemoteActionResult reorder( List<sObject> records){
       Savepoint sp;
       RemoteActionResult result = new RemoteActionResult();
 
@@ -172,7 +172,7 @@ public with sharing class FormModuleReorderController {
             if( records.get(0).getSobjectType().getDescribe().isUpdateable() ){
                 update records;
             }
-        
+
           //TODO Crear Label DataSavedSuccessfully
           result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 
@@ -185,7 +185,7 @@ public with sharing class FormModuleReorderController {
                   result.addMessage(new RemoteActionResult.RemoteActionMessage(m, '' ));
               }
           } else {
-            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));  
+            result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
           }
       }catch(Exception e){
           if(sp != null){

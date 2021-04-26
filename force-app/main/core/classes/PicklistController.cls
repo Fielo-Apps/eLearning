@@ -1,4 +1,4 @@
-public with sharing class PicklistController {
+global with sharing class PicklistController {
 
 	public class Entry {
 		public String Id{get;set;}
@@ -38,7 +38,7 @@ public with sharing class PicklistController {
 		      try {
 		    	optionsList = (List<Entry>) JSON.deserialize( cOptions, List<Entry>.class );
 	          } catch( JSONException e ) {
-	              system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + cOptions );        
+	              system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + cOptions );
 	          }
 		    } else {
 		    	optionsList = new List<Entry>();
@@ -50,12 +50,12 @@ public with sharing class PicklistController {
 	public String fixedName { get{
 		if (fixedName == null && cValue != null) {
 			fixedName = ((String) getName(cValue).get('Name')) ;
-		} 
+		}
 		return fixedName;
 	} set;}
 
 	@RemoteAction
-	public static List<sObject> getRecordsSOSL( String sObjectName, String idField, String idLabel, String metaField, String whereCondition, String searchTerm  ){
+	global static List<sObject> getRecordsSOSL( String sObjectName, String idField, String idLabel, String metaField, String whereCondition, String searchTerm  ){
 		if ( searchTerm.length() > 1 ) {
 			DescribeSObjectResult objectDescribe = Schema.describeSObjects(new String[]{sObjectName})[0];
 			Map<String, Schema.SObjectField> fieldsMap = objectDescribe.fields.getMap();
@@ -78,13 +78,13 @@ public with sharing class PicklistController {
 				throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{sObjectName}));
 			}
 
-			return records.get(0);	
+			return records.get(0);
 		}
 		return null;
 	}
 
 	@RemoteAction
-	public static List<sObject> getRecords( String sObjectName, String idField, String idLabel, String metaField, String whereCondition, String searchTerm  ){
+	global static List<sObject> getRecords( String sObjectName, String idField, String idLabel, String metaField, String whereCondition, String searchTerm  ){
 		DescribeSObjectResult objectDescribe = Schema.describeSObjects(new String[]{sObjectName})[0];
 		Map<String, Schema.SObjectField> fieldsMap = objectDescribe.fields.getMap();
 
@@ -117,7 +117,7 @@ public with sharing class PicklistController {
 	}
 
     @RemoteAction
-    public static sObject getName( ID lookupId ) {
+    global static sObject getName( ID lookupId ) {
         return CoreService.getName(lookupId);
-    } 
+    }
 }

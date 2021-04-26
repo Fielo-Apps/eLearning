@@ -1,4 +1,4 @@
-public with sharing class FormController {
+global with sharing class FormController {
 
     /*****  Datos  *****/
     public String csObjectName{get;set;}
@@ -334,7 +334,7 @@ public with sharing class FormController {
 
     /*****  Metodos Remote para Save y Retrieve *****/
     @RemoteAction
-    public static RemoteActionResult save( sObject record, List<String> nullFields ){
+    global static RemoteActionResult save( sObject record, List<String> nullFields ){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
         try{
@@ -390,7 +390,7 @@ public with sharing class FormController {
     }
 
     @RemoteAction
-    public static sObject retrieve( String objectName, String recordId, String fields ){
+    global static sObject retrieve( String objectName, String recordId, String fields ){
         Map<String, Schema.SObjectField> fieldsMap = Schema.describeSObjects(new String[]{objectName})[0].fields.getMap();
         Set<String> newFields = new Set<String>();
 		for(String s : fields.split(',')){
