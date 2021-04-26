@@ -1,34 +1,39 @@
 <apex:component layout="none">
   <apex:attribute name="ns" description="namespace of package" type="String" default="" />
   <apex:attribute name="offset" description="offset hours" type="Long" default="" />
-	<script>
-	  // Seteo la variable para los recursos CSS
-	  if(typeof BackEndJSSettings == 'undefined') {
+  <apex:attribute name="locale" description="locale of the user" type="String" default="" />
+  <apex:attribute name="dateFormat" description="dateFormat of the user" type="String" default="" />
+  <apex:attribute name="dateTimeFormat" description="dateTimeFormat of the user" type="String" default="" />
+  <apex:attribute name="language" description="language of the user" type="String" default="" />
+  <script>
+    // Seteo la variable para los recursos CSS
+    if (typeof BackEndJSSettings == 'undefined') {
       var BackEndJSSettings = {};
     }
 
     BackEndJSSettings.OFFSET = {!offset};
-    BackEndJSSettings.DATE_FORMAT = UserContext.dateFormat;
-    BackEndJSSettings.DATETIME_FORMAT = UserContext.dateTimeFormat;
+    BackEndJSSettings.LOCALE = '{!locale}' || 'en';
+    BackEndJSSettings.DATE_FORMAT = '{!dateFormat}';
+    BackEndJSSettings.DATETIME_FORMAT = '{!dateTimeFormat}';
+    BackEndJSSettings.LANGUAGE = '{!language}';
 
-
-    if(typeof BackEndJSSettings.RESOURCE == 'undefined') {
+    if (typeof BackEndJSSettings.RESOURCE == 'undefined') {
       BackEndJSSettings.RESOURCE = {};
     }
 
     BackEndJSSettings.RESOURCE.NAMESPACE = "{!IF(ISBLANK(ns),'',ns + '.')}";
     BackEndJSSettings.RESOURCE.BACKEND = '{!URLFOR($Resource.FieloSalesforce_Backend)}';
 
-    if(typeof BackEndJSSettings.LABELS == 'undefined') {
-    	BackEndJSSettings.LABELS = {};
+    if (typeof BackEndJSSettings.LABELS == 'undefined') {
+      BackEndJSSettings.LABELS = {};
     }
 
-  	BackEndJSSettings.LABELS.Close = '{!JSENCODE($Label.Close)}';
-  	BackEndJSSettings.LABELS.ReviewFollowingErrors = '{!JSENCODE($Label.ReviewFollowingErrors)}';
-  	BackEndJSSettings.LABELS.Areyousure = '{!JSENCODE($Label.Areyousure)}';
-  	BackEndJSSettings.LABELS.CompleteRequiredFields = '{!JSENCODE($Label.CompleteRequiredFields)}';
+    BackEndJSSettings.LABELS.Close = '{!JSENCODE($Label.Close)}';
+    BackEndJSSettings.LABELS.ReviewFollowingErrors = '{!JSENCODE($Label.ReviewFollowingErrors)}';
+    BackEndJSSettings.LABELS.Areyousure = '{!JSENCODE($Label.Areyousure)}';
+    BackEndJSSettings.LABELS.CompleteRequiredFields = '{!JSENCODE($Label.CompleteRequiredFields)}';
     BackEndJSSettings.LABELS.NoRecordsToShow = '{!JSENCODE($Label.NoRecordsToShow)}';
-  	BackEndJSSettings.LABELS.Loading = '{!JSENCODE($Label.Loading)}';
+    BackEndJSSettings.LABELS.Loading = '{!JSENCODE($Label.Loading)}';
     BackEndJSSettings.LABELS.ExternalURLPhotoUpload = '{!$Label.ExternalURLPhotoUpload}';
-	</script>
+  </script>
 </apex:component>

@@ -1470,9 +1470,11 @@ var handlers = {
 
     this.wheeling = true;
 
-    setTimeout(function () {
-      _this.wheeling = false;
-    }, 50);
+    setTimeout(
+      $A.getCallback(function() {
+        _this.wheeling = false;
+      }), 50
+    );
 
     var delta = 1;
 
@@ -3146,15 +3148,17 @@ var Cropper = function () {
       this.setData(options.data);
 
       // Trigger the ready event asynchronously to keep `data('cropper')` is defined
-      this.completing = setTimeout(function () {
-        if ($.isFunction(options.ready)) {
-          $element.one(EVENT_READY, options.ready);
-        }
+      this.completing = setTimeout(
+        $A.getCallback(function() {
+          if ($.isFunction(options.ready)) {
+            $element.one(EVENT_READY, options.ready);
+          }
 
-        _this3.trigger(EVENT_READY);
-        _this3.trigger(EVENT_CROP, _this3.getData());
-        _this3.completed = true;
-      }, 0);
+          _this3.trigger(EVENT_READY);
+          _this3.trigger(EVENT_CROP, _this3.getData());
+          _this3.completed = true;
+        }), 0
+      );
     }
   }, {
     key: 'unbuild',
