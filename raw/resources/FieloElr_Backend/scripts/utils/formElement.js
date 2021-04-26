@@ -282,11 +282,6 @@
 
     this.disableTimezoneFix_ =
         this.element_.getAttribute(this.Constant_.TIMEZONE_FIX) || null;
-
-    if (this.fieldName_ == 'FieloELR__StartDate__c' ||
-    this.fieldName_ == 'FieloELR__EndDate__c') {
-      this.disableTimezoneFix_ = true;
-    }
   };
 
   /**
