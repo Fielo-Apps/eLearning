@@ -1,0 +1,151 @@
+// Arregla header
+
+.fielosf .slds-text-heading--medium,
+.fielosf .slds-grid {
+  display: table-cell;
+}
+
+.fielosf .slds-button,
+.fielosf .slds-button-group,
+.fielosf .slds-button--last {
+  display: inline-block;
+
+  &.slds-hide {
+    display: none;
+  }
+}
+
+.fielosf .slds-button-group .slds-button {
+  margin-left: -4px !important;
+}
+
+.fielosf .slds-button-group {
+  vertical-align: middle;
+}
+
+.slds-page-header > .slds-grid {
+  display: table;
+  width: 100%;
+
+  & > .slds-col {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+
+  & > .slds-col + .slds-col {
+    float: right;
+  }
+}
+
+.slds-page-header__detail-row li {
+  float: left;
+}
+
+// arregla dropdown feos
+.slds-dropdown .slds-dropdown__item p {
+  display: inline;
+  line-height: 32px;
+}
+
+.fielosf .slds-nubbin--top::before,
+.fielosf .slds-nubbin--top::after {
+  display: none;
+}
+
+.fielosf .slds-nubbin--top {
+  margin: 0;
+}
+
+.slds-dropdown.slds-nubbin--top {
+  left: inherit;
+  right: -10px;
+}
+
+// Alínea a la izquierda los items de menu
+.slds-dropdown .slds-dropdown__item > a {
+  display: block;
+  text-align: left;
+
+  & > svg {
+    float: right;
+    margin-top: 8px;
+  }
+}
+
+// Arregla el contenido del body al 100%
+.fielosf .fielosf-body {
+  display: table;
+  width: 100%;
+
+  // Hace flotar a los cards para el FrontEnd
+  .slds-col {
+    display: table-cell;
+    vertical-align: top;
+  }
+}
+
+.fielosf-header .slds-media__figure {
+  float: left;
+}
+
+// Arregla el header de los cards
+.fielosf .slds-card__header {
+  display: table;
+  width: 100%;
+
+  & > .slds-media {
+    float: left;
+
+    & > .slds-media__figure {
+      float: left;
+    }
+  }
+
+  & > .slds-media + .slds-no-flex {
+    float: right;
+  }
+}
+
+// Centra la caja del feedback
+.fielosf .slds-modal {
+  & .slds-modal__container {
+    top: 50%;
+    margin-top: -211px;
+    margin-bottom: 0;
+    height: inherit;
+  }
+}
+
+@media (max-width: 48em) {
+  // Arregla tabla mobile
+  // Estaquea verticalmente
+  .slds-max-medium-table--stacked-horizontal {
+    th,
+    td {
+      float: left;
+      width: 100%;
+    }
+  }
+
+  // Arregla botonera para que no se pegue al menú principal
+  .slds-page-header > .slds-grid {
+    & > .slds-col:first-child {
+      display: block;
+    }
+
+    & > .slds-col + .slds-col {
+      float: left;
+    }
+  }
+
+  // Estaquea verticalmente las cards
+  .fielosf .fielosf-body {
+    & > .slds-col:first-child {
+      display: block;
+    }
+
+    & > .slds-col + .slds-col {
+      float: left;
+    }
+  }
+}

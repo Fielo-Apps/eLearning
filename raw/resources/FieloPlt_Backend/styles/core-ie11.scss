@@ -1,0 +1,11 @@
+@media (max-width: 48em) {
+  // Arregla tabla mobile
+  // Estaquea verticalmente
+  .slds-max-medium-table--stacked-horizontal {
+    th,
+    td {
+      float: left;
+      width: 100%;
+    }
+  }
+}

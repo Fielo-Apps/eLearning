@@ -1,0 +1,27 @@
+.fielosf-menu {
+  position: relative;
+}
+
+//iconos
+.fielosf-icon__label {
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-block;
+  text-align: center;
+}
+
+.fielosf-icon__label-text {
+  float: left;
+  padding-left: 0;
+  width: 100%;
+}
+
+.fielosf-icon__label-input {
+  width: 100%;
+}
+
+.fielosf-icon__label-icon {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
