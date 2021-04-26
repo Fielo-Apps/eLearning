@@ -18,7 +18,7 @@
     <apex:attribute name="saveConfirm" description="Confirmation before save" type="String" default="false" />
     <apex:attribute name="saveConfirmMessage" description="Confirmation message before save" type="String" default="false" />
     <apex:attribute name="renderButtons" description="Shows save and cancel buttons" type="Boolean" default="true" />
-    
+
     <div id="{!formId}" role="dialog" tabindex="-1" aria-labelledby="{!formId}headerModal" class="slds-hide slds-modal slds-fade-in-open slds-form {!className}" data-on-show="FieloForm_retrieve" data-save-controller="{!IF(namespace == '','',namespace + '.')}{!saveController}" data-retrieve-controller="{!IF(namespace == '','',namespace + '.')}{!retrieveController}" data-object-name="{!sObjectName}" data-fields="{!fields}" data-secondary-parameters="{!secondaryParameters}" data-redirect="{!redirect}">
         <div class="slds-modal__container">
             <div class="slds-modal__header slds-text-heading--medium">
@@ -52,8 +52,8 @@
                                                 </div>
                                             </apex:panelGroup>
                                             <apex:panelGroup layout="none"  rendered="{! d.Type == 'input'}" >
-                                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
-                                            </apex:panelGroup>                                            
+                                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}" disableTimezoneFix="{!d.DisableTimezoneFix}"/>
+                                            </apex:panelGroup>
                                             <apex:panelGroup layout="none"  rendered="{! d.Type == 'checkbox'}" >
                                                 <c:Checkbox toggle="true" formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF(ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
                                             </apex:panelGroup>
@@ -101,7 +101,7 @@
           if(typeof BackEndJSSettings.LABELS == 'undefined') {
             BackEndJSSettings.LABELS = {};
           }
- 
+
           BackEndJSSettings.LABELS.ErrorReviewErrorsForm = '{!$Label.fieloelr__errorreviewerrorsform}';
         </script>
     </div>

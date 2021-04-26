@@ -247,29 +247,6 @@
       delete this.data_.cloneId;
     }
 
-    if (this.data_ && this.data_.FieloELR__StartDate__c) {
-      var startDateStr = new Date(
-        this.elements_
-          .FieloELR__StartDate__c
-          .FieloFormElement
-          .input_.value).toISOString();
-      startDateStr =
-        startDateStr.substring(0, startDateStr.indexOf('T'));
-      this.data_.FieloELR__StartDate__c = // eslint-disable-line camelcase
-        new Date(startDateStr + 'T00:00:00Z').getTime();
-    }
-
-    if (this.data_ && this.data_.FieloELR__EndDate__c) {
-      var endDateStr = new Date(
-        this.elements_
-          .FieloELR__EndDate__c
-          .FieloFormElement
-          .input_.value).toISOString();
-      endDateStr =
-        endDateStr.substring(0, endDateStr.indexOf('T'));
-      this.data_.FieloELR__EndDate__c = // eslint-disable-line camelcase
-        new Date(endDateStr + 'T00:00:00Z').getTime();
-    }
 
     if (this.checkRequiredPassOk_()) {
       // Arma el array de argumentos para el Invoke
@@ -309,21 +286,6 @@
       notify.FieloNotify.show();
       fielo.util.spinner.FieloSpinner.hide();
     }
-  };
-
-  FieloELearning.prototype.endRetrieve = function() {
-    if (this.elements_ &&
-      this.elements_.FieloELR__StartDate__c) {
-        this.elements_
-          .FieloELR__StartDate__c
-          .FieloFormElement.set('value', new Date(Date(this.result.FieloELR__StartDate__c)));
-      }
-    if (this.elements_ &&
-      this.elements_.FieloELR__EndDate__c) {
-        this.elements_
-          .FieloELR__EndDate__c
-          .FieloFormElement.set('value', new Date(Date(this.result.FieloELR__EndDate__c)));
-      }
   };
 
    /**
@@ -457,7 +419,6 @@
       fieloForms.forEach(function(fForm) {
         if (fForm.FieloForm) {
           fForm.FieloForm.save_ = this.save_.bind(fForm.FieloForm);
-          fForm.FieloForm.endRetrieve = this.endRetrieve.bind(fForm.FieloForm);
         }
       }.bind(this));
     }

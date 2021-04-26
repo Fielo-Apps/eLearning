@@ -33,6 +33,7 @@
     FIELD_LABEL: 'data-field-label',
     FIELD_META: 'data-field-meta',
     FIELD_NAME: 'data-field-name',
+    TIMEZONE_FIX: 'data-timezone-fix',
     FORM_ID: 'data-id',
     LOOKUP_ITEMS: 'data-items',
     OBJECT_LABEL: 'data-object-label',
@@ -278,6 +279,9 @@
     if (this.input_.value !== '') {
       this.set('value', fielo.util.parseDateFromSF(this.input_.value));
     }
+
+    this.disableTimezoneFix_ =
+        this.element_.getAttribute(this.Constant_.TIMEZONE_FIX) || null;
   };
 
   /**
@@ -839,44 +843,47 @@
             value = this.input_.value;
             if (this.input_.value) {
               value = $(this.input_).datepicker('getDate').valueOf();
-              // gets the offset
-              var offset = new Date().getTimezoneOffset();
-              // check if  we are in DST
-              if (new Date().isDst()) {
-                // We are in DST
-                // So then the computer clock was already forwarded one hour
-                if (
+
+              if (!this.disableTimezoneFix_) {
+                // gets the offset
+                var offset = new Date().getTimezoneOffset();
+                // check if  we are in DST
+                if (new Date().isDst()) {
+                  // We are in DST
+                  // So then the computer clock was already forwarded one hour
+                  if (
+                    new Date(value).toLocaleDateString('en', {
+                      timeZoneName: 'long'
+                    }).indexOf('Summer Time') === -1
+                  ) {
+                    // Since the selected date isn't summer time
+                    // we need to compensate the removed hour by the computer
+                    offset += 60;
+                  }
+                } else if (
                   new Date(value).toLocaleDateString('en', {
                     timeZoneName: 'long'
-                  }).indexOf('Summer Time') === -1
+                  }).indexOf('Summer Time') > -1
                 ) {
-                  // Since the selected date isn't summer time
-                  // we need to compensate the removed hour by the computer
-                  offset += 60;
+                  // We aren't in DST
+                  // So then the computer clock isn't forwarded
+
+                  // Since the selected date is summer time
+                  // we need to remove since we aren't in DST and
+                  // one hour more since is a summer time date
+                  offset -= 60;
                 }
-              } else if (
-                new Date(value).toLocaleDateString('en', {
-                  timeZoneName: 'long'
-                }).indexOf('Summer Time') > -1
-              ) {
-                // We aren't in DST
-                // So then the computer clock isn't forwarded
+                // change the offset sign because is inverted
+                offset *= -1;
+                // Add the offset hours needed to standarize the date to 0
+                value += offset * 60000;
 
-                // Since the selected date is summer time
-                // we need to remove since we aren't in DST and
-                // one hour more since is a summer time date
-                offset -= 60;
-              }
-              // change the offset sign because is inverted
-              offset *= -1;
-              // Add the offset hours needed to standarize the date to 0
-              value += offset * 60000;
-
-              if (this.type_ === 'input-datetime') {
-                // reset standard offset
-                value -= offset * 60000;
-                // Agrega perfiles definido en SF
-                value += BackEndJSSettings.OFFSET * 60000; // eslint-disable-line no-undef
+                if (this.type_ === 'input-datetime') {
+                  // reset standard offset
+                  value -= offset * 60000;
+                  // Agrega perfiles definido en SF
+                  value += BackEndJSSettings.OFFSET * 60000; // eslint-disable-line no-undef
+                }
               }
             } else {
               value = null;
@@ -1183,7 +1190,6 @@
    * Inicializa el elemento
    */
   FieloFormElement.prototype.init = function() {
-    console.log('FieloFormElement init!');
     if (this.element_) {
       this.id_ = this.element_.getAttribute(this.Constant_.COMPONENT_ID);
       this.help_ =

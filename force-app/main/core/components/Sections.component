@@ -1,5 +1,5 @@
 <apex:component controller="SectionController" layout="none">
-    
+
     <apex:attribute name="formId" type="String" default="form" description="" assignTo="{!cFormId}"/>
     <apex:attribute name="fieldset" type="String" default="" description="Form Fields" assignTo="{!cFieldset}" />
     <apex:attribute name="sObjectName" type="String" default="" description="" assignTo="{!csObjectName}" />
@@ -21,14 +21,14 @@
                     <apex:repeat value="{!s.Rows}" var="r">
                         <div class="slds-form-element__row slds-p-bottom--small">
                             <apex:repeat value="{!r}" var="d">
-                                
+
                                     <apex:panelGroup layout="none" rendered="{! d.Type == 'hidden'}" >
                                         <div class="slds-form-element slds-hide" data-component-id="{!d.Name}" >
                                             <input type="hidden" name="{!d.Name}" value="{!d.Value}" />
                                         </div>
                                     </apex:panelGroup>
                                     <apex:panelGroup layout="none"  rendered="{! d.Type == 'input'}" >
-                                        <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!IF(CONTAINS(d.Name,'.'),$ObjectType[d.TargetObject].Fields[d.TargetField],$ObjectType[sObjectName].Fields[d.Name])}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF(ISBLANK(cRecord),d.Value,cRecord[d.Name])}" fieldLabel="{!d.Label}"/>
+                                        <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!IF(CONTAINS(d.Name,'.'),$ObjectType[d.TargetObject].Fields[d.TargetField],$ObjectType[sObjectName].Fields[d.Name])}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF(ISBLANK(cRecord),d.Value,cRecord[d.Name])}" fieldLabel="{!d.Label}" disableTimezoneFix="{!d.DisableTimezoneFix}"/>
                                     </apex:panelGroup>
                                     <apex:panelGroup layout="none"  rendered="{! d.Type == 'checkbox'}" >
                                         <c:Checkbox toggle="true" formid="{!formId}" required="{!d.RequiredValue}" describe="{!IF(CONTAINS(d.Name,'.'),$ObjectType[d.TargetObject].Fields[d.TargetField],$ObjectType[sObjectName].Fields[d.Name])}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(cRecord),d.Value,cRecord[d.Name])}" fieldLabel="{!d.Label}"/>
@@ -53,19 +53,19 @@
                                             </div>
                                         </div>
                                     </apex:panelGroup>
-    
+
                                     <apex:panelGroup layout="none" rendered="{! d.Type == 'richtext'}" >
                                         <c:RichText formId="{!formId}" required="{!d.RequiredValue}" record="{!cRecord}" fieldName="{!d.Name}" describe="{!IF(CONTAINS(d.Name,'.'),$ObjectType[d.TargetObject].Fields[d.TargetField],$ObjectType[sObjectName].Fields[d.Name])}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>
                                     </apex:panelGroup>
                                     <apex:panelGroup layout="none" rendered="{! d.Type == 'photoupload'}" >
-                                         <c:PhotoUpload record="{!recordObject}" 
-                                            folderName="{!d.Folder}" 
-                                            fieldName="{!d.Name}" 
-                                            externalURLName="{!d.ExternalURL}" 
+                                         <c:PhotoUpload record="{!recordObject}"
+                                            folderName="{!d.Folder}"
+                                            fieldName="{!d.Name}"
+                                            externalURLName="{!d.ExternalURL}"
                                             sObjectName="{!sObjectName}"
                                             instance="{!d.Instance}"
                                           />
-                                    </apex:panelGroup>                                
+                                    </apex:panelGroup>
                             </apex:repeat>
                         </div>
                     </apex:repeat>

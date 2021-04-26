@@ -17,7 +17,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 		Id recordId = controller.getId();
 		Set<String> fields = new Set<String>();
 
-		
+
 		fields.addAll(Schema.describeSObjects(
 			new String[]{objectName})[0].fields.getMap().keySet());
 
@@ -29,7 +29,7 @@ public with sharing class CourseViewController extends PageSettingsController {
             fields.remove(fieldName);
             if(!fieldFilter.contains(fieldName)){
                 fields.add(fieldName.toLowerCase());
-            }   
+            }
 		}
 
         record = (FieloELR__Course__c)controller.getRecord();
@@ -55,7 +55,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 
 		if(!buttonList.isEmpty()){
             buttonString = JSON.serialize(buttonList);
-            buttonString = buttonString.substring(1,buttonString.length()-1);    
+            buttonString = buttonString.substring(1,buttonString.length()-1);
         }
 
         String standardTools = '';
@@ -64,7 +64,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 		exportPage.getParameters().put( 'courseId', recordId );
 		exportPage.getParameters().put( 'type', 'courses' );
 
-		
+
 		buttonList = new List<Map<String,Object>>();
 		buttonList.add(new Map<String,Object>{
             'Label' => 'Export',
@@ -80,7 +80,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 
 		standardTools = JSON.serialize(buttonList);
         standardTools = standardTools.substring(1,standardTools.length()-1);
-		
+
 		initPageSettings(objectName, (SObject) record, buttonString, standardTools, '', record.Id);
 
 		editSettings.FieloPLT__Sections__c = getSectionsWithSegmentWhereCondition(editSettings.FieloPLT__Sections__c, record.Program__c);
@@ -124,7 +124,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 				}
 			}
 		}
-		
+
 		if ( fieldList.size() > 0  ) {
 			for(String fieldName:fieldList) {
 				fields.add(fieldName);
@@ -165,7 +165,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 	}
 
 	public Boolean getShowInActivate() {
-		return this.record.FieloELR__Status__c == 'Active' || 
+		return this.record.FieloELR__Status__c == 'Active' ||
 			this.record.FieloELR__Status__c == 'Scheduled' ||
 			this.record.FieloELR__Status__c == 'Completed';
 	}
@@ -187,7 +187,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 		}
 
 		List<Course__c> result;
-		
+
 		// SR: CRUD Check
 		if ( Schema.sObjectType.Course__c.isAccessible() && Schema.sObjectType.FieloPLT__Segment__c.isAccessible()) {
 			if (Schema.sObjectType.FieloPLT__Segment__c.fields.FieloPLT__RelatedSegments__c.isAccessible()) {
@@ -226,7 +226,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 			for ( String f :nullFields ) {
          		record.put(f, null );
 			}
-			
+
 			// SR: FLS Check
 			if ( Schema.sObjectType.Course__c.fields.Segment__c.isUpdateable() && Schema.sObjectType.Course__c.fields.Segment__c.isCreateable() ) {
 				if ( segments.size() == 1 ) {
@@ -315,7 +315,7 @@ public with sharing class CourseViewController extends PageSettingsController {
                     	if (fieldName != 'Id') {
                     		if (String.valueOf(fieldMap.get(fieldName).getDescribe().getType()) == 'DOUBLE') {
                     			if (record.get(fieldName) != null) {
-	                    			courses.get(0).put(fieldName, 
+	                    			courses.get(0).put(fieldName,
 	                    				record.get(fieldName) instanceof String ?
 	                    					Decimal.valueOf((String)record.get(fieldName)):
 	                    					Decimal.valueOf((Double)record.get(fieldName)));
@@ -391,7 +391,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 			//TODO Crear Label DataSavedSuccessfully
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 			result.redirectURL = '/' + record.Id;
-			
+
     	}catch(DMLException e){
     		if(sp != null){
 	            Database.rollback(sp);
@@ -403,11 +403,11 @@ public with sharing class CourseViewController extends PageSettingsController {
 	            Database.rollback(sp);
         	}
         	result.addMessage(new RemoteActionResult.RemoteActionMessage(e));
-    	}	    	
-	  	
+    	}
+
 	  	return result;
   	}
-	
+
   	@RemoteAction
   	public static RemoteActionResult saveCourseDependency( SObject record, List<String> nullFields) {
 		Savepoint sp;
@@ -436,7 +436,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 			}else{
 				throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{'CourseDependency__c'}));
 			}
-        	
+
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.DataSavedSuccessfully) );
 			result.redirectURL = '/' + ((CourseDependency__c)record).Course__c;
     	}catch(DMLException e){
@@ -469,35 +469,11 @@ public with sharing class CourseViewController extends PageSettingsController {
         return records;
     }
 
-    public class Section {
-        public String Name{get;set;}
-        public List<List<FormField>> Rows{get;set;}
-        public String CssClass{get;set;}
-    }
-
-    public class FormField {
-        public String Type{get;set;}
-        public String MetaField{get;set;}
-        public String Name{get;set;}
-        public String onchange{get;set;}
-        public String Label{get;set;}
-        public String Value{get;set;}
-        public String WhereCondition{get;set;}
-        public Boolean Required{get;set;}
-
-        public String getRequiredValue () {
-            if ( Required != null ) {
-                return Required ? 'true' : 'false';
-            }
-            return '';
-        }
-    }
-
     public static String getSectionsWithSegmentWhereCondition(String sectionsString, String programId){
-        List<Section> sections = (List<Section>) JSON.deserialize( sectionsString, List<CourseViewController.Section>.class );
-        for ( Section s :sections ) {
-          for ( List<FormField> r :s.rows ) {
-            for ( FormField f :r ) {
+        List<FormController.Section> sections = (List<FormController.Section>) JSON.deserialize( sectionsString, List<FormController.Section>.class );
+        for ( FormController.Section s :sections ) {
+          for ( List<FormController.FormField> r :s.rows ) {
+            for ( FormController.FormField f :r ) {
               if(f.Name != null) {
                 if(f.Name == 'FieloELR__Segment__c') {
                     f.WhereCondition = ' FieloPLT__Program__c IN ( //, /' + programId + '/ ) AND RecordType.Name <> /Metasegment/ ';
@@ -511,9 +487,9 @@ public with sharing class CourseViewController extends PageSettingsController {
     }
 
     public static String getSectionsWithCourseWhereCondition(String sectionsString, String programId, String courseId){
-	    Section section = (Section) JSON.deserialize( sectionsString, CourseViewController.Section.class );
-		for ( List<FormField> r :section.rows ) {
-			for ( FormField f :r ) {
+	    FormController.Section section = (FormController.Section) JSON.deserialize( sectionsString, FormController.Section.class );
+		for ( List<FormController.FormField> r :section.rows ) {
+			for ( FormController.FormField f :r ) {
 		  		if(f.Name != null) {
 		    		if(f.Name == 'FieloELR__Predecessor__c') {
 		        		f.WhereCondition = ' FieloELR__Program__c = /' + programId + '/ AND Id != /' + courseId + '/';
@@ -529,7 +505,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			CourseService.activateCourses(new Set<Id>{recordId});
-			
+
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.CourseActivated) );
 
 			result.redirectURL = '/' + recordId;
@@ -547,7 +523,7 @@ public with sharing class CourseViewController extends PageSettingsController {
 		RemoteActionResult result = new RemoteActionResult();
 		try{
 			CourseService.inactivateCourses(new Set<Id>{recordId});
-			
+
 			result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, Label.CourseInactivated) );
 
 			result.redirectURL = '/' + recordId;

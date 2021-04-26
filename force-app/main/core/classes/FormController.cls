@@ -63,6 +63,7 @@ public with sharing class FormController {
         public String WhereCondition{get;set;}
         public Boolean Required{get;set;}
         public Boolean ReadOnly{get;set;}
+        public Boolean DisableTimezoneFix{get;set;}
         public String SearchField{get;set;}
 
         public String getRequiredValue () {
@@ -72,12 +73,17 @@ public with sharing class FormController {
         return '';
         }
         public String getReadOnly () {
-        if ( ReadOnly != null ) {
-            return ReadOnly ? 'true' : 'false';
+            if ( ReadOnly != null ) {
+                return ReadOnly ? 'true' : 'false';
+            }
+            return '';
         }
-        return '';
+        public String getDisableTimezoneFix () {
+            if ( DisableTimezoneFix != null ) {
+                return DisableTimezoneFix ? 'true' : 'false';
+            }
+            return '';
         }
-
     }
 
     private void loadSections () {
@@ -88,7 +94,7 @@ public with sharing class FormController {
             cFieldset = '[' + cFieldset.replace('\'', '"') + ']';
             }
             try {
-            sections = (List<Section>) JSON.deserialize( cFieldset, List<FormController.Section>.class );
+                sections = (List<Section>) JSON.deserialize( cFieldset, List<FormController.Section>.class );
             } catch( JSONException e ) {
             system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
             return;
