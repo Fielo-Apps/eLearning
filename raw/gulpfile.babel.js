@@ -193,6 +193,34 @@ gulp.task('watch', () => {
   gulp.watch(platformSalesforceJsSources, ['js']);
 });
 
+// Copy Images
+gulp.task('images', ['cleanImages'], () => {
+  // CORE
+  gulp.src(['resources/FieloElr_Backend/images/**'], {
+      dot: true
+    })
+    .pipe(gulp.dest('../force-app/main/core/staticresources/FieloSalesforce_Backend/images'))
+    .pipe($.size({
+      title: 'copy'
+    }));
+
+  // PLT
+  gulp.src(['resources/FieloPlt_Salesforce/images/**'], {
+      dot: true
+    })
+    .pipe(gulp.dest('../plt/main/default/staticresources/FieloPlt_Salesforce/images'))
+    .pipe($.size({
+      title: 'copy'
+    }));
+});
+
+// Clean Images
+gulp.task('cleanImages', () => del([
+  '../force-app/main/core/staticresources/FieloSalesforce_Backend/images/**'
+], {
+  dot: true,
+  force: true
+}));
 
 // Javascript documentation
 gulp.task('doc', ['cleanDoc'], () => {
@@ -259,7 +287,16 @@ gulp.task('cleanVendor', () => del([
 // Build production site files
 gulp.task('build', ['clean'], cb => {
   runSequence(
-    'css', 'js', // 'doc',
+    'vendor', 'images', 'js', 'css',
     cb
- );
+  );
+});
+
+
+// Gulp default task
+gulp.task('default', cb => {
+  runSequence(
+    'build',
+    cb
+  );
 });
