@@ -282,6 +282,11 @@
 
     this.disableTimezoneFix_ =
         this.element_.getAttribute(this.Constant_.TIMEZONE_FIX) || null;
+
+    if (this.fieldName_ == 'FieloELR__StartDate__c' ||
+    this.fieldName_ == 'FieloELR__EndDate__c') {
+      this.disableTimezoneFix_ = true;
+    }
   };
 
   /**
@@ -1238,6 +1243,9 @@
       this.optionsGetter_ =
         this.element_.getAttribute(this.Constant_.OPTIONS_GETTER) || null;
       this.dependableElements = {};
+
+      this.fieldName_ =
+        this.element_.getAttribute(this.Constant_.FIELD_NAME);
 
       switch (this.type_) {
         case 'picklist':
