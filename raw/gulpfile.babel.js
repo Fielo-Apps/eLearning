@@ -63,33 +63,33 @@ var platformSalesforceJs = [{
     // CORE
     src: [
       // vendor
-      'resources/FieloPlt_Backend/vendor/cropper/cropper.min.js',
+      'resources/FieloElr_Backend/vendor/cropper/cropper.min.js',
       // polyfill para navegadores incompatibles
-      'resources/FieloPlt_Backend/scripts/polyfill/date.js',
-      'resources/FieloPlt_Backend/scripts/polyfill/classList.js',
-      'resources/FieloPlt_Backend/scripts/polyfill/remove.js',
-      'resources/FieloPlt_Backend/scripts/polyfill/assign.js',
-      'resources/FieloPlt_Backend/vendor/svg4everybody/svg4everybody.min.js',
+      'resources/FieloElr_Backend/scripts/polyfill/date.js',
+      'resources/FieloElr_Backend/scripts/polyfill/classList.js',
+      'resources/FieloElr_Backend/scripts/polyfill/remove.js',
+      'resources/FieloElr_Backend/scripts/polyfill/assign.js',
+      'resources/FieloElr_Backend/vendor/svg4everybody/svg4everybody.min.js',
       // Utils - los tiene que inicializar un controlador externo
-      'resources/FieloPlt_Backend/scripts/helpers/main.js',
-      'resources/FieloPlt_Backend/scripts/helpers/ComponentHandler.js',
-      'resources/FieloPlt_Backend/scripts/utils/ckeditor.js',
-      'resources/FieloPlt_Backend/scripts/utils/notify.js',
-      'resources/FieloPlt_Backend/scripts/utils/formElement.js',
-      'resources/FieloPlt_Backend/scripts/utils/output.js',
+      'resources/FieloElr_Backend/scripts/helpers/main.js',
+      'resources/FieloElr_Backend/scripts/helpers/ComponentHandler.js',
+      'resources/FieloElr_Backend/scripts/utils/ckeditor.js',
+      'resources/FieloElr_Backend/scripts/utils/notify.js',
+      'resources/FieloElr_Backend/scripts/utils/formElement.js',
+      'resources/FieloElr_Backend/scripts/utils/output.js',
 
       // Helpers - se inicializan solos
-      'resources/FieloPlt_Backend/scripts/helpers/spinner.js',
-      'resources/FieloPlt_Backend/scripts/helpers/button.js',
-      'resources/FieloPlt_Backend/scripts/helpers/select.js',
-      'resources/FieloPlt_Backend/scripts/helpers/menu.js',
-      'resources/FieloPlt_Backend/scripts/helpers/tabs.js',
-      'resources/FieloPlt_Backend/scripts/helpers/paginator.js',
-      'resources/FieloPlt_Backend/scripts/helpers/filter.js',
-      'resources/FieloPlt_Backend/scripts/helpers/form.js',
-      'resources/FieloPlt_Backend/scripts/helpers/recentRecords.js',
-      'resources/FieloPlt_Backend/scripts/helpers/relatedRecords.js',
-      'resources/FieloPlt_Backend/scripts/helpers/photoUpload.js'
+      'resources/FieloElr_Backend/scripts/helpers/spinner.js',
+      'resources/FieloElr_Backend/scripts/helpers/button.js',
+      'resources/FieloElr_Backend/scripts/helpers/select.js',
+      'resources/FieloElr_Backend/scripts/helpers/menu.js',
+      'resources/FieloElr_Backend/scripts/helpers/tabs.js',
+      'resources/FieloElr_Backend/scripts/helpers/paginator.js',
+      'resources/FieloElr_Backend/scripts/helpers/filter.js',
+      'resources/FieloElr_Backend/scripts/helpers/form.js',
+      'resources/FieloElr_Backend/scripts/helpers/recentRecords.js',
+      'resources/FieloElr_Backend/scripts/helpers/relatedRecords.js',
+      'resources/FieloElr_Backend/scripts/helpers/photoUpload.js'
 
 
     ],
@@ -205,10 +205,10 @@ gulp.task('images', ['cleanImages'], () => {
     }));
 
   // PLT
-  gulp.src(['resources/FieloPlt_Salesforce/images/**'], {
+  gulp.src(['resources/FieloElr_Salesforce/images/**'], {
       dot: true
     })
-    .pipe(gulp.dest('../plt/main/default/staticresources/FieloPlt_Salesforce/images'))
+    .pipe(gulp.dest('../plt/main/default/staticresources/FieloElr_Salesforce/images'))
     .pipe($.size({
       title: 'copy'
     }));
