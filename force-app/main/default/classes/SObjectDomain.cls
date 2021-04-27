@@ -335,7 +335,7 @@ public without sharing virtual class SObjectDomain {
         }
     }
 
-    public static boolean isHandlerActive(String triggerField) {
+    public static boolean isHandlerActive(SObjectField triggerField) {
         return (
             FieloPLT__Triggers__c.getInstance(UserInfo.getUserId()).Id == null ||
             Boolean.valueOf(FieloPLT__Triggers__c.getInstance(UserInfo.getUserId()).get(triggerField))
