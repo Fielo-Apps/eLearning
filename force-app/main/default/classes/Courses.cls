@@ -33,12 +33,16 @@ public  class Courses extends SObjectDomain{
         if(validateAdminFields){
             for(Course__c course : (List<Course__c>)records){
                 if (course.StartDate__c != null) {
-                    if (course.StartDate__c < System.today()) {
+                    System.debug('Trigger received Start date: ' + course.StartDate__c);
+                    System.debug('Validated against: ' + System.now().dateGmt());
+                    if (course.StartDate__c < System.now().dateGmt()) {
                         course.addError(Label.CourseFutureDatesNotAllowed);
                     }
                 }
                 if (course.EndDate__c != null) {
-                    if (course.EndDate__c < System.today()) {
+                    System.debug('Trigger received End date: ' + course.EndDate__c);
+                    System.debug('Validated against: ' + System.now().dateGmt());
+                    if (course.EndDate__c < System.now().dateGmt()) {
                         course.addError(Label.CourseFutureDatesNotAllowed);
                     }
                 }

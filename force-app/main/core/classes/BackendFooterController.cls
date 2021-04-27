@@ -6,9 +6,7 @@ public with sharing class BackendFooterController {
     }
 
     public Long offset {get{
-    	DateTime now = DateTime.now();
-			offset = DateTime.newInstance(now.date(), now.time()).getTime() - DateTime.newInstance(now.dateGmt(), now.timeGmt()).getTime();
-			offset = (-1) * offset / (60 * 1000);
+			offset = (-1) * UserInfo.getTimeZone().getOffset(Datetime.now())/60000;
 			return offset;
     } set;}
 

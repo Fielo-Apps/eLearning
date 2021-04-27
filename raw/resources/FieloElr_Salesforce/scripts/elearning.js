@@ -247,7 +247,6 @@
       delete this.data_.cloneId;
     }
 
-
     if (this.checkRequiredPassOk_()) {
       // Arma el array de argumentos para el Invoke
       var invokeData = [];
@@ -288,6 +287,29 @@
     }
   };
 
+  FieloELearning.prototype.checkTimezone = function() {
+    var pcTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase();
+    var sfTimezone = BackEndJSSettings.USER_TIMEZONE.toLowerCase();
+
+    if (pcTimezone !== sfTimezone) {
+      var notify = fielo.util.notify.create();
+      notify.FieloNotify.addMessages([
+        BackEndJSSettings.LABELS.TimezoneMissmatch +
+        '. Web Browser Timezone: ' + pcTimezone +
+        ', Salesforce User Timezone: ' + sfTimezone
+      ]);
+      notify.FieloNotify.setTheme('warning', false);
+      notify.FieloNotify.show();
+
+      setTimeout(
+        function() {
+          this.hide();
+        }.bind(notify.FieloNotify),
+        30000
+      );
+    }
+  };
+
    /**
    * Inicializa el elemento
    */
@@ -299,6 +321,7 @@
         var _this = document.getElementsByClassName(
           'fielosf-elearning')[0];
         _this.FieloELearning.disableProgramChange_();
+        _this.FieloELearning.checkTimezone();
       });
 
       $('#FieloELR__Module__cFormNew').on('shown.aljs.modal', function() {
@@ -419,6 +442,15 @@
       fieloForms.forEach(function(fForm) {
         if (fForm.FieloForm) {
           fForm.FieloForm.save_ = this.save_.bind(fForm.FieloForm);
+        }
+      }.bind(this));
+
+      var fieloFormElements = document.querySelectorAll('.slds-modal .slds-form-element');
+      fieloFormElements.forEach(function(f) {
+        if (f.FieloFormElement &&
+          (f.FieloFormElement.get('fieldName') == 'FieloELR__StartDate__c' ||
+          f.FieloFormElement.get('fieldName') == 'FieloELR__EndDate__c')) {
+            f.FieloFormElement.disableTimezoneFix_ = true;
         }
       }.bind(this));
     }

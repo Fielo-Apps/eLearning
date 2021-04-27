@@ -281,7 +281,7 @@
     }
 
     this.disableTimezoneFix_ =
-        this.element_.getAttribute(this.Constant_.TIMEZONE_FIX) || null;
+        this.element_.getAttribute(this.Constant_.TIMEZONE_FIX) === "true" || null;
   };
 
   /**

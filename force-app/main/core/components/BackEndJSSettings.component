@@ -16,6 +16,7 @@
     BackEndJSSettings.DATE_FORMAT = '{!dateFormat}';
     BackEndJSSettings.DATETIME_FORMAT = '{!dateTimeFormat}';
     BackEndJSSettings.LANGUAGE = '{!language}';
+    BackEndJSSettings.USER_TIMEZONE = '{!TEXT($User.TimeZoneSidKey)}';
 
     if (typeof BackEndJSSettings.RESOURCE == 'undefined') {
       BackEndJSSettings.RESOURCE = {};
@@ -35,5 +36,6 @@
     BackEndJSSettings.LABELS.NoRecordsToShow = '{!JSENCODE($Label.NoRecordsToShow)}';
     BackEndJSSettings.LABELS.Loading = '{!JSENCODE($Label.Loading)}';
     BackEndJSSettings.LABELS.ExternalURLPhotoUpload = '{!$Label.ExternalURLPhotoUpload}';
+    BackEndJSSettings.LABELS.TimezoneMissmatch = '{!$Label.TimezoneMissmatch}';
   </script>
 </apex:component>
