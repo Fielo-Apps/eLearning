@@ -6,6 +6,8 @@ function removeFolder {
 function convertMetadata {
     echo 'Converting Source'
     sfdx force:source:convert --outputdir ../FieloELR --packagename FieloELR
+    echo 'Adding PostInstallClass'
+    gsed -i '$i  <postInstallClass>PackageInstallation</postInstallClass>' ../FieloELR/package.xml
 }
 
 function deployMetadata {
