@@ -17,7 +17,10 @@ global without sharing class PackageInstallation implements InstallHandler {
         if(context.PreviousVersion() == null){
             install(context.installerId());
         }else{
-
+            System.debug('Check: ' + context.previousVersion().compareTo(new Version(1,76)));
+            if(context.previousVersion().compareTo(new Version(1,76)) < 0) {
+                updateCourses();
+            }
         }
     }
 
@@ -38,5 +41,36 @@ global without sharing class PackageInstallation implements InstallHandler {
             CourseStatusBatchSchedule courseStatusBatch = new CourseStatusBatchSchedule();
             System.schedule('courseStatusJob' + sysTime.getTime(), chron_exp, courseStatusBatch);
         }
+    }
+
+    public static void updateCourses() {
+        FieloPLT__Triggers__c triggers = FieloPLT__Triggers__c.getInstance(UserInfo.getUserId());
+        triggers.Course__c = false;
+
+        if( SecurityUtils.canUpdate(FieloPLT__Triggers__c.sObjectType, new List<String>{'FieloELR__Course__c'}) ){
+            upsert triggers;
+        }else{
+            throw new FieloException(Label.CannotInsertUpdateRecords);
+        }
+
+        List<Course__c> courses = new List<Course__c>();
+
+        for(Course__c c : [SELECT Id, StartDate__c, EndDate__c FROM Course__c]) {
+            courses.add(
+                new Course__c(
+                    Id = c.Id,
+                    StartDatetime__c = c.StartDate__c != null ? (datetime) c.StartDate__c : null,
+                    EndDatetime__c = c.EndDate__c != null ? (datetime) c.EndDate__c : null
+                )
+            );
+        }
+
+        if (!courses.isEmpty()) {
+            update courses;
+        }
+
+        //Enable default Fielo triggers again
+        SecurityUtils.checkObjectIsDeletable(FieloPLT__Triggers__c.sObjectType);
+        delete triggers;
     }
 }

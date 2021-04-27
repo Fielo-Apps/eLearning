@@ -43,8 +43,8 @@
    * Configs date with moment
    */
   FieloOutput.prototype.configDate_ = function() {
-    var date = new Date(this.element_.innerText);
-    if (date) {
+    if (Boolean(this.element_.innerText)) {
+      var date = new Date(this.element_.innerText);
       // formats output
       if (this.type_.toLowerCase() === 'datetime') {
         var options = {
