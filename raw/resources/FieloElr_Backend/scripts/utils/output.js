@@ -43,39 +43,24 @@
    * Configs date with moment
    */
   FieloOutput.prototype.configDate_ = function() {
-    var format = BackEndJSSettings.DATE_FORMAT;
-    var date = this.element_.innerText;
-    if (date !== '') {
-      // Parse differents formats of dates to a number to 0 GMT
-      date = fielo.util.parseDateFromSF(date);
-      if (!isNaN(date)) {
-        if (this.type_.toLowerCase() === 'datetime') {
-          // Adds profile offset defined at SalesForce
-          date -= BackEndJSSettings.OFFSET * 60000;
-
-          // puts the corresponding format
-          format = BackEndJSSettings.DATETIME_FORMAT;
-        }
-
-        // tansform the date form number to an IsoString of Date object
-        date = new Date(date).toISOString();
-
-        // This new date lets use UTC with moment and correct timezone issues
-        date = moment(date).parseZone(date).utc();
-
-        // formats output
-        if (this.type_.toLowerCase() === 'datetime') {
-          date = date.calendar(null, {
-            sameElse: format
-          }).replace(/am$/g, 'AM').replace(/pm$/g, 'PM');
-        }
-
-        if (this.type_.toLowerCase() === 'date') {
-          date = date.format(format);
-        }
-
-        this.element_.innerText = date;
+    var date = new Date(this.element_.innerText);
+    if (date) {
+      // formats output
+      if (this.type_.toLowerCase() === 'datetime') {
+        var options = {
+          year: 'numeric', month: 'numeric', day: 'numeric',
+          hour: 'numeric', minute: 'numeric', second: 'numeric',
+          hour12: false,
+          timeZone: BackEndJSSettings.USER_TIMEZONE
+        };
+        date = new Intl.DateTimeFormat(BackEndJSSettings.LOCALE, options).format(date)
       }
+
+      if (this.type_.toLowerCase() === 'date') {
+        date = new Intl.DateTimeFormat(BackEndJSSettings.LOCALE.replace('_','-')).format(date)
+      }
+
+      this.element_.innerText = date;
     }
   };
 
