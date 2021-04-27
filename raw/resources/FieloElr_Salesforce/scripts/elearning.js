@@ -288,7 +288,12 @@
   };
 
   FieloELearning.prototype.checkTimezone = function() {
-    var pcTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase();
+    var pcTimezone =
+      Intl
+      .DateTimeFormat() // eslint-disable-line new-cap
+      .resolvedOptions()
+      .timeZone
+      .toLowerCase();
     var sfTimezone = BackEndJSSettings.USER_TIMEZONE.toLowerCase();
 
     if (pcTimezone !== sfTimezone) {
@@ -445,14 +450,15 @@
         }
       }.bind(this));
 
-      var fieloFormElements = document.querySelectorAll('.slds-modal .slds-form-element');
+      var fieloFormElements =
+        document.querySelectorAll('.slds-modal .slds-form-element');
       fieloFormElements.forEach(function(f) {
         if (f.FieloFormElement &&
-          (f.FieloFormElement.get('fieldName') == 'FieloELR__StartDate__c' ||
-          f.FieloFormElement.get('fieldName') == 'FieloELR__EndDate__c')) {
-            f.FieloFormElement.disableTimezoneFix_ = true;
+        (f.FieloFormElement.get('fieldName') === 'FieloELR__StartDate__c' ||
+        f.FieloFormElement.get('fieldName') === 'FieloELR__EndDate__c')) {
+          f.FieloFormElement.disableTimezoneFix_ = true;
         }
-      }.bind(this));
+      });
     }
   };
 
