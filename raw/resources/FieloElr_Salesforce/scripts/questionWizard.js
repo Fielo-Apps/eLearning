@@ -163,7 +163,6 @@
       }
     }, this);
     this.result = result;
-    console.log(this.result);
     // Set form type
     $('#' + this.formId_)
       .find('[data-field-name="FieloELR__Type__c"]')[0]
@@ -428,7 +427,6 @@
         this.throwMessage('error', Array.from(errorMsgs));
       } else {
         this.hasError_ = false;
-        console.log(questionValues);
         Visualforce.remoting.Manager.invokeAction(
           this.form_.getAttribute('data-save-controller'),
           questionValues,
@@ -941,10 +939,8 @@
 
       var hash = window.location.hash;
       if (hash) {
-        console.log(hash);
         var button =
           $('[data-action="' + hash.replace('#', '') + '"]')[0];
-        console.log(button);
         if (button) {
           window.location.href =
             window.location.href.replace(hash, '#');

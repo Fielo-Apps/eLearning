@@ -179,7 +179,7 @@
   };
 
   FieloAnswerOptions.prototype.set = function() {
-    return console.log('recibe lista de objetos');
+
   };
 
   FieloAnswerOptions.prototype.clear = function() {
