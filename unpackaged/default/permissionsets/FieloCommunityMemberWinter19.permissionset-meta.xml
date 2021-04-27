@@ -128,7 +128,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FieloPLT__Challenge__c.FieloPLT__EndDatetime__c</field>
+        <field>FieloPLT__Challenge__c.FieloPLT__EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -218,7 +218,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FieloPLT__MemberAgreement__c.FieloPLT__EndDatetime__c</field>
+        <field>FieloPLT__MemberAgreement__c.FieloPLT__EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -238,7 +238,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FieloPLT__MemberConsent__c.FieloPLT__EndDatetime__c</field>
+        <field>FieloPLT__MemberConsent__c.FieloPLT__EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -413,7 +413,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>FieloPLT__Mission__c.FieloPLT__EndDatetime__c</field>
+        <field>FieloPLT__Mission__c.FieloPLT__EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -478,7 +478,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>FieloPLT__Mission__c.FieloPLT__StartDatetime__c</field>
+        <field>FieloPLT__Mission__c.FieloPLT__StartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -768,7 +768,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FieloPLT__Promotion__c.FieloPLT__EndDatetime__c</field>
+        <field>FieloPLT__Promotion__c.FieloPLT__EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -803,7 +803,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FieloPLT__Promotion__c.FieloPLT__StartDatetime__c</field>
+        <field>FieloPLT__Promotion__c.FieloPLT__StartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
