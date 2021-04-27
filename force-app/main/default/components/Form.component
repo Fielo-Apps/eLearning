@@ -52,7 +52,7 @@
                                                 </div>
                                             </apex:panelGroup>
                                             <apex:panelGroup layout="none"  rendered="{! d.Type == 'input'}" >
-                                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}" disableTimezoneFix="{!d.DisableTimezoneFix}"/>
+                                                <c:Input formId="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF( ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}" disableTimezoneFix="{!d.DisableTimezoneFix}" dataType="{!d.DataType}"/>
                                             </apex:panelGroup>
                                             <apex:panelGroup layout="none"  rendered="{! d.Type == 'checkbox'}" >
                                                 <c:Checkbox toggle="true" formid="{!formId}" required="{!d.RequiredValue}" describe="{!$ObjectType[sObjectName].Fields[d.Name]}" mode="{!IF(d.ReadOnly,'view',mode)}" value="{!IF(ISBLANK(recordObject),d.Value,recordObject[d.Name])}" fieldLabel="{!d.Label}"/>

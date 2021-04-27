@@ -60,6 +60,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>FieloELR__Course__c.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>FieloELR__Course__c.EndDatetime__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -96,6 +101,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>FieloELR__Course__c.Segment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FieloELR__Course__c.StartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -84,6 +84,13 @@ global with sharing class FormController {
             }
             return '';
         }
+        public String getDataType() {
+            System.debug('getDataType: ' + Name);
+            return Name.toLowerCase() == 'fieloelr__startdatetime__c' ||
+                Name.toLowerCase() == 'fieloelr__enddatetime__c' ?
+                'date' :
+                '';
+        }
     }
 
     private void loadSections () {

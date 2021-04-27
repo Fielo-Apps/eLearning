@@ -752,7 +752,7 @@
             "value" : "00D6A0000001u5v-a0L6A000000BU2s"
           }, {
             "apiName" : "fieloplt__fieldset__c",
-            "value" : "{\"Name\":\"Name\"}, {\"Name\":\"FieloELR__Program__r.Name\"}, {\"Name\":\"FieloELR__Status__c\"}, {\"Name\":\"FieloELR__Segment__r.Name\"}, {\"Name\":\"FieloELR__StartDatetime__c\"}, {\"Name\":\"FieloELR__EndDatetime__c\"}"
+            "value" : "{\"Name\":\"Name\"}, {\"Name\":\"FieloELR__Program__r.Name\"}, {\"Name\":\"FieloELR__Status__c\"}, {\"Name\":\"FieloELR__Segment__r.Name\"}, {\"Name\":\"FieloELR__StartDatetime__c\",\"Type\":\"Date\"}, {\"Name\":\"FieloELR__EndDatetime__c\",\"Type\":\"Date\"}"
           }, {
             "apiName" : "fieloplt__iscustom__c",
             "value" : "false"
