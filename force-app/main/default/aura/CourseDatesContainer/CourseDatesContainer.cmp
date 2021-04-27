@@ -8,11 +8,11 @@
     <aura:attribute type="Integer" name="daysLeft"/>
     <aura:attribute type="Boolean" name="isNew" default="false"/>
     <aura:attribute type="sObject" name="record"/>
-    
+
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
-    
+
     <div aura:id="dates-container" class="fielo-dates-container">
-        <aura:if isTrue="{!or(v.record.FieloELR__StartDate__c != null, v.record.FieloELR__EndDate__c!=null)}">
+        <aura:if isTrue="{!or(v.record.FieloELR__StartDatetime__c != null, v.record.FieloELR__EndDatetime__c!=null)}">
             <lightning:layout class="fielo-date-grid" verticalAlign="start" horizontalAlign="start">
                 <lightning:layoutItem class="fielo-dates-left">
                     <lightning:layout class="fielo-badge-values" verticalAlign="center" horizontalAlign="end">
@@ -33,7 +33,7 @@
                         <lightning:layoutItem class="fielo-startdate">
                             <lightning:layout verticalAlign="center" horizontalAlign="end">
                                 <lightning:layoutItem class="fielo-date-value-output fielo-course-startdate">
-                                    <aura:if isTrue="{!v.record.FieloELR__StartDate__c != null}">
+                                    <aura:if isTrue="{!v.record.FieloELR__StartDatetime__c != null}">
                                         <lightning:formattedText value="{!v.startDate}" />
                                         <aura:set attribute="else">
                                             &nbsp;
@@ -45,7 +45,7 @@
                         <lightning:layoutItem class="fielo-enddate">
                             <lightning:layout verticalAlign="center" horizontalAlign="start">
                                 <lightning:layoutItem class="fielo-date-value-output fielo-course-enddate">
-                                    <aura:if isTrue="{!v.record.FieloELR__EndDate__c != null}">
+                                    <aura:if isTrue="{!v.record.FieloELR__EndDatetime__c != null}">
                                         <lightning:formattedText value="{!v.endDate}" />
                                         <aura:set attribute="else">
                                             &nbsp;
@@ -55,11 +55,11 @@
                             </lightning:layout>
                         </lightning:layoutItem>
                     </lightning:layout>
-                    <aura:if isTrue="{!or(v.record.FieloELR__StartDate__c!=null,v.record.FieloELR__EndDate__c!=null)}">
+                    <aura:if isTrue="{!or(v.record.FieloELR__StartDatetime__c!=null,v.record.FieloELR__EndDatetime__c!=null)}">
                         <lightning:layout verticalAlign="center" horizontalAlign="center">
                             <lightning:layoutItem class="fielo-date-timeline">
                                 <c:CourseDates name="{!v.name}" record="{!v.record}" config="{!v.config}" />
-                                <aura:if isTrue="{!v.record.FieloELR__EndDate__c != null}">
+                                <aura:if isTrue="{!v.record.FieloELR__EndDatetime__c != null}">
                                     <aura:if isTrue="{!v.record.FieloELR__Status__c == 'Active'}">
                                         <div class="{! 'fielo-dates-daycounter ' + v.className}">
                                             {!v.daysLeft + ' ' + $Label.c.daysLeft}

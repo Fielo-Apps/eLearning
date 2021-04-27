@@ -1,6 +1,6 @@
 @isTest
 public with sharing class TestButtonsController {
-	
+
 	@isTest
 	static void TestButtonsController() {
 
@@ -23,7 +23,7 @@ public with sharing class TestButtonsController {
 	btnCls.ObjectName = 'none';
 	btnCls.Action = 'none';
 	btnCls.CssClass = 'none';
-	btnCls.Parameters = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
+	btnCls.Parameters = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
 	btnCls.Confirm = true;
 	btnCls.reflection = true;
 	btnCls.cRecordId = 'none';
@@ -40,7 +40,7 @@ public with sharing class TestButtonsController {
 	btnsController.cButtonsString = 'buttons';
 	System.assert(btnsController.cButtons == null);
 
-	btnsController.cToolsString = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
+	btnsController.cToolsString = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
 	System.assert(btnsController.cTools != null);
 
 

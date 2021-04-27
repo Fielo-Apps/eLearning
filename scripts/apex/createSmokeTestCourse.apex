@@ -21,14 +21,14 @@ String logoUrl = String.format('/resource/{0}/{1}{2}', new List<String>{
     st.Name
 });
 
-courses.add(new FieloELR__Course__c( 
+courses.add(new FieloELR__Course__c(
     Name = name,
     FieloELR__Program__c = programs.get(0).Id,
     FieloELR__Description__c = 'Savvy marketing, sales and channel management professionals want to provide members of their customer and ' +
                                 'channel ecosystem with compelling programs that command their attention and boost their productivity. ',
     FieloELR__SubscriptionMode__c = 'Automatic',
-    FieloELR__StartDate__c = System.today(),
-    FieloELR__EndDate__c = System.today().addMonths(3),
+    FieloELR__StartDatetime__c = System.today(),
+    FieloELR__EndDatetime__c = System.today().addMonths(3),
     FieloELR__ExternalURL__c = logoUrl
 ));
 

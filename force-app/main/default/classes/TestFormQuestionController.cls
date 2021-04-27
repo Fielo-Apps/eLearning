@@ -2,7 +2,7 @@
 public with sharing class TestFormQuestionController {
 	@testSetup static void setup(){
         MockUpFactory.InsertTestData();
-   		
+
    		List<FieloPLT__PageSettings__c> pageSettings = new List<FieloPLT__PageSettings__c>();
 
         pageSettings.add( new FieloPLT__PageSettings__c(
@@ -23,13 +23,13 @@ public with sharing class TestFormQuestionController {
             )
         );
 
-        insert pageSettings; 
+        insert pageSettings;
 
     }
 
 	@isTest
 	static void TestFormQuestionController() {
-		
+
 		FormQuestionController questController = new FormQuestionController();
 		questController.csObjectName = 'FieloELR__Course__c';
 		questController.cFilter = '';
@@ -49,8 +49,8 @@ public with sharing class TestFormQuestionController {
 		questController.cRecord = course;
 
 		FormQuestionController.Section section = new FormQuestionController.Section();
-		FormQuestionController.FormField formfield = new FormQuestionController.FormField();		
-		questController.cFieldset = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}]]}';
+		FormQuestionController.FormField formfield = new FormQuestionController.FormField();
+		questController.cFieldset = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}]]}';
 
 		System.assert(questController.recordObject != null);
 
@@ -68,12 +68,12 @@ public with sharing class TestFormQuestionController {
 		formfield.Value = 'none';
 	  	formfield.Name = 'none';
 	    formfield.WhereCondition = 'none';
-	    
+
 	    List<FormQuestionController.FormField> innerList = new List<FormQuestionController.FormField>{formfield};
 	   section.Rows = new List<List<FormQuestionController.FormField>>{innerList};
 
-	   FieloELR__Question__c question = [SELECT Id FROM FieloELR__Question__c LIMIT 1]; 
-	   List<FieloELR__AnswerOption__c> ansOpt1 = [SELECT Id FROM FieloELR__AnswerOption__c LIMIT 2]; 
+	   FieloELR__Question__c question = [SELECT Id FROM FieloELR__Question__c LIMIT 1];
+	   List<FieloELR__AnswerOption__c> ansOpt1 = [SELECT Id FROM FieloELR__AnswerOption__c LIMIT 2];
 	   List<String> optNull = new List<String>{'listNull'};
 	   Map<Id, List<String>> answOptNull = new Map<Id,List<String>>{question.Id => optNull};
 	   RemoteActionResult resultSave = FormQuestionController.save(
@@ -91,7 +91,7 @@ public with sharing class TestFormQuestionController {
 			new String[]{'FieloELR__Course__c'})[0].fields.getMap().keySet()) ,',');
 		FieloELR__Course__c retrievedCourse = (FieloELR__Course__c) FormQuestionController.retrieve('FieloELR__Course__c', course.Id, fields);
 
-		
+
 
     //System.assertEquals('picklist', formfield.Type);
     System.assertEquals('none', formfield.MetaField);
@@ -99,7 +99,7 @@ public with sharing class TestFormQuestionController {
     System.assertEquals('none', formfield.Value);
     System.assertEquals(null, formfield.Required);
     System.assertEquals('', formfield.getRequiredValue());
-    
+
     formfield.Required = true;
     System.assertEquals(true, formfield.Required);
     System.assertEquals('true', formfield.getRequiredValue());

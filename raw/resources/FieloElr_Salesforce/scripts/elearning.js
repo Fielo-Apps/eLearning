@@ -454,8 +454,8 @@
         document.querySelectorAll('.slds-modal .slds-form-element');
       fieloFormElements.forEach(function(f) {
         if (f.FieloFormElement &&
-        (f.FieloFormElement.get('fieldName') === 'FieloELR__StartDate__c' ||
-        f.FieloFormElement.get('fieldName') === 'FieloELR__EndDate__c')) {
+        (f.FieloFormElement.get('fieldName') === 'FieloELR__StartDatetime__c' ||
+        f.FieloFormElement.get('fieldName') === 'FieloELR__EndDatetime__c')) {
           f.FieloFormElement.disableTimezoneFix_ = true;
         }
       });

@@ -212,7 +212,7 @@
                 "value" : "false"
               }, {
                 "apiName" : "fieloplt__reportfilter__c",
-                "value" : "[{ \"Report Field\" : \"FieloPLT__Program__c.Id\", \"Operator\" : \"equals\", \"Record Field\": \"FieloPLT__Program__r.Id\"}, {\"Report Field\" : \"FieloELR__CourseStatus__c.FieloELR__Course__c.FieloELR__Status__c\", \"Operator\" : \"equals\", \"Value\" : \"Active\" }, { \"Report Field\" : \"FieloELR__CourseStatus__c.CreatedDate\", \"Operator\" : \"greaterOrEqual\", \"Record Field\" : \"FieloPLT__StartDate__c\" }, { \"Report Field\" : \"FieloELR__CourseStatus__c.CreatedDate\", \"Operator\" : \"lessOrEqual\", \"Record Field\" : \"FieloPLT__EndDate__c\" }]"
+                "value" : "[{ \"Report Field\" : \"FieloPLT__Program__c.Id\", \"Operator\" : \"equals\", \"Record Field\": \"FieloPLT__Program__r.Id\"}, {\"Report Field\" : \"FieloELR__CourseStatus__c.FieloELR__Course__c.FieloELR__Status__c\", \"Operator\" : \"equals\", \"Value\" : \"Active\" }, { \"Report Field\" : \"FieloELR__CourseStatus__c.CreatedDate\", \"Operator\" : \"greaterOrEqual\", \"Record Field\" : \"FieloPLT__StartDatetime__c\" }, { \"Report Field\" : \"FieloELR__CourseStatus__c.CreatedDate\", \"Operator\" : \"lessOrEqual\", \"Record Field\" : \"FieloPLT__EndDatetime__c\" }]"
               }, {
                 "apiName" : "fieloplt__reportmetadata__c",
                 "value" : "{\"size\":\"small\",\"styleClass\":\"\",\"cacheResults\":true,\"hideOnError\":false,\"rendered\":true,\"showRefreshButton\":true}"
@@ -537,7 +537,7 @@
             "value" : "FieloELR__Course__c"
           }, {
             "apiName" : "fieloplt__sections__c",
-            "value" : "{ \t\r\n\t\"Name\":\"Information\",\r\n \t\"Rows\": \t\r\n\t[ \t\t\r\n\t\t[ \t\t\t\r\n\t\t\t{\"Name\":\"Name\",\"Type\":\"input\"}\r\n \t\t], \t\t\r\n\t\t[ \t\t\t\t\t\t\t\t\t{\"Name\":\"FieloELR__Program__c\",\"Type\":\"lookup\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t\t\t\t{\"Name\":\"FieloELR__Segment__c\",\"Type\":\"multiselect\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__SubscriptionMode__c\",\"Type\":\"radio\"}\r\n\t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__Description__c\",\"Type\":\"input\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__StartDate__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true},\r\n \t\t\t{\"Name\":\"FieloELR__EndDate__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true}\r\n \t\t]\r\n \t]\r\n}"
+            "value" : "{ \t\r\n\t\"Name\":\"Information\",\r\n \t\"Rows\": \t\r\n\t[ \t\t\r\n\t\t[ \t\t\t\r\n\t\t\t{\"Name\":\"Name\",\"Type\":\"input\"}\r\n \t\t], \t\t\r\n\t\t[ \t\t\t\t\t\t\t\t\t{\"Name\":\"FieloELR__Program__c\",\"Type\":\"lookup\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t\t\t\t{\"Name\":\"FieloELR__Segment__c\",\"Type\":\"multiselect\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__SubscriptionMode__c\",\"Type\":\"radio\"}\r\n\t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__Description__c\",\"Type\":\"input\"}\r\n \t\t],\r\n \t\t[ \t\t\t\t\t\t{\"Name\":\"FieloELR__StartDatetime__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true},\r\n \t\t\t{\"Name\":\"FieloELR__EndDatetime__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true}\r\n \t\t]\r\n \t]\r\n}"
           }, {
             "apiName" : "fieloplt__type__c",
             "value" : "Edit"
@@ -599,7 +599,7 @@
             "value" : "FieloELR__Course__c"
           }, {
             "apiName" : "fieloplt__sections__c",
-            "value" : "{\r\n\t\"Name\":\"Information\",\r\n\t\"Rows\":\r\n\t[\r\n\t\t[\r\n\t\t\t{\"Name\":\"Name\",\"Type\":\"input\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Program__c\",\"Type\":\"lookup\",\"onchange\":\"RefreshSegments\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Segment__c\",\"Type\":\"multiselect\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__SubscriptionMode__c\",\"Type\":\"radio\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Description__c\",\"Type\":\"input\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__StartDate__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true},\r\n\t\t\t{\"Name\":\"FieloELR__EndDate__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true}\r\n\t\t]\r\n\t]\r\n}, \r\n{ \"Name\": \"Model\", \"Rows\": [[ { \"Label\": \"Course\", \"Type\": \"model\" }]]}"
+            "value" : "{\r\n\t\"Name\":\"Information\",\r\n\t\"Rows\":\r\n\t[\r\n\t\t[\r\n\t\t\t{\"Name\":\"Name\",\"Type\":\"input\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Program__c\",\"Type\":\"lookup\",\"onchange\":\"RefreshSegments\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Segment__c\",\"Type\":\"multiselect\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__SubscriptionMode__c\",\"Type\":\"radio\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__Description__c\",\"Type\":\"input\"}\r\n\t\t],\r\n\t\t[\r\n\t\t\t{\"Name\":\"FieloELR__StartDatetime__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true},\r\n\t\t\t{\"Name\":\"FieloELR__EndDatetime__c\",\"Type\":\"input\",\"DisableTimezoneFix\":true}\r\n\t\t]\r\n\t]\r\n}, \r\n{ \"Name\": \"Model\", \"Rows\": [[ { \"Label\": \"Course\", \"Type\": \"model\" }]]}"
           }, {
             "apiName" : "fieloplt__type__c",
             "value" : "New"
@@ -752,7 +752,7 @@
             "value" : "00D6A0000001u5v-a0L6A000000BU2s"
           }, {
             "apiName" : "fieloplt__fieldset__c",
-            "value" : "{\"Name\":\"Name\"}, {\"Name\":\"FieloELR__Program__r.Name\"}, {\"Name\":\"FieloELR__Status__c\"}, {\"Name\":\"FieloELR__Segment__r.Name\"}, {\"Name\":\"FieloELR__StartDate__c\"}, {\"Name\":\"FieloELR__EndDate__c\"}"
+            "value" : "{\"Name\":\"Name\"}, {\"Name\":\"FieloELR__Program__r.Name\"}, {\"Name\":\"FieloELR__Status__c\"}, {\"Name\":\"FieloELR__Segment__r.Name\"}, {\"Name\":\"FieloELR__StartDatetime__c\"}, {\"Name\":\"FieloELR__EndDatetime__c\"}"
           }, {
             "apiName" : "fieloplt__iscustom__c",
             "value" : "false"

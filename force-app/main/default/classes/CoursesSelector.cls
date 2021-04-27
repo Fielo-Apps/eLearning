@@ -4,12 +4,12 @@ public with sharing class CoursesSelector extends SObjectSelector{
                 Course__c.Id,
                 Course__c.Name,
                 Course__c.Description__c,
-                Course__c.EndDate__c,
+                Course__c.EndDatetime__c,
                 Course__c.Program__c,
                 Course__c.Segment__c,
-                Course__c.StartDate__c,
+                Course__c.StartDatetime__c,
                 Course__c.Status__c,
-                Course__c.SubscriptionMode__c    
+                Course__c.SubscriptionMode__c
             };
     }
 
@@ -63,7 +63,7 @@ public with sharing class CoursesSelector extends SObjectSelector{
                     new List<String> {
                         getFieldListString(),
                         getSObjectName(),
-                        getOrderBy() 
+                        getOrderBy()
                     }
                 )
             );
@@ -72,7 +72,7 @@ public with sharing class CoursesSelector extends SObjectSelector{
         }
       return records;
     }
-    
+
     public List<Course__c> selectAllByIdHavingCourseStatus(Set<Id> courseIds) {
         List<Course__c> records;
         // SR: CRUD Check
@@ -217,8 +217,8 @@ public with sharing class CoursesSelector extends SObjectSelector{
 
         // SR: CRUD Check
         if( Schema.sObjectType.Course__c.isAccessible() ) {
-            listCourse = (List<Course__c>) Database.query(String.format(       
-               'SELECT {0} ' +                
+            listCourse = (List<Course__c>) Database.query(String.format(
+               'SELECT {0} ' +
                   'FROM {1} ' +
                   'WHERE Id IN : courseIds and SubscriptionMode__c = :automatic ' +
                   'ORDER BY {2}',
@@ -235,9 +235,9 @@ public with sharing class CoursesSelector extends SObjectSelector{
 
     public List<Course__c> selectByIdAndStatus(Set<Id> courseIds, Set<String> status) {
         List<Course__c> listCourse;
-        
+
         // SR: CRUD Check
-        if(Schema.sObjectType.Course__c.isAccessible()){	
+        if(Schema.sObjectType.Course__c.isAccessible()){
             listCourse = (List<Course__c>) Database.query(String.format(
                 'SELECT {0} ' +
                     'FROM {1} ' +
@@ -262,7 +262,7 @@ public with sharing class CoursesSelector extends SObjectSelector{
         // SR: CRUD Check
         if( Schema.sObjectType.Course__c.isAccessible() && Schema.sObjectType.CourseDependency__c.isAccessible() ) {
             listCourse = (List<Course__c>) Database.query(String.format(
-                    'SELECT {0} ' +               
+                    'SELECT {0} ' +
                     'FROM {1} ' +
                     'WHERE Id IN (SELECT Course__c FROM CourseDependency__c WHERE Predecessor__c IN :recordIds)' +
                     'ORDER BY {2}',

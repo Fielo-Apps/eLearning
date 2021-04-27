@@ -2,7 +2,7 @@
 public class MockUpFactory {
 
     private static Map<String, Id> rtMember;
-    
+
     public static List<FieloPLT__Program__c> createPrograms(String basename, Integer count) {
         List<FieloPLT__Program__c> results = new List<FieloPLT__Program__c>();
         for(Integer x = 0; x < count; x++){
@@ -38,8 +38,8 @@ public class MockUpFactory {
                     FieloELR__Description__c = 'Description',
                     FieloELR__SubscriptionMode__c = 'Manual',
                     FieloELR__Segment__c = segmentId,
-                    FieloELR__StartDate__c = System.today(),
-                    FieloELR__EndDate__c = System.today().addDays(30)
+                    FieloELR__StartDatetime__c = System.today(),
+                    FieloELR__EndDatetime__c = System.today().addDays(30)
                 )
             );
         }
@@ -126,7 +126,7 @@ public class MockUpFactory {
         );
         insert memberSegment;
 
-        List<FieloELR__Module__c> modules = new List<FieloELR__Module__c> { 
+        List<FieloELR__Module__c> modules = new List<FieloELR__Module__c> {
             new FieloELR__Module__c(
                 Name = 'Basic',
                 Course__c = courses.get(0).id,
@@ -181,7 +181,7 @@ public class MockUpFactory {
         questions.addAll(createQuestions(modules.get(1).Id, questionsMap));
 
         insert questions;
-        
+
         List<FieloELR__AnswerOption__c> answersOptions = new List<FieloELR__AnswerOption__c>();
 
         for (FieloELR__Question__c q: questions){

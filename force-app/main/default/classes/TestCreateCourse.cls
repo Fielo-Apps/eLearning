@@ -9,7 +9,7 @@ private class TestCreateCourse{
     private static List<FieloELR__AnswerOption__c> answers = new List<FieloELR__AnswerOption__c>();
 
     @testSetup
-    static void setup(){ 
+    static void setup(){
 
         //Programs
         programs = MockUpFactory.createPrograms('testProgram', 2);
@@ -21,18 +21,18 @@ private class TestCreateCourse{
         segments.get(1).FieloPLT__Program__c = programs.get(1).id;
         insert segments;
 
-        //Courses 
+        //Courses
         courses = MockUpFactory.createCourses(programs.get(0).id, segments.get(0).id, 5);
-        
+
         //course to check status
         courses.get(0).FieloELR__Description__c = 'aTestCourse';
-     
+
         //course to activate
         courses.get(1).FieloELR__Program__c = programs.get(0).id;
 
         //course active
         courses.get(2).FieloELR__Program__c = programs.get(0).id;
-        
+
         //course with course status && active
         courses.get(3).FieloELR__Program__c = programs.get(1).id;
         courses.get(3).FieloELR__Segment__c = segments.get(1).id;
@@ -58,7 +58,7 @@ private class TestCreateCourse{
         moduleTest.FieloELR__Course__c = courses.get(3).id;
         moduleTest.FieloELR__ApprovalGrade__c = 0;
         modules.add(moduleTest);
-        
+
         FieloELR__Module__c moduleTest2 = new FieloELR__Module__c();
         moduleTest2.Name = 'testModule';
         moduleTest2.FieloELR__Course__c = courses.get(2).id;
@@ -142,7 +142,7 @@ private class TestCreateCourse{
     static void ELR_0001_FB1(){
 
         courses = [SELECT id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 0'];
-        
+
         System.assertEquals(0,courses.get(0).FieloELR__ActiveModules__c);
         System.assertEquals('Draft',courses.get(0).FieloELR__Status__c);
     }
@@ -190,9 +190,9 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA8() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         System.assertEquals('Draft', courses.get(0).FieloELR__Status__c);
-        
+
         courses.get(0).FieloELR__Order__c = 3;
 
         update courses.get(0);
@@ -225,9 +225,9 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA9() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         courses.get(0).FieloELR__Status__c = 'Active';
-        
+
         FieloELR.Courses.validateAdminFields = false;
         update courses.get(0);
         FieloELR.Courses.validateAdminFields = true;
@@ -254,7 +254,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA11() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         System.assertEquals('Draft', courses.get(0).FieloELR__Status__c);
 
         delete courses.get(0);
@@ -270,7 +270,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA14() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         System.assertEquals('Draft', courses.get(0).FieloELR__Status__c);
 
         courses.get(0).FieloELR__Status__c = 'Active';
@@ -303,7 +303,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA15() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 3' LIMIT 1];
-        
+
         System.assertEquals('Active', courses.get(0).FieloELR__Status__c);
 
         courses.get(0).FieloELR__Status__c = 'Inactive';
@@ -328,7 +328,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA7() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c,FieloELR__Program__c, FieloELR__Program__r.Name FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         System.assertEquals('Draft', courses.get(0).FieloELR__Status__c);
         System.assertEquals('testProgram0', courses.get(0).FieloELR__Program__r.Name);
 
@@ -349,7 +349,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA12() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 1' LIMIT 1];
-        
+
         System.assertEquals('Draft', courses.get(0).FieloELR__Status__c);
 
         courses.get(0).FieloELR__Status__c = 'Active';
@@ -374,7 +374,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA13() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 3' LIMIT 1];
-        
+
         System.assertEquals('Active', courses.get(0).FieloELR__Status__c);
 
         try{
@@ -392,7 +392,7 @@ private class TestCreateCourse{
     */
     @isTest static void ELR_0001_FA10() {
         courses = [SELECT Id,FieloELR__Status__c,FieloELR__Order__c, FieloELR__ActiveModules__c FROM FieloELR__Course__c WHERE Name = 'Course 3' LIMIT 1];
-        
+
         System.assertEquals('Active', courses.get(0).FieloELR__Status__c);
 
         courses.get(0).FieloELR__Status__c = 'Inactive';
@@ -424,7 +424,7 @@ private class TestCreateCourse{
         FieloPLT__Segment__c segment = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Segment__c WHERE Name = 'testSegment0' LIMIT 1];
         courses.get(0).FieloELR__Program__c = segment.FieloPLT__Program__c;
         courses.get(0).FieloELR__Segment__c = segment.Id;
-        courses.get(0).FieloELR__StartDate__c = Date.today() - 10;
+        courses.get(0).FieloELR__StartDatetime__c = Date.today() - 10;
 
         try{
             insert courses;
@@ -445,14 +445,14 @@ private class TestCreateCourse{
         FieloPLT__Segment__c segment = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Segment__c WHERE Name = 'testSegment0' LIMIT 1];
         courses.get(0).FieloELR__Program__c = segment.FieloPLT__Program__c;
         courses.get(0).FieloELR__Segment__c = segment.Id;
-        courses.get(0).FieloELR__EndDate__c = Date.today() - 10;
+        courses.get(0).FieloELR__EndDatetime__c = Date.today() - 10;
 
         try{
             insert courses;
         }catch(System.Dmlexception e){
             System.assert(e.getMessage().Contains('Start Date and End Date must be equal or greater than today date.'));
         }
-    } 
+    }
 
     /*  TEST-1762
         Create Course
@@ -464,9 +464,9 @@ private class TestCreateCourse{
         FieloPLT__Segment__c segment = [SELECT Id, FieloPLT__Program__c FROM FieloPLT__Segment__c WHERE Name = 'testSegment0' LIMIT 1];
         courses.get(0).FieloELR__Program__c = segment.FieloPLT__Program__c;
         courses.get(0).FieloELR__Segment__c = segment.Id;
-        courses.get(0).FieloELR__EndDate__c = Date.today() + 10;
-        courses.get(0).FieloELR__StartDate__c = Date.today() + 20;
-        
+        courses.get(0).FieloELR__EndDatetime__c = Date.today() + 10;
+        courses.get(0).FieloELR__StartDatetime__c = Date.today() + 20;
+
         try{
             insert courses;
         }catch(System.Dmlexception e){

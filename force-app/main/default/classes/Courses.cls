@@ -26,23 +26,29 @@ public  class Courses extends SObjectDomain{
             if(String.isBlank(course.SubscriptionMode__c)){
                 course.SubscriptionMode__c = 'Manual';
             }
+            if (course.StartDatetime__c != null) {
+                course.StartDate__c = course.StartDatetime__c.dateGmt();
+            }
+            if (course.EndDatetime__c != null) {
+                course.EndDate__c = course.EndDatetime__c.dateGmt();
+            }
         }
     }
 
     public override void onValidate() {
         if(validateAdminFields){
             for(Course__c course : (List<Course__c>)records){
-                if (course.StartDate__c != null) {
-                    System.debug('Trigger received Start date: ' + course.StartDate__c);
+                if (course.StartDatetime__c != null) {
+                    System.debug('Trigger received Start date: ' + course.StartDatetime__c);
                     System.debug('Validated against: ' + System.now().dateGmt());
-                    if (course.StartDate__c < System.now().dateGmt()) {
+                    if (course.StartDatetime__c < System.now().dateGmt()) {
                         course.addError(Label.CourseFutureDatesNotAllowed);
                     }
                 }
-                if (course.EndDate__c != null) {
-                    System.debug('Trigger received End date: ' + course.EndDate__c);
+                if (course.EndDatetime__c != null) {
+                    System.debug('Trigger received End date: ' + course.EndDatetime__c);
                     System.debug('Validated against: ' + System.now().dateGmt());
-                    if (course.EndDate__c < System.now().dateGmt()) {
+                    if (course.EndDatetime__c < System.now().dateGmt()) {
                         course.addError(Label.CourseFutureDatesNotAllowed);
                     }
                 }
@@ -80,13 +86,13 @@ public  class Courses extends SObjectDomain{
                 }
 
                 // Date validation
-                if (course.StartDate__c != null) {
-                    if (course.StartDate__c < System.today()) {
+                if (course.StartDatetime__c != null) {
+                    if (course.StartDatetime__c < System.today()) {
                         addError(course, Label.CourseFutureDatesNotAllowed);
                     }
                 }
-                if (course.EndDate__c != null) {
-                    if (course.EndDate__c < System.today()) {
+                if (course.EndDatetime__c != null) {
+                    if (course.EndDatetime__c < System.today()) {
                         addError(course, Label.CourseFutureDatesNotAllowed);
                     }
                 }
@@ -324,10 +330,10 @@ public  class Courses extends SObjectDomain{
         // Course has at least 1 related Course Status
         List<Course__c> coursesWithStatus;
         if(Schema.sObjectType.Course__c.isAccessible()) {
-            if (Schema.sObjectType.Course__c.fields.Status__c.isAccessible() && Schema.sObjectType.Course__c.fields.SubscriptionMode__c.isAccessible() && Schema.sObjectType.Course__c.fields.Segment__c.isAccessible() && Schema.sObjectType.Course__c.fields.StartDate__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDate__c.isAccessible()) {
-                coursesWithStatus = new CoursesSelector(new Set<String>{'Id','FieloELR__Status__c','FieloELR__SubscriptionMode__c','FieloELR__Segment__c','FieloELR__StartDate__c','FieloELR__EndDate__c'}).selectByIdHavingCourseStatus(coursesMap.KeySet());
+            if (Schema.sObjectType.Course__c.fields.Status__c.isAccessible() && Schema.sObjectType.Course__c.fields.SubscriptionMode__c.isAccessible() && Schema.sObjectType.Course__c.fields.Segment__c.isAccessible() && Schema.sObjectType.Course__c.fields.StartDatetime__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDatetime__c.isAccessible()) {
+                coursesWithStatus = new CoursesSelector(new Set<String>{'Id','FieloELR__Status__c','FieloELR__SubscriptionMode__c','FieloELR__Segment__c','FieloELR__StartDatetime__c','FieloELR__EndDatetime__c'}).selectByIdHavingCourseStatus(coursesMap.KeySet());
             } else {
-                throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c','Status__c,SubscriptionMode__c,Segment__c,StartDate__c,EndDate__c'}));
+                throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c','Status__c,SubscriptionMode__c,Segment__c,StartDatetime__c,EndDatetime__c'}));
             }
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c'}));
