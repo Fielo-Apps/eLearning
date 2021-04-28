@@ -12,12 +12,12 @@ function convertMetadata {
 
 function deployMetadata {
     echo 'Deploying Converted Source to org'
-    sfdx force:mdapi:deploy --deploydir ../FieloELR --targetusername master-elr -w -1
+    sfdx force:mdapi:deploy --deploydir ../FieloELR --targetusername patch-elr-1.76 -w -1
 }
 
 function runAllTests {
     echo 'Running all test on org'
-    sfdx force:apex:test:run --resultformat human --synchronous --loglevel error -w 60 -l RunLocalTests -u master-elr > .local/AllTestsResults.txt && code -r .local/AllTestsResults.txt
+    sfdx force:apex:test:run --resultformat human --synchronous --loglevel error -w 60 -l RunLocalTests -u patch-elr-1.76 > .local/AllTestsResults.txt && code -r .local/AllTestsResults.txt
 }
 
 removeFolder && convertMetadata && deployMetadata && runAllTests
