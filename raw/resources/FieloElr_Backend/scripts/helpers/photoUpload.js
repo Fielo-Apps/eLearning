@@ -126,7 +126,7 @@
         status,
         imageUrl,
         this.instance_,
-        this.imageCaption_.value,
+        this.imageCaption_ && this.imageCaption_.value || '',
         this.processSavesAndDelete_.bind(this),
         {
           escape: false
