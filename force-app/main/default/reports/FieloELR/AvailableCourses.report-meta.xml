@@ -60,7 +60,7 @@
     <scope>user</scope>
     <showDetails>false</showDetails>
     <timeFrameFilter>
-        <dateColumn>Course__c.EndDate__c</dateColumn>
+        <dateColumn>Course__c.EndDatetime__c</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

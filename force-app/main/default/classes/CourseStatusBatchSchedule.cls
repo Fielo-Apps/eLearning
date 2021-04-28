@@ -7,24 +7,24 @@ public with sharing class CourseStatusBatchSchedule implements Database.Batchabl
     public Database.QueryLocator start(Database.BatchableContext BC) {
         Date today = date.today();
         Date yesterday = date.today().addDays(-1);
-        
+
         Database.QueryLocator queryLocator;
 
         if (Schema.sObjectType.Course__c.isAccessible()) {
-            if ( Schema.sObjectType.Course__c.fields.Status__c.isAccessible() && Schema.sObjectType.Course__c.fields.StartDate__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDate__c.isAccessible() ) {
-                queryLocator = Database.getQueryLocator('SELECT Id, FieloELR__Status__c FROM FieloELR__Course__c WHERE (FieloELR__Status__c = \'Scheduled\' AND FieloELR__StartDate__c <=: today) OR (FieloELR__Status__c = \'Active\' AND FieloELR__EndDate__c <=: yesterday)');
+            if ( Schema.sObjectType.Course__c.fields.Status__c.isAccessible() && Schema.sObjectType.Course__c.fields.StartDatetime__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDatetime__c.isAccessible() ) {
+                queryLocator = Database.getQueryLocator('SELECT Id, FieloELR__Status__c FROM FieloELR__Course__c WHERE (FieloELR__Status__c = \'Scheduled\' AND FieloELR__StartDatetime__c <=: today) OR (FieloELR__Status__c = \'Active\' AND FieloELR__EndDatetime__c <=: yesterday)');
             } else {
-                throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c', 'Status__c, StartDate__c, EndDate__c'}));
+                throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c', 'Status__c, StartDatetime__c, EndDatetime__c'}));
             }
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c'}));
         }
-        return queryLocator; 
+        return queryLocator;
     }
 
     public void execute(Database.BatchableContext BC, List<sobject> scope) {
         SObjectUnitOfWork uow = new SObjectUnitOfWork(new List<Schema.SObjectType>{Course__c.SObjectType});
-        
+
         for(Sobject course : scope){
             Course__c c = (Course__c)course;
             if( c.Status__c == 'Scheduled'){

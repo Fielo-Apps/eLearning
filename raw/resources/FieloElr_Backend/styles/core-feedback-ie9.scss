@@ -1,0 +1,17 @@
+// arregla el feedback a dos columnas
+.slds-form--stacked {
+  display: table;
+  width: 100%;
+
+  & .slds-col--padded {
+    display: table-cell;
+  }
+}
+
+@media (max-width: 48em) {
+  .slds-form--stacked {
+    & .slds-col--padded {
+      display: block;
+    }
+  }
+}

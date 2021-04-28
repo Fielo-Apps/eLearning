@@ -2,15 +2,15 @@
 public with sharing class TestFormController {
 	@testSetup static void setup(){
         MockUpFactory.InsertTestData();
-    }	
+    }
 
 
-    @isTest 
+    @isTest
     static void test(){
     	FormController controller = new FormController();
     	FormController.FormField formfield = new FormController.FormField();
     	FormController.Section section = new FormController.Section();
-		
+
 		section.Name =  'none';
 		section.CssClass = 'none';
 
@@ -19,8 +19,8 @@ public with sharing class TestFormController {
 
     	controller.csObjectName = 'Course__c';
     	controller.cFormId = '';
-    	//adicionar o objeto 
-    	controller.cFieldset = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
+    	//adicionar o objeto
+    	controller.cFieldset = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}], [{"Name":"FieloELR__Status__c","Type":"picklist"}], [{"Name":"FieloELR__EraseLater__c","Type":"picklist"}]]}';
 
     	List<FormController.FormField> innerList = new List<FormController.FormField>{formfield};
    		section.Rows = new List<List<FormController.FormField>>{innerList};
@@ -31,19 +31,19 @@ public with sharing class TestFormController {
     	List<FormController.Section> sections = new List<FormController.Section>{section};
 
     	sObject recordCrs = [SELECT Id FROM FieloELR__Course__c LIMIT 1];
-    	
+
     	RemoteActionResult resultSave1 = FormController.save(
     		recordCrs,
     		new List<String>{
-    			'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'}); 
-   		
+    			'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'});
+
    		RemoteActionResult resultSave2 = FormController.save(
     		recordCrs,
     		new List<String>{
-    			'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'}); 
-   		
+    			'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'});
+
    		sObject resultRetrieve = FormController.retrieve(
    			'FieloELR__Course__c'
    			,recordCrs.Id
@@ -54,7 +54,7 @@ public with sharing class TestFormController {
    		resultMapOpt = controller.mapOptionsString;
 
 		Map<String, String> resultMapPickLst = new Map<String, String>();
-   		
+
    		controller.mapPicklistController = null;
    		resultMapPickLst = controller.mapPicklistController;
 
@@ -62,14 +62,14 @@ public with sharing class TestFormController {
    		resultMapPickVld = controller.mapPicklistValidFor;
 
 
-  	
+
    	 	//sObject recordCrs = formController.recordObject;
     }
 
     @isTest
 	static void testSectionFormField() {
-	
-	
+
+
 	FormController.Section section = new FormController.Section();
 	section.Name =  'none';
 	section.CssClass = 'none';
@@ -86,7 +86,7 @@ public with sharing class TestFormController {
 	formfield.Value = 'none';
   	formfield.Name = 'none';
     formfield.WhereCondition = 'none';
-    
+
     List<FormController.FormField> innerList = new List<FormController.FormField>{formfield};
    section.Rows = new List<List<FormController.FormField>>{innerList};
 
@@ -97,7 +97,7 @@ public with sharing class TestFormController {
     System.assertEquals('none', formfield.Value);
     System.assertEquals(null, formfield.Required);
     System.assertEquals('', formfield.getRequiredValue());
-    
+
     formfield.Required = true;
     System.assertEquals(true, formfield.Required);
     System.assertEquals('true', formfield.getRequiredValue());

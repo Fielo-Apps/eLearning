@@ -71,7 +71,7 @@
     width: 50%;
 }
 
-.THIS .FieloELRListView .table div[data-field-name="FieloELR__StartDate__c"] {
+.THIS .FieloELRListView .table div[data-field-name="FieloELR__StartDatetime__c"] {
     position: absolute;
     top: 198px;
     left: 358.2px;
@@ -291,7 +291,7 @@
 	margin-top: 40px;
 }
 
-.THIS .no-date .table .slds-card__body div[data-field-name="FieloELR__StartDate__c"]{
+.THIS .no-date .table .slds-card__body div[data-field-name="FieloELR__StartDatetime__c"]{
 	display:none;
 }
 
@@ -300,6 +300,6 @@
 .THIS .no-description .table div[data-field-name="FieloELR__Description__c"]{
 	display:none;
 }
-.THIS .no-description .table div[data-field-name="FieloELR__StartDate__c"]{
+.THIS .no-description .table div[data-field-name="FieloELR__StartDatetime__c"]{
 	top: 148px;
 }

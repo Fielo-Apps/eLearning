@@ -2,18 +2,18 @@
     <aura:attribute type="String" name="name"/>
     <aura:attribute type="sObject" name="record"/>
     <aura:attribute type="String" name="config"/>
-    
+
     <div aura:id="timeline-container" class="fielo-timeline-container">
         <div class="slds-progress">
             <ol class="slds-progress__list">
                 <li class="slds-progress__item slds-is-active">
-                    <button class="{! 'slds-button slds-progress__marker' + (v.record.FieloELR__StartDate__c == null ? ' hide-progress-marker' : '')}">
-                        <span class="slds-assistive-text">{!v.record.FieloELR__StartDate__c}</span>
+                    <button class="{! 'slds-button slds-progress__marker' + (v.record.FieloELR__StartDatetime__c == null ? ' hide-progress-marker' : '')}">
+                        <span class="slds-assistive-text">{!v.record.FieloELR__StartDatetime__c}</span>
                     </button>
                 </li>
                 <li class="slds-progress__item slds-is-active">
-                    <button class="{! 'slds-button slds-progress__marker' + (v.record.FieloELR__EndDate__c == null ? ' hide-progress-marker' : '')}">
-                        <span class="slds-assistive-text">{!v.record.FieloELR__EndDate__c}</span>
+                    <button class="{! 'slds-button slds-progress__marker' + (v.record.FieloELR__EndDatetime__c == null ? ' hide-progress-marker' : '')}">
+                        <span class="slds-assistive-text">{!v.record.FieloELR__EndDatetime__c}</span>
                     </button>
                 </li>
             </ol>

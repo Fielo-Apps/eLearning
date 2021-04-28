@@ -9,6 +9,8 @@
     <apex:attribute name="fieldName" description="Override Describe Name" type="String" />
     <apex:attribute name="onchange" description="Javascript method responsable of handle the on change method" type="String"  />
     <apex:attribute name="required" description="Required Override isNillable of field" type="String"  />
+    <apex:attribute name="disableTimezoneFix" description="Disables date field timezone adjustment" type="Boolean"/>
+    <apex:attribute name="dataType" description="Overrides DataType" type="String"/>
     <apex:attribute name="sObjectType" description="sObjectType" type="String" default="" />
     <apex:attribute name="fieldLabel" description="Overrides field label" type="String" default="" />
 
@@ -19,8 +21,13 @@
     </apex:panelGroup>
     <apex:panelGroup layout="none" rendered="{! mode != 'hidden' }">
         <apex:variable var="fieldNameData" value="{!IF(ISBLANK(fieldName),SUBSTITUTE( describe.Name, '_', ''),fieldName)}"/>
+        <apex:variable var="fieldType" value="{!IF ( ISBLANK(dataType), describe.Type, dataType )}"/>
+
         <apex:panelGroup layout="none" rendered="{! mode == 'edit' || (mode == 'update' && describe.Updateable) || (describe.Createable && mode == 'new') }">
-            <div id="{!formId}-{!fieldNameData }" data-field-name="{!IF ( ISBLank(describe.Name), fieldNameData, describe.Name )}" class="slds-form-element {!className}" data-component-id="{!describe.label}" data-type="input-{!describe.Type}" data-on-change="{!onchange}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }" data-default-value="{!value}">
+            <div id="{!formId}-{!fieldNameData }" data-field-name="{!IF ( ISBLank(describe.Name), fieldNameData, describe.Name )}" class="slds-form-element {!className}"
+            data-component-id="{!describe.label}" data-type-override="{!dataType}" data-type="input-{!fieldType}"
+            data-on-change="{!onchange}" data-form-id="{!formId}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"
+            data-default-value="{!value}" data-timezone-fix="{!disableTimezoneFix}">
                 <apex:panelGroup layout="none" rendered="{!showLabel}">
                     <label class="slds-form-element__label" for="{!formId}-{!fieldNameData}-input"><apex:panelGroup layout="none" rendered="{! IF( ISBLANK(required), !describe.Nillable, IF(required == 'true', true, false) ) }"><abbr class="slds-required" title="required">*</abbr></apex:panelGroup>{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</label>
                     <apex:panelGroup layout="none" rendered="{! !ISBLANK(describe.inlineHelpText)}">
@@ -38,8 +45,8 @@
                     </apex:panelGroup>
                 </apex:panelGroup>
                 <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
-                    <input id="{!formId}-{!fieldNameData}-input" name="{!formId}-{!describe.Name}" class="slds-input slds-{!LOWER(describe.Type)}" type="{! IF(describe.Type == 'checkbox', 'checkbox', 'text')}" placeholder="" value="{!value}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"/>
-                    <apex:panelGroup rendered="{! describe.Type == 'date' || describe.Type == 'datetime'}">
+                    <input id="{!formId}-{!fieldNameData}-input" name="{!formId}-{!describe.Name}" class="slds-input slds-{!LOWER(fieldType)}" type="{! IF(fieldType == 'checkbox', 'checkbox', 'text')}" placeholder="" value="{!value}" data-required="{! IF( ISBLANK(required), !describe.Nillable, required ) }"/>
+                    <apex:panelGroup rendered="{! fieldType == 'date' || fieldType == 'datetime'}">
                         <span class="fielosf-date-picker--faux slds-input__icon slds-icon-text-default" ><img src="{!URLFOR($Resource.FieloSalesforce_Backend)}/images/event_60.png"/></span>
                     </apex:panelGroup>
                 </div>
@@ -51,7 +58,7 @@
             <div class="slds-form-element {!className}" data-type="text" data-field-name="{!IF ( ISBLank(describe.Name), fieldNameData, describe.Name )}" id="{!formId}-{!fieldNameData }" data-value="{!value}" >
                 <span class="slds-form-element__label">{!IF(AND(fieldLabel != null,fieldLabel != ''),fieldLabel,describe.label)}</span>
                 <div class="slds-form-element__control slds-has-divider--bottom">
-                    <c:OutputField title="{!value}" type="{!describe.Type}" content="{!value}" cssClass="slds-form-element__static"/>
+                    <c:OutputField title="{!value}" type="{!fieldType}" content="{!value}" cssClass="slds-form-element__static"/>
                 </div>
             </div>
         </apex:panelGroup>

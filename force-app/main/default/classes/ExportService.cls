@@ -44,20 +44,20 @@ public class ExportService{
         List<String> moduleDependencyFieldsList = getObjectFields(moduleDependencyFields);
         List<String> questionFieldsList = getObjectFields(questionFields);
         List<String> answerOptionFieldsList = getObjectFields(answerOptionFields);
-        
+
         FieloPLT__Program__c program = ProgramService.getActiveProgram();
-        
+
         List<Course__c> courses = new List<Course__c>();
         Map<Id,Course__c> coursesMap = new Map<Id,Course__c>();
         Set<String> coursefieldsSet = new Set<String>(courseFieldsList);
-        coursefieldsSet.remove('FieloELR__StartDate__c');
-        coursefieldsSet.remove('FieloELR__EndDate__c');
+        coursefieldsSet.remove('FieloELR__StartDatetime__c');
+        coursefieldsSet.remove('FieloELR__EndDatetime__c');
         coursefieldsSet.remove('FieloELR__Status__c');
         coursefieldsSet.remove('FieloELR__ActiveModules__c');
         coursefieldsSet.remove('FieloELR__HasDependencies__c');
         courseFieldsList = new List<String>(coursefieldsSet);
         coursefieldsSet.addAll(new Set<String>{'Segment__c','Segment__r.Name','Segment__r.RecordType.DeveloperName','Segment__r.FieloPLT__RelatedSegments__c'});
-        
+
         Set<String> courseDependencyFieldsSet = new Set<String>(courseDependencyFieldsList);
         courseDependencyFieldsSet.remove('FieloELR__ExternalKey__c');
         courseDependencyFieldsList = new List<String>(courseDependencyFieldsSet);
@@ -98,7 +98,7 @@ public class ExportService{
             modulefieldsSet.remove('FieloELR__IsActive__c');
             modulefieldsList = new List<String>(modulefieldsSet);
             modulefieldsSet.addAll(new Set<String>{'FieloELR__Course__c','FieloELR__Course__r.Name'});
-            
+
             Set<String> moduleDependencyFieldsSet = new Set<String>(moduleDependencyFieldsList);
             moduleDependencyFieldsSet.remove('FieloELR__ExternalKey__c');
             moduleDependencyFieldsList = new List<String>(moduleDependencyFieldsSet);
@@ -171,7 +171,7 @@ public class ExportService{
                 segmentMultiUsedIds.addAll(new Set<String>(c.Segment__r.FieloPLT__RelatedSegments__c.split(';')));
             }
         }
-        
+
         Map<Id,FieloPLT__Segment__c> segmentsMultiUsedMap;
         // SR: CRUD Check
         if ( Schema.sObjectType.FieloPLT__Segment__c.isAccessible() ) {
@@ -180,10 +180,10 @@ public class ExportService{
 
         JSONGenerator genJson = JSON.createGenerator(true);
         genJson.writeStartObject();
- 
+
         if(!courses.isEmpty()){
             exportCourses(genJson, courses, coursesMap, modulesMap, questionsMap, courseFieldsList, courseDependencyFieldsList, moduleFieldsList, moduleDependencyFieldsList, questionFieldsList, answerOptionFieldsList, segmentsMultiUsedMap);
-        }        
+        }
         genJson.writeEndObject();
 
         return genJson.getAsString();
@@ -240,7 +240,7 @@ public class ExportService{
         genJson.writeStartArray();
         for(CourseDependency__c courseDependency : courseDependencies){
             genJson.writeStartObject();
-            
+
             if(coursesMap.containsKey(courseDependency.Predecessor__c)){
                 genJson.writeObjectField( 'courseReference', courseDependency.Predecessor__c);
             }else{
@@ -428,7 +428,7 @@ public class ExportService{
                 uowMetaSegments.commitWork();
             } else {
                 throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_updateable, new List<String>{'Segment__c'}));
-            }          
+            }
         }
     }
 
@@ -459,7 +459,7 @@ public class ExportService{
         }
 
         SObjectUnitOfWork uow;
-        
+
         // SR: CRUD Check, in this class, only Update / Insert may happen.
         if ( Schema.sObjectType.Course__c.isUpdateable() && Schema.sObjectType.Course__c.isCreateable() && Schema.sObjectType.CourseDependency__c.isUpdateable() && Schema.sObjectType.CourseDependency__c.isCreateable() && Schema.sObjectType.Module__c.isUpdateable() && Schema.sObjectType.Module__c.isCreateable() && Schema.sObjectType.ModuleDependency__c.isUpdateable() && Schema.sObjectType.ModuleDependency__c.isCreateable() && Schema.sObjectType.Question__c.isUpdateable() && Schema.sObjectType.Question__c.isCreateable() && Schema.sObjectType.AnswerOption__c.isUpdateable() && Schema.sObjectType.AnswerOption__c.isCreateable() ) {
             uow = new SObjectUnitOfWork(new List<Schema.SobjectType>{ Course__c.SObjectType, CourseDependency__c.SObjectType, Module__c.SObjectType, ModuleDependency__c.SObjectType, Question__c.SObjectType, AnswerOption__c.SObjectType});

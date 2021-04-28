@@ -95,7 +95,7 @@ public class TestModuleViewController {
         );
 
         result = ModuleViewController.activate(module.Id);
-        
+
 
     }
 
@@ -155,7 +155,7 @@ public class TestModuleViewController {
         ModuleViewController controller = new ModuleViewController(standardController);
 
         RemoteActionResult result = ModuleViewController.inactivate(module.Id);
-    
+
 
        FieloPLT__PageSettings__c pageSettingsTest = new FieloPLT__PageSettings__c();
         pageSettingsTest  = controller.getPageSettings(
@@ -215,7 +215,7 @@ public class TestModuleViewController {
                 'FieloELR__QuestionPool__c'
             }
         );
-        
+
         String fields = String.join( new List<String>(Schema.describeSObjects(
             new String[]{'FieloELR__Module__c'})[0].fields.getMap().keySet()) ,',');
 
@@ -286,7 +286,7 @@ public class TestModuleViewController {
         );
 
         insert modules;
-        
+
         FieloELR__ModuleDependency__c moduleDependency = new FieloELR__ModuleDependency__c(
             Module__c = modules[0].Id,
             Predecessor__c = modules[1].Id
@@ -305,7 +305,7 @@ public class TestModuleViewController {
             'Test',
             1,
             'isTested');
-    
+
 
         List<FieloELR__Module__c> moduleRecords2 = ModuleViewController.getRecords(
             'FieloELR__Module__c',
@@ -316,7 +316,7 @@ public class TestModuleViewController {
             null,
             'isTested');
 
-    String test1 = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup","onchange":"RefreshSegments"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}]]},{ "Name": "Model", "Rows": [[ { "Label": "Course", "Type": "model" }]]}';
+    String test1 = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup","onchange":"RefreshSegments"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"radio"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}]]},{ "Name": "Model", "Rows": [[ { "Label": "Course", "Type": "model" }]]}';
     String test2 = 'test2';
     String test3 = 'test3';
     //acredito que ele espera uma string json no primeiro parmetro
@@ -324,18 +324,18 @@ public class TestModuleViewController {
             test1,
             test2,
             test3
-            ); 
-    
+            );
+
     }
 
 
     @isTest
     static void testCurrentPageView() {
-    
+
     ModuleViewController.Section section = new ModuleViewController.Section();
     section.Name =  'none';
     section.CssClass = 'none';
-    
+
 
     System.assertEquals('none', section.Name);
     System.assertEquals('none', section.CssClass);
@@ -349,7 +349,7 @@ public class TestModuleViewController {
     formfield.Value = 'none';
     formfield.Name = 'none';
     formfield.WhereCondition = 'none';
-    
+
     List<ModuleViewController.FormField> innerList = new List<ModuleViewController.FormField>{formfield};
    section.Rows = new List<List<ModuleViewController.FormField>>{innerList};
 
@@ -360,7 +360,7 @@ public class TestModuleViewController {
     System.assertEquals('none', formfield.Value);
     System.assertEquals(null, formfield.Required);
     System.assertEquals('', formfield.getRequiredValue());
-    
+
     formfield.Required = true;
     System.assertEquals(true, formfield.Required);
     System.assertEquals('true', formfield.getRequiredValue());

@@ -11,7 +11,7 @@
             action.setCallback(this, function(response) {
                 var spinner = $A.get("e.c:ToggleSpinnerEvent");
                 var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();                
+                var state = response.getState();
                 if (component.isValid() && state === 'SUCCESS') {
                     var objectInfo = JSON.parse(response.getReturnValue());
                     component.set('v.filterFieldSet',objectInfo.fields);
@@ -22,10 +22,10 @@
                         "message": " ",
                         "type": "error"
                     });
-                    toastEvent.fire(); 
+                    toastEvent.fire();
                     if(spinner){
                         spinner.setParam('show', false);
-                        spinner.fire();    
+                        spinner.fire();
                     }
                 }
             });
@@ -134,12 +134,12 @@
             var quantity = component.get('v.quantity');
             if(spinner){
                 spinner.setParam('show', true);
-                spinner.fire();    
-            }           
+                spinner.fire();
+            }
             var member = component.get('v.member');
             var fieldset = component.get('v.fieldset');
             fieldset = helper.getFieldFromFieldset(fieldset).fieldset.join(',');
-            
+
             if(fieldset != ''){
                 this.requiredFields.forEach(function(fieldName) {
                     if (fieldset.toLowerCase().indexOf(fieldName.toLowerCase()) == -1) {
@@ -147,7 +147,7 @@
                     }
                 });
             }
-            
+
             var modulesFieldset = component.get('v.courseFieldset');
             modulesFieldset = helper.getFieldFromFieldset(modulesFieldset).fieldset.join(',');
             if(modulesFieldset != '' && modulesFieldset.indexOf('FieloELR__AttemptsAllowed__c') == -1){
@@ -155,17 +155,17 @@
             }
             var dynamicFilterString = component.get('v.dynamicFilterString');
             var sortByClause = component.get('v.sortByClause') || component.get('v.defaultSortBy');
-            if(member){            
+            if(member){
                 var action;
                 var activeViewName = component.get('v.activeViewName');
                 var showPointsEarned = component.get('v.showPointsEarned');
-                
+
                 if (activeViewName == 'availableCourses') {
                     action = component.get('c.getCourses');
                 } else {
                     action = component.get('c.getCourseByCourseStatus');
                 }
-                
+
                 var params = {
                     'member': member,
                     'coursesFieldset': fieldset.split(','),
@@ -176,17 +176,17 @@
                     'dynamicFilter': dynamicFilterString,
                     'showPointsEarned': showPointsEarned
                 };
-                
+
                 action.setParams(params);
                 // Add callback behavior for when response is received
                 action.setCallback(this, function(response) {
                     try{
                         var spinner = $A.get("e.c:ToggleSpinnerEvent");
                         var toastEvent = $A.get("e.force:showToast");
-                        var state = response.getState();                
-                        if (component.isValid() && state === 'SUCCESS') {                    
+                        var state = response.getState();
+                        if (component.isValid() && state === 'SUCCESS') {
                             var member = component.get('v.member');
-                            var memberId = member.Id;                                     
+                            var memberId = member.Id;
                             var result = JSON.parse(response.getReturnValue());
                             var courseWrappers, coursesList, courseStatus, coursePoints;
                             activeViewName = component.get('v.activeViewName');
@@ -226,7 +226,7 @@
                                 "message": " ",
                                 "type": "error"
                             });
-                            toastEvent.fire(); 
+                            toastEvent.fire();
                         }
                         if(spinner){
                             spinner.setParam('show', false);
@@ -235,9 +235,9 @@
                     } catch(e) {
                         console.log(e);
                     }
-                });      
+                });
                 // Send action off to be executed
-                $A.enqueueAction(action);   
+                $A.enqueueAction(action);
             } else {
                 var memberEvent = $A.get("e.FieloPLT:RefreshMemberEvent");
                 if (memberEvent) {
@@ -250,9 +250,9 @@
     },
     updateCoursesCache: function(component, event, helper) {
         console.log('updateCoursesCache');
-        var coursesCache = window.localStorage.getItem('coursesCache');        
-        var memberId = component.get('v.member');        
-        memberId = memberId.Id;        
+        var coursesCache = window.localStorage.getItem('coursesCache');
+        var memberId = component.get('v.member');
+        memberId = memberId.Id;
         if(coursesCache){
             coursesCache = JSON.parse(coursesCache);
             if(!coursesCache[memberId]){
@@ -260,21 +260,21 @@
             }
         } else {
             coursesCache = {};
-            coursesCache[memberId] = {};            
+            coursesCache[memberId] = {};
         }
-        window.localStorage.setItem('coursesCache', JSON.stringify(coursesCache));        
+        window.localStorage.setItem('coursesCache', JSON.stringify(coursesCache));
     },
     getFieldFromFieldset : function(fieldset) {
         var fields = {fieldset: ['Name'], subcomponents: []};
-        fieldset.forEach(function(field){            
+        fieldset.forEach(function(field){
             if(field.type != 'subcomponent'){
                 if(field.apiName != 'Name'){
-                    fields.fieldset.push(field.apiName);        
-                }                
+                    fields.fieldset.push(field.apiName);
+                }
             } else {
-                fields.subcomponents.push(field);    
-            }           
-        })      
+                fields.subcomponents.push(field);
+            }
+        })
         return fields;
     },
     getConfiguration: function(component) {
@@ -283,11 +283,11 @@
             action.setCallback(this, function(response) {
                 var spinner = $A.get("e.c:ToggleSpinnerEvent");
                 var toastEvent = $A.get("e.force:showToast");
-                var state = response.getState();                
-                if (component.isValid() && state === 'SUCCESS') {                    
+                var state = response.getState();
+                if (component.isValid() && state === 'SUCCESS') {
                     var config = response.getReturnValue();
                     component.set('v.compConfig',config);
-                    
+
                     this.getCourseFieldSet(component);
                 }else {
                     var errorMsg = response.getError()[0].message;
@@ -296,12 +296,12 @@
                         "message": " ",
                         "type": "error"
                     });
-                    toastEvent.fire(); 
+                    toastEvent.fire();
                     if(spinner){
                         spinner.setParam('show', false);
-                        spinner.fire();    
-                    }           
-                    
+                        spinner.fire();
+                    }
+
                 }
             });
             $A.enqueueAction(action);
@@ -361,7 +361,7 @@
                     title = {
                         "value": component.get('v.titleValue'),
                         "type": "text"
-                    };                    
+                    };
                 }
             }
             if (title) {
@@ -371,20 +371,20 @@
                 if(type == 'label'){
                     var label = '$Label.' + value;
                     titleValue = $A.get(label);
-                    component.set('v.title', titleValue);                
+                    component.set('v.title', titleValue);
                 }else{
                     titleValue = value;
                     component.set('v.title', titleValue);
                 }
             }
             // TITLE
-            
+
             // FIELDSET
-            fieldset = [], fields = [];                        
+            fieldset = [], fields = [];
             var fieldsConfig = component.get('v.fields').trim();
             var courseDetailFields = component.get('v.courseDetailFields').trim();
             if(fieldsConfig.length == 0){
-                fieldset = config.fieldset;                
+                fieldset = config.fieldset;
             } else if (fieldsConfig.indexOf('[') == 0) {
                 fieldset = JSON.parse(fieldsConfig);
             } else {
@@ -427,7 +427,7 @@
                     }
                 });
                 fieldset.push({
-                    "apiName": "FieloELR__StartDate__c",
+                    "apiName": "FieloELR__StartDatetime__c",
                     "type": "subcomponent",
                     "subcomponent": "c:CourseDatesContainer",
                     "label": {
@@ -479,8 +479,8 @@
         'FieloELR__Image__c',
         'FieloELR__ExternalURL__c',
         'FieloELR__Description__c',
-        'FieloELR__StartDate__c',
-        'FieloELR__EndDate__c'
+        'FieloELR__StartDatetime__c',
+        'FieloELR__EndDatetime__c'
     ],
     getSortByOptions: function(component) {
         try {
@@ -503,7 +503,7 @@
                         });
                     }
                     if (options) {
-                        component.set('v.sortByOptions', options);    
+                        component.set('v.sortByOptions', options);
                     }
                 } else {
                     var errorMsg = response.getError()[0].message;
@@ -513,6 +513,6 @@
             $A.enqueueAction(action);
         } catch (e) {
             console.log(e);
-        }       
+        }
     }
 })

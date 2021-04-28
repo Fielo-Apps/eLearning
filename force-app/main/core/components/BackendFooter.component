@@ -1,54 +1,79 @@
 <apex:component layout="none" controller="BackendFooterController">
   <apex:attribute name="namespace" description="namespace of package" type="String" default="" />
-  <apex:attribute name="externalJS" type="String" description="List of external JS separated by ," assignTo="{!cExternalJS}"/>
+  <apex:attribute name="externalJS" type="String" description="List of external JS separated by ," assignTo="{!cExternalJS}"
+  />
   <apex:attribute name="appiphony" type="Boolean" default="true" description="" />
   <apex:attribute name="helpers" type="String" default="" description="" />
-    <script>
-      var ie = {};
-      if (navigator.userAgent.indexOf("MSIE 9.0") !== -1) {
-        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie9.css')}";
-        ie.jsSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core-ie9.min.js')}";
-      } else if(navigator.userAgent.indexOf("MSIE 10.0") !== -1) {
-        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie10.css')}";
-      } else if(navigator.userAgent.indexOf("MSIE 11.0") !== -1) {
-        ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie11.css')}";
-      }else{
-        ie=null;
+  <script>
+    var ie = {};
+    if (navigator.userAgent.indexOf("MSIE 9.0") !== -1) {
+      ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie9.css')}";
+      ie.jsSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core-ie9.min.js')}";
+    } else if (navigator.userAgent.indexOf("MSIE 10.0") !== -1) {
+      ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie10.css')}";
+    } else if (navigator.userAgent.indexOf("MSIE 11.0") !== -1) {
+      ie.cssSrc = "{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/styles/core-ie11.css')}";
+    } else {
+      ie = null;
+    }
+    // si es IE cargo su css y js
+    if (ie) {
+      var js = document.createElement("script"),
+        css = document.createElement("link");
+      // para js
+      if (ie.jsSrc) {
+        js.setAttribute("src", ie.jsSrc);
+        document.getElementsByTagName("head")[0].appendChild(js);
       }
-      // si es IE cargo su css y js
-      if (ie){
-        var js = document.createElement("script"),
-            css = document.createElement("link");
-        // para js
-        if(ie.jsSrc) {
-          js.setAttribute("src", ie.jsSrc);
-          document.getElementsByTagName("head")[0].appendChild(js);
-        }
 
-        // para css
-        if(ie.cssSrc) {
-          css.setAttribute("rel", "stylesheet");
-          css.setAttribute("type", "text/css");
-          css.setAttribute("href", ie.cssSrc);
-          document.getElementsByTagName("head")[0].appendChild(css);
-        }
+      // para css
+      if (ie.cssSrc) {
+        css.setAttribute("rel", "stylesheet");
+        css.setAttribute("type", "text/css");
+        css.setAttribute("href", ie.cssSrc);
+        document.getElementsByTagName("head")[0].appendChild(css);
       }
-    </script>
-    <apex:panelGroup rendered="{!appiphony}">
-      <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'jquery/jquery.min.js')}"></script>
-      <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'appiphony/jquery.aljs-all-with-moment.min.js')}"></script>
-    </apex:panelGroup>
-    <c:BackEndJSSettings ns="{!namespace}" offset="{!offset}"/>
-    <script src="{!URLFOR($Resource.FieloSalesforce_Backend, 'tinymce/js/tinymce/tinymce.min.js')}"></script>
-    <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}"></script>  
-    
-    
-    <apex:panelGroup rendered="{! ! ISBlank(externalJS) }">
-      <apex:repeat var="url" value="{!JSUrls}" >
-        <script type="text/javascript" src="{!url}"></script>
-      </apex:repeat>
-    </apex:panelGroup>
-    <apex:panelGroup rendered="{! ! ISBlank(helpers) }">
-      <script type="text/javascript">fielo.helper.init([ {!helpers} ]);</script>
-    </apex:panelGroup>
+    }
+  </script>
+  <!-- Loads SF CKEDITOR -->
+
+  <script type="text/javascript" src="/ckeditor/ckeditor-4.x/rel/ckeditor.js?t=4.11.2.22"></script>
+  <script type="text/javascript" src="/ckeditor/ckeditor-4.x/rel/lang/en.js?t=4.11.2.22"></script>
+  <script type="text/javascript" src="/ckeditor/ckeditor-4.x/rel/styles.js?t=4.11.2.22"></script>
+
+  <script>
+    CKEDITOR.timestamp = '4.11.2.22';
+    var protocolAndHost = window.location.protocol + '//' + window.location.host;
+    var FIELO_CKEDITOR_CONFIG = {
+      removePlugins: 'elementspath,image,sfdcImage,sfdcMediaEmbed,sfdcSmartLink,sfdcCodeBlock, sfdcTable, sfdcVfAjax4J',
+      baseHref: protocolAndHost + '/ckeditor/ckeditor-4.x/rel/',
+      customConfig: '/ckeditor/ckeditor-4.x/rel/sfdc-config.js',
+      toolbar: 'SalesforceBasic',
+      sfdcLabels: { CkeLineHeight: { title: 'Insert quick text' }, CkeQuickText: { title: 'Insert quick text' }, CkeMediaEmbed: { iframeMissing: 'Invalid &lt;iframe&gt; element. Please use valid code from the approved sites.', subtitle: 'Paste &amp;lt;iframe&amp;gt; code here:', description: 'Use &lt;iframe&gt; code from an approved video source.', title: 'Embed Multimedia Content', exampleTitle: 'Example:', example: '\n            \n                &lt;iframe width=\&quot;560\&quot; height=\&quot;315\&quot; src=\&quot;https://www.youtube.com/embed/KcOm0TNvKBA\&quot; frameborder=\&quot;0\&quot; allowfullscreen&gt;&lt;/iframe&gt;\n            \n        ' }, CkeImageMenu: { uploadFile: ' Browse or Upload', uploadUrl: 'Web Image', title: 'Insert images into your message' }, CkeImagePaste: { CkeImagePasteWarning: 'Pasting an image is not working properly with Firefox, please use [Copy Image location] instead.' }, CkeImageDialog: { infoTab_desc_info: 'Enter a description of the image for visually impaired users', uploadTab_desc: 'Description', defaultImageDescription: 'User-added image', uploadTab_file_info: 'Maximum size 1 MB. Only png, gif or jpeg', uploadTab_desc_info: 'Enter a description of the image for visually impaired users', imageUploadLimit_info: 'Max number of upload images exceeded', btn_insert_tooltip: 'Insert Image', httpUrlWarning: 'Are you sure you want to use an HTTP URL? Using HTTP image URLs may result in security warnings about insecure content. To avoid these warnings, use HTTPS image URLs instead.', title: 'Insert Image', error: 'Error:', uploadTab: 'Upload Image', wrongFileTypeError: 'You can insert only .gif .jpeg and .png files.', infoTab_url: 'URL', infoTab: 'Web Address', infoTab_url_info: 'Example: http://www.mysite.com/myimage.jpg', missingUrlError: 'You must enter a URL', uploadTab_file: 'Select Image', btn_update_tooltip: 'Update Image', infoTab_desc: 'Description', btn_insert: 'Insert', btn_update: 'Update', btn_upadte: 'Update', invalidUrlError: 'You can only use http:, https:, data:, //, /, or relative URL schemes.' }, sfdcSwitchToText: { sfdcSwitchToTextAlt: 'Use plain text' }, CkeSmartLink: { SmartLinkContextMenuEdit: 'Edit Smart Link', title: 'Insert a Smart Link' } },
+      contentsCss: ['/ckeditor/ckeditor-4.x/rel/contents.css', '/sCSS/48.0/sprites/1580155678000/Theme3/default/gc/CKEditor.css', '/sCSS/48.0/sprites/1580155678000/Theme3/default/gc/HtmlDetailElem.css'],
+      disableNativeSpellChecker: false,
+      language: 'en-us',
+      allowIframe: false,
+      sharedSpaces: { top: 'cke_topSpace', bottom: ' cke_bottomSpace' }
+    };
+  </script>
+
+  <apex:panelGroup rendered="{!appiphony}">
+    <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'jquery/jquery.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'appiphony/jquery.aljs-all-with-moment.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'momentLocales/allLocales.min.js')}"></script>
+  </apex:panelGroup>
+  <c:BackEndJSSettings ns="{!namespace}" offset="{!offset}" locale="{!locale}" dateFormat="{!dateFormat}" dateTimeFormat="{!dateTimeFormat}"
+    language="{!language}" />
+  <script type="text/javascript" src="{!URLFOR($Resource.FieloSalesforce_Backend, 'fielo/scripts/core.min.js')}"></script>
+
+
+  <apex:panelGroup rendered="{! ! ISBlank(externalJS) }">
+    <apex:repeat var="url" value="{!JSUrls}">
+      <script type="text/javascript" src="{!url}"></script>
+    </apex:repeat>
+  </apex:panelGroup>
+  <apex:panelGroup rendered="{! ! ISBlank(helpers) }">
+    <script type="text/javascript">fielo.helper.init([{!helpers}]);</script>
+  </apex:panelGroup>
 </apex:component>

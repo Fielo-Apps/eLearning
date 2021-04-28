@@ -59,23 +59,52 @@ platformSalesforceCss.forEach(function (obj) {
   platformSalesforceCssSources = platformSalesforceCssSources.concat(obj.src);
 });
 
-var platformSalesforceJs = [
+var platformSalesforceJs = [{
+    // CORE
+    src: [
+      // vendor
+      'resources/FieloElr_Backend/vendor/cropper/cropper.min.js',
+      // polyfill para navegadores incompatibles
+      'resources/FieloElr_Backend/scripts/polyfill/date.js',
+      'resources/FieloElr_Backend/scripts/polyfill/classList.js',
+      'resources/FieloElr_Backend/scripts/polyfill/remove.js',
+      'resources/FieloElr_Backend/scripts/polyfill/assign.js',
+      'resources/FieloElr_Backend/vendor/svg4everybody/svg4everybody.min.js',
+      // Utils - los tiene que inicializar un controlador externo
+      'resources/FieloElr_Backend/scripts/helpers/main.js',
+      'resources/FieloElr_Backend/scripts/helpers/ComponentHandler.js',
+      'resources/FieloElr_Backend/scripts/utils/ckeditor.js',
+      'resources/FieloElr_Backend/scripts/utils/notify.js',
+      'resources/FieloElr_Backend/scripts/utils/formElement.js',
+      'resources/FieloElr_Backend/scripts/utils/output.js',
+
+      // Helpers - se inicializan solos
+      'resources/FieloElr_Backend/scripts/helpers/spinner.js',
+      'resources/FieloElr_Backend/scripts/helpers/button.js',
+      'resources/FieloElr_Backend/scripts/helpers/select.js',
+      'resources/FieloElr_Backend/scripts/helpers/menu.js',
+      'resources/FieloElr_Backend/scripts/helpers/tabs.js',
+      'resources/FieloElr_Backend/scripts/helpers/paginator.js',
+      'resources/FieloElr_Backend/scripts/helpers/filter.js',
+      'resources/FieloElr_Backend/scripts/helpers/form.js',
+      'resources/FieloElr_Backend/scripts/helpers/recentRecords.js',
+      'resources/FieloElr_Backend/scripts/helpers/relatedRecords.js',
+      'resources/FieloElr_Backend/scripts/helpers/photoUpload.js'
+
+
+    ],
+    name: 'core.min.js',
+    dest: '../force-app/main/core/staticresources/FieloSalesforce_Backend/fielo/scripts'
+  },
   {
     src: [
-      // Components
       'resources/FieloElr_Salesforce/scripts/programSelector.js',
       'resources/FieloElr_Salesforce/scripts/elearning.js',
-      // Formularios
       'resources/FieloElr_Salesforce/scripts/recentOrder.js',
       'resources/FieloElr_Salesforce/scripts/questionManage.js',
       'resources/FieloElr_Salesforce/scripts/questionWizard.js',
-      'resources/FieloElr_Salesforce/scripts/answerOptions.js'
-      // Landings
-      // 'resources/FieloElr_Salesforce/scripts/elearningLanding.js'
-      // Views
-      // 'resources/FieloElr_Salesforce/scripts/courseView.js'
-      // Create
-      // 'resources/FieloPlt_Salesforce/scripts/programCreate.js'
+      'resources/FieloElr_Salesforce/scripts/answerOptions.js',
+      'resources/FieloElr_Salesforce/scripts/formElement.js'
     ],
     name: 'core.js',
     dest: '../force-app/main/default/staticresources/FieloElr_Salesforce/scripts'
@@ -164,6 +193,34 @@ gulp.task('watch', () => {
   gulp.watch(platformSalesforceJsSources, ['js']);
 });
 
+// Copy Images
+gulp.task('images', ['cleanImages'], () => {
+  // CORE
+  gulp.src(['resources/FieloElr_Backend/images/**'], {
+      dot: true
+    })
+    .pipe(gulp.dest('../force-app/main/core/staticresources/FieloSalesforce_Backend/images'))
+    .pipe($.size({
+      title: 'copy'
+    }));
+
+  // PLT
+  gulp.src(['resources/FieloElr_Salesforce/images/**'], {
+      dot: true
+    })
+    .pipe(gulp.dest('../plt/main/default/staticresources/FieloElr_Salesforce/images'))
+    .pipe($.size({
+      title: 'copy'
+    }));
+});
+
+// Clean Images
+gulp.task('cleanImages', () => del([
+  '../force-app/main/core/staticresources/FieloSalesforce_Backend/images/**'
+], {
+  dot: true,
+  force: true
+}));
 
 // Javascript documentation
 gulp.task('doc', ['cleanDoc'], () => {
@@ -195,8 +252,33 @@ gulp.task('cleanDoc', () => del([
 
 // Clean Static Resource
 gulp.task('clean', () => del([
-  '../resource-bundles/FieloElr_Salesforce.resource/**',
-  '!../resource-bundles/FieloElr_Salesforce.resource',
+  '../force-app/main/default/staticresources/FieloElr_Salesforce/**',
+  '!../force-app/main/default/staticresources/FieloElr_Salesforce',
+  '../force-app/main/core/staticresources/FieloSalesforce_Backend/**',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend'
+], {
+  dot: true,
+  force: true
+}));
+
+// Copy vendor files
+gulp.task('vendor', ['cleanVendor'], () => {
+  return gulp.src(
+      ['resources/FieloElr_Backend/vendor/**/*'], {
+        dot: true
+      })
+    .pipe(gulp.dest('../force-app/main/core/staticresources/FieloSalesforce_Backend/'))
+    .pipe($.size({
+      title: 'copy'
+    }));
+});
+
+// Clean Vendor
+gulp.task('cleanVendor', () => del([
+  '../force-app/main/core/staticresources/FieloSalesforce_Backend/**',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/fielo/**',
+  '!../force-app/main/core/staticresources/FieloSalesforce_Backend/images/**'
 ], {
   dot: true,
   force: true
@@ -205,7 +287,16 @@ gulp.task('clean', () => del([
 // Build production site files
 gulp.task('build', ['clean'], cb => {
   runSequence(
-    'css', 'js', // 'doc',
+    'vendor', 'images', 'js', 'css',
     cb
- );
+  );
+});
+
+
+// Gulp default task
+gulp.task('default', cb => {
+  runSequence(
+    'build',
+    cb
+  );
 });

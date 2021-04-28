@@ -1,6 +1,6 @@
-public with sharing class RecentRecordsController {
-    
-  /***** Header fields  ******/  
+global with sharing class RecentRecordsController {
+
+  /***** Header fields  ******/
     public String cFieldset{get;set;}
     public String cNameField{get;set;}
     public String cWhereClause{get;set;}
@@ -8,13 +8,13 @@ public with sharing class RecentRecordsController {
     public Integer recordsInPage{get{
         if(recordsInPage == null && !cAsync){
           if ( !String.isBlank(cDataFilters) ) {
-            cDataFilters = cDataFilters.replace('\'', '"'); 
+            cDataFilters = cDataFilters.replace('\'', '"');
           }
           recordsInPage = getRecords(  csObjectName,  fieldsetString, 0,  orderBy,  cDataFilters,  cRecordsPerPage + 1, cWhereClause ).size();
         }
         return recordsInPage;
       }set;}
-    
+
     public class HeaderColumn {
       public String id{get;set;}
       public String Type{get;set;}
@@ -58,7 +58,7 @@ public with sharing class RecentRecordsController {
                   }else if(!apiName.contains('__c') && c.Name.contains('.') ){
                       apiName += 'id';
                   }
-                  Schema.DescribeFieldResult fieldDescribe = objectFieldMap.get(apiName).getDescribe();              
+                  Schema.DescribeFieldResult fieldDescribe = objectFieldMap.get(apiName).getDescribe();
                   if(objectFieldMap.containsKey(apiName)){
                     if(!fieldDescribe.isAccessible()){
                       fields.remove(i);
@@ -73,21 +73,21 @@ public with sharing class RecentRecordsController {
                       if(c.Type == null){
                         c.Type = fieldDescribe.getType().name();
                       }
-                    }              
+                    }
                   }
                 }
               }
             } catch( JSONException e ) {
-              system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );        
+              system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
             }
-            
+
           } else {
             fields = new List<HeaderColumn>();
           }
         }
         return fields;
       } set;
-    } 
+    }
 
     public String fieldsetString { get {
         if ( fieldsetString == null) {
@@ -101,13 +101,13 @@ public with sharing class RecentRecordsController {
         return fieldsetString;
       } set;
     }
-    
-  /***** Query Datos  ******/  
+
+  /***** Query Datos  ******/
     public String csObjectName {get; set;}
     public Integer cRecordsPerPage {get; set;}
-    public String orderBy {get; set;}  
-    public String cDataFilters {get; set;}  
-    
+    public String orderBy {get; set;}
+    public String cDataFilters {get; set;}
+
     private static String getWhereCondition( String filterJson ) {
       String whereCondition = '';
       if(filterJson != null && filterJson != '{}'){
@@ -116,29 +116,21 @@ public with sharing class RecentRecordsController {
           for ( String k :filter.keySet() ) {
             String value = (String) filter.get(k);
             if ( value.startsWith('!') ) {
-              whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';            
+              whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';
             } else {
               whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' = \'' +  String.escapeSingleQuotes(value) + '\'';
             }
           }
           whereCondition = ' WHERE ' + whereCondition.substring(4);
         } catch( JSONException e ) {
-          system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + filterJson );        
-        }        
+          system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + filterJson );
+        }
       }
       return whereCondition;
     }
-    /*
-    @RemoteAction
-  public static Integer getRecordsQty( String objectName, String dataFilters) {
-      String query = 'SELECT Id ';
-      query += ' FROM ' + objectName;
-      query += getWhereCondition( dataFilters );
-      return Database.query(query).size();
-  }*/
 
     @RemoteAction
-    public static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause ) {
+    global static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause ) {
         List<String> listToDescribe = new List<String>{objectName};
         Schema.DescribeSObjectResult objectDescribe = Schema.describeSObjects(listToDescribe)[0];
         Map<String, Schema.SObjectField> fieldsMap = objectDescribe.fields.getMap();
@@ -158,11 +150,11 @@ public with sharing class RecentRecordsController {
         }
         String query = 'SELECT Id, ' + String.join(new List<String>(fieldset), ',');
         query += ' FROM ' + objectName;
-        query += getWhereCondition( dataFilters ); 
+        query += getWhereCondition( dataFilters );
         if(whereClause != null && WhereClause != ''){
           query += query.contains(' WHERE ') ?  ' ' + whereClause : ' WHERE ' + whereClause;
         }
-        // ORDER BY       
+        // ORDER BY
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
         }
@@ -190,7 +182,7 @@ public with sharing class RecentRecordsController {
     public List<sObject> recentRecords { get {
       if ( recentRecords == null ) {
         if ( !String.isBlank(cDataFilters) ) {
-          cDataFilters = cDataFilters.replace('\'', '"'); 
+          cDataFilters = cDataFilters.replace('\'', '"');
         }
 
         List<sObject> aux = getRecords(  csObjectName,  fieldsetString, 0,  orderBy,  cDataFilters,  cRecordsPerPage + 1, cWhereClause );
@@ -200,5 +192,5 @@ public with sharing class RecentRecordsController {
         }
       }
       return recentRecords;
-    } set; }    
+    } set; }
 }

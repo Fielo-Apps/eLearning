@@ -1,9 +1,9 @@
-public with sharing class BackendHeaderRecordController {
+global with sharing class BackendHeaderRecordController {
 
 /*****  Datos  *****/
   public String csObjectName{get;set;}
   private Boolean queryRecordNotDone = true;
-  
+
   public SObject cRecord{get{
     if (queryRecordNotDone && cRecord !=null && cRecord.Id != null ) {
         Id recordId = cRecord.Id;
@@ -26,7 +26,7 @@ public with sharing class BackendHeaderRecordController {
                     fields.add('toLabel('  + c.Name + ')');
                 }else{
                     fields.add(c.Name);
-                }           
+                }
                 if(c.Name.contains('__r')){
                     fields.add(c.Name.substring(0, c.Name.indexOf('__r') ) + '__c');
                 }
@@ -83,7 +83,7 @@ public with sharing class BackendHeaderRecordController {
             columns = (List<BackendHeaderRecordController.HeaderColumn>) JSON.deserialize( cFieldset, List<BackendHeaderRecordController.HeaderColumn>.class );
           } catch( JSONException e ) {
               system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
-              return null;       
+              return null;
           }
           // Rellenar los Labels y Types Nulos
           if ( objectFieldMap != null ) {
@@ -99,7 +99,7 @@ public with sharing class BackendHeaderRecordController {
                 apiName += 'id';
               }
               Schema.DescribeFieldResult fieldDescribe = objectFieldMap.get(apiName).getDescribe();
-              if(objectFieldMap.containsKey(apiName)){                
+              if(objectFieldMap.containsKey(apiName)){
                 if(!fieldDescribe.isAccessible()){
                   columns.remove(i);
                   i--;
@@ -126,11 +126,11 @@ public with sharing class BackendHeaderRecordController {
   }
 
   @RemoteAction
-  public static RemoteActionResult deleteRecord( Id recordId ){
+  global static RemoteActionResult deleteRecord( Id recordId ){
     RemoteActionResult result = new RemoteActionResult();
     try{
-        if ( recordId == null ) {          
-          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR, String.format(Label.RequiredArgument, new String[]{'recordId'} ) ) );        
+        if ( recordId == null ) {
+          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR, String.format(Label.RequiredArgument, new String[]{'recordId'} ) ) );
         } else {
           sobjectType sobjectType = recordId.getSobjectType();
           SObject record = sobjectType.newSObject();

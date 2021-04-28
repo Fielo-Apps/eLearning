@@ -2,10 +2,10 @@
 public class TestCourseStatusViewController {
 	@testSetup static void setup(){
         MockUpFactory.InsertTestData();
-    }	
+    }
 
 	@isTest static void getTests(){
- 		
+
  		List<FieloPLT__Program__c> programs = [SELECT Id FROM FieloPLT__Program__c];
 
  		FieloPLT__Segment__c metaSegment =
@@ -13,7 +13,7 @@ public class TestCourseStatusViewController {
 		List<FieloPLT__Segment__c> segments =
 			MockUpFactory.createSegments('Segment #', 2, 'Manual');
 
-		
+
 
 		for (FieloPLT__Segment__c segment:segments) {
 			segment.FieloPLT__Program__c = programs[0].Id;
@@ -60,7 +60,7 @@ public class TestCourseStatusViewController {
 		courses = [SELECT Id, Status__c FROM Course__c WHERE Program__c =: programs.get(0).id];
 		courses.get(0).Status__c = 'Active';
 		update courses;
-		
+
 		System.assertEquals('Active', courses.get(0).Status__c);
 
  		//Members
@@ -74,7 +74,7 @@ public class TestCourseStatusViewController {
 		Member__c = members.get(0).id
 		,Course__c = courses.get(0).id);
 		insert record;
-	
+
 	   	  //ModuleResponse
         FieloELR__ModuleResponse__c moduleRes = new FieloELR__ModuleResponse__c(
         	Member__c = members.get(0).id
@@ -91,17 +91,17 @@ public class TestCourseStatusViewController {
     	RemoteActionResult resultSave = CourseStatusViewController.save(
 			record,
 			new List<String>{
-				'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'
+				'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'
 			}
 		);
 
 		RemoteActionResult resutSaveModuleRes = CourseStatusViewController.saveModuleResponse(
 			moduleRes,
 			new List<String>{
-				'FieloELR__StartDate__c'}
+				'FieloELR__StartDatetime__c'}
 		);
-    	
+
 		String fields = String.join( new List<String>(Schema.describeSObjects(
 			new String[]{'FieloELR__Course__c'})[0].fields.getMap().keySet()) ,',');
 
@@ -109,10 +109,10 @@ public class TestCourseStatusViewController {
 
 	}
 
-	
+
 	@isTest
 	static void testSectionFormField() {
-	
+
 	CourseStatusViewController.Section section = new CourseStatusViewController.Section();
 	section.Name =  'none';
 	section.CssClass = 'none';
@@ -129,7 +129,7 @@ public class TestCourseStatusViewController {
 	formfield.Value = 'none';
   	formfield.Name = 'none';
     formfield.WhereCondition = 'none';
-    
+
     List<CourseStatusViewController.FormField> innerList = new List<CourseStatusViewController.FormField>{formfield};
    section.Rows = new List<List<CourseStatusViewController.FormField>>{innerList};
 
@@ -140,7 +140,7 @@ public class TestCourseStatusViewController {
     System.assertEquals('none', formfield.Value);
     System.assertEquals(null, formfield.Required);
     System.assertEquals('', formfield.getRequiredValue());
-    
+
     formfield.Required = true;
     System.assertEquals(true, formfield.Required);
     System.assertEquals('true', formfield.getRequiredValue());

@@ -4741,4 +4741,12 @@ If it is a CRM Person Account, a Fielo Individual Member account is created.</va
         <shortDescription>Results</shortDescription>
         <value>Results</value>
     </labels>
+    <labels>
+        <fullName>TimezoneMissmatch</fullName>
+        <categories>BackEndJSSettings.component</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>TimezoneMissmatch</shortDescription>
+        <value>Your browser timezone is not the same as your Salesforce user timezone. That may cause wrong date validations</value>
+    </labels>
 </CustomLabels>

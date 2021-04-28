@@ -196,7 +196,7 @@
                 "showLabel": false,
                 "config": JSON.stringify(component.get('v.compConfig'))
             });
-            
+
             //COURSE DESCRIPTION SUBCOMPONENT
             fieldset.push({
                 "apiName": "FieloELR__Description__c",
@@ -206,11 +206,11 @@
                     "type": "default"
                 },
                 "showLabel": false
-                
+
             })
-            //DATE SUBCOMPONENT 
+            //DATE SUBCOMPONENT
             fieldset.push({
-                "apiName": "FieloELR__StartDate__c",
+                "apiName": "FieloELR__StartDatetime__c",
                 "type": "subcomponent",
                 "subcomponent": "c:CourseDatesContainer",
                 "label": {
@@ -249,7 +249,7 @@
         } catch (e) {
             console.log(e);
         }
-    },    
+    },
     loadCourseStatus: function (component) {
         try {
             var courseId = component.get('v.recordId');
@@ -333,7 +333,7 @@
                 "message": " ",
                 "type": type
             });
-            toastEvent.fire();     
+            toastEvent.fire();
         } catch(e) {
             console.log(e);
         }
@@ -345,8 +345,8 @@
         'FieloELR__Image__c',
         'FieloELR__ExternalURL__c',
         'FieloELR__Description__c',
-        'FieloELR__StartDate__c',
-        'FieloELR__EndDate__c'
+        'FieloELR__StartDatetime__c',
+        'FieloELR__EndDatetime__c'
     ],
     courseStatusRequiredFields: [
         'Name',

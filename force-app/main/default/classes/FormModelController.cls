@@ -1,8 +1,8 @@
-public with sharing class FormModelController  {
+global with sharing class FormModelController  {
   /*****  Retrieve  *****/
 
 	@RemoteAction
-	public static FieloPLT__Model__c retrieve( String objectName, Id recordId, String fields ){
+	global static FieloPLT__Model__c retrieve( String objectName, Id recordId, String fields ){
     	FieloPLT__Model__c recordObject;
     	objectName = recordId.getSObjectType().getDescribe().getName();
 

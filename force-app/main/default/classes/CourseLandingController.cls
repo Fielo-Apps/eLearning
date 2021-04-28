@@ -1,7 +1,7 @@
 /**
 * @description Class to Control the Incentives Landing Page.
 */
-public with sharing class CourseLandingController extends PageSettingsSetController {
+global with sharing class CourseLandingController extends PageSettingsSetController {
 
     public String currentView {get;set;}
     public FieloPLT__PageSettings__c newCourse {get;set;}
@@ -18,10 +18,10 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
     }set;}
 
     public CourseLandingController() {
-        
+
         //Verify if a program was already created. If not, redirect to ProgramLanding page
         if(currentProgram != null)
-        {      
+        {
             String standardTools  = '';
             String standardButtons = '';
 
@@ -51,7 +51,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
             }
         }
     }
-    
+
     //Verify if a program was already created. If not, redirect to ProgramLanding page
     public PageReference verifyProgram(){
         PageReference retURL;
@@ -62,46 +62,20 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
       return retURL;
     }
 
-    public class Section {
-        public String Name{get;set;}
-        public List<List<FormField>> Rows{get;set;}
-        public String CssClass{get;set;}
-    }
-
-    public class FormField {
-        public String Type{get;set;}
-        public String MetaField{get;set;}
-        public String Name{get;set;}
-        public String onchange{get;set;}
-        public String Label{get;set;}
-        public String Value{get;set;}
-        public String WhereCondition{get;set;}
-        public Boolean Required{get;set;}
-
-        public String getRequiredValue () {
-            if ( Required != null ) {
-                return Required ? 'true' : 'false';
-            }
-            return '';
-        }
-    }
-
     public static String getSectionsWithSegmentWhereCondition(String sectionsString){
-        
+
         //saveController = 'CourseLandingController.createCourseWithoutSegments';
         saveController = 'CourseLandingController.createCourse';
         secondaryParameters = 'modelId,FieloELR__Segment__c';
 
 
-        List<Section> sections = (List<Section>) JSON.deserialize( sectionsString, List<CourseLandingController.Section>.class );
-        for ( Section s :sections ) {
-          for ( List<FormField> r :s.rows ) {
-            for ( FormField f :r ) {
+        List<FormController.Section> sections = (List<FormController.Section>) JSON.deserialize( sectionsString, List<FormController.Section>.class );
+        for ( FormController.Section s :sections ) {
+          for ( List<FormController.FormField> r :s.rows ) {
+            for ( FormController.FormField f :r ) {
               if(f.Name != null) {
                 if(f.Name == 'FieloELR__Segment__c') {
                     f.WhereCondition = ' FieloPLT__Program__c IN ( //, /' + ProgramService.getActiveProgram().Id + '/ ) AND RecordType.Name <> /Metasegment/ ';
-                    //secondaryParameters = 'FieloELR__Segment__c';
-                    //saveController = 'CourseLandingController.createCourseWithSegments';
                 }
               }
             }
@@ -125,7 +99,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
     }
 
     @RemoteAction
-    public static List<FieloELR__Course__c> getCourses( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage, String whereClause ) {
+    global static List<FieloELR__Course__c> getCourses( String objectName, String fields, Integer offset, String orderBy, String filter, Integer recordsPerPage, String whereClause ) {
         Set<String> fieldset = new Set<String> { 'Name', 'SubscriptionMode__c', 'Status__c', 'Program__r.Name' };
         Map<String,Object> jsonObject = (Map<String, Object>) JSON.deserializeUntyped( filter);
         Id programId = (String)jsonObject.get('Program__c');
@@ -133,7 +107,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
         }
-        
+
         List<FieloELR__Course__c> records = new List<FieloELR__Course__c>();
 
         // SR: CRUD Check
@@ -147,7 +121,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
         } else {
             throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c,FieloPLT__Program__c'}));
         }
-        
+
         return records != null ? records : new List<FieloELR__Course__c>();
     }
 
@@ -155,7 +129,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
         Create Courses Method
     */
     @RemoteAction
-    public static RemoteActionResult createCourse(sObject objectRecord, List<String> nullFields, String modelId, List<String> segments) {
+    global static RemoteActionResult createCourse(sObject objectRecord, List<String> nullFields, String modelId, List<String> segments) {
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
 		Map<String,Schema.SObjectField> objectFieldsMap = Schema.sObjectType.Course__c.fields.getMap();
@@ -225,7 +199,7 @@ public with sharing class CourseLandingController extends PageSettingsSetControl
     }
 
     @RemoteAction
-    public static List<SObject> getSegments( String programId ) {
+    global static List<SObject> getSegments( String programId ) {
         List<SObject> records;
         if ( Schema.sObjectType.FieloPLT__Segment__c.isAccessible() ) {
             if ( Schema.sObjectType.FieloPLT__Segment__c.fields.Name.isAccessible() ) {
