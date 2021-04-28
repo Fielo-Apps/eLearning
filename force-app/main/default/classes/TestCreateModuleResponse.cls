@@ -197,8 +197,8 @@ private class TestCreateModuleResponse {
         MockUpFactory.InsertTestData();
         Course__c course = [SELECT Id FROM Course__c WHERE Name = 'Course 0' LIMIT 1];
 
-        course.StartDate__c = System.today();
-        course.EndDate__c = System.today().addDays(30);
+        course.StartDatetime__c = System.today();
+        course.EndDatetime__c = System.today().addDays(30);
 
         update course;
 

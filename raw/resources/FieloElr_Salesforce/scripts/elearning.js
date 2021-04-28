@@ -231,6 +231,90 @@
   };
   window.RefreshSegments = // eslint-disable-line camelcase
     FieloELearning.prototype.programChangeProxy_; // eslint-disable-line no-undef
+
+  FieloELearning.prototype.save_ = function() {
+    fielo.util.spinner.FieloSpinner.show();
+    var notify;
+    this.getValues_();
+    if (this.recordId_) {
+      this.data_.Id = this.recordId_;
+    } else if (this.sObjectType_ && this.sObjectType_ !== '') {
+      this.data_.sObjectType =
+        this.sObjectType_;
+    }
+
+    if (this.data_.cloneId) {
+      delete this.data_.cloneId;
+    }
+
+    if (this.checkRequiredPassOk_()) {
+      // Arma el array de argumentos para el Invoke
+      var invokeData = [];
+      invokeData.push(this.saveController_);
+      invokeData.push(this.data_);
+      invokeData.push(this.nullFields_);
+      for (var el in this.secondaryData_) {
+        if (this.secondaryData_.hasOwnProperty(el)) {
+          invokeData.push(this.secondaryData_[el]);
+        }
+      }
+      invokeData.push(this.processRemoteActionResult_.bind(this));
+      invokeData.push({
+        escape: true
+      });
+      try {
+        Visualforce.remoting.Manager.invokeAction.apply(
+          Visualforce.remoting.Manager, invokeData
+        );
+      } catch (e) {
+        notify = fielo.util.notify.create();
+        notify.FieloNotify.addMessages([
+          BackEndJSSettings.LABELS.ReviewFollowingErrors,
+          e
+        ]);
+        notify.FieloNotify.setTheme('error');
+        notify.FieloNotify.show();
+        fielo.util.spinner.FieloSpinner.hide();
+      }
+    } else {
+      notify = fielo.util.notify.create();
+      notify.FieloNotify.addMessages([
+        BackEndJSSettings.LABELS.CompleteRequiredFields
+      ]);
+      notify.FieloNotify.setTheme('error');
+      notify.FieloNotify.show();
+      fielo.util.spinner.FieloSpinner.hide();
+    }
+  };
+
+  FieloELearning.prototype.checkTimezone = function() {
+    var pcTimezone =
+      Intl
+      .DateTimeFormat() // eslint-disable-line new-cap
+      .resolvedOptions()
+      .timeZone
+      .toLowerCase();
+    var sfTimezone = BackEndJSSettings.USER_TIMEZONE.toLowerCase();
+
+    if (pcTimezone !== sfTimezone) {
+      var notify = fielo.util.notify.create();
+      notify.FieloNotify.addMessages([
+        BackEndJSSettings.LABELS.TimezoneMissmatch +
+        '. Web Browser Timezone: ' + pcTimezone +
+        ', Salesforce User Timezone: ' + sfTimezone
+      ]);
+      notify.FieloNotify.setTheme('warning', false);
+      notify.FieloNotify.show();
+
+      setTimeout(
+        function() {
+          this.hide();
+        }.bind(notify.FieloNotify),
+        30000
+      );
+    }
+  };
+
    /**
    * Inicializa el elemento
    */
@@ -242,6 +326,7 @@
         var _this = document.getElementsByClassName(
           'fielosf-elearning')[0];
         _this.FieloELearning.disableProgramChange_();
+        _this.FieloELearning.checkTimezone();
       });
 
       $('#FieloELR__Module__cFormNew').on('shown.aljs.modal', function() {
@@ -356,6 +441,23 @@
       var relatedListButtons = document.querySelectorAll('.bRelatedList');
       relatedListButtons.forEach(function(rel) {
         $(rel.querySelector('.pShowMore')).toggle(false);
+      });
+
+      var fieloForms = document.querySelectorAll('.slds-modal');
+      fieloForms.forEach(function(fForm) {
+        if (fForm.FieloForm) {
+          fForm.FieloForm.save_ = this.save_.bind(fForm.FieloForm);
+        }
+      }.bind(this));
+
+      var fieloFormElements =
+        document.querySelectorAll('.slds-modal .slds-form-element');
+      fieloFormElements.forEach(function(f) {
+        if (f.FieloFormElement &&
+        (f.FieloFormElement.get('fieldName') === 'FieloELR__StartDatetime__c' ||
+        f.FieloFormElement.get('fieldName') === 'FieloELR__EndDatetime__c')) {
+          f.FieloFormElement.disableTimezoneFix_ = true;
+        }
       });
     }
   };

@@ -1,5 +1,5 @@
-public with sharing class RelatedListController {
-/***** Badges ******/  
+global with sharing class RelatedListController {
+/***** Badges ******/
   public String cBadges{get;set;}
   public String cActions{get;set;}
   public List<String> cBadgesList{get{
@@ -45,7 +45,7 @@ public with sharing class RelatedListController {
               }else{
                 nameFieldLabel = '';
               }
-              break;        
+              break;
             }
           }
         }
@@ -54,7 +54,7 @@ public with sharing class RelatedListController {
       return nameFieldLabel;
     } set;
   }
-  
+
   public List<RelatedColumn> columns { get {
       if ( columns == null ) {
         if ( !String.isBlank(cFieldset)  ) {
@@ -68,7 +68,7 @@ public with sharing class RelatedListController {
             // Rellenar los Labels y Types Nulos
             if ( objectFieldMap != null ) {
               for ( Integer i = 0; i < columns.size() ; i++ ) {
-                RelatedColumn c = columns[i];              
+                RelatedColumn c = columns[i];
                 //si tiene campo por relacion tomo lo anterior al punto nomas
                 String apiName = c.Name.indexOf('.') > 0 ? c.Name.substring(0,c.Name.indexOf('.')) : c.Name;
                 //si es un campo custom con __r lo cambio por __c
@@ -77,8 +77,8 @@ public with sharing class RelatedListController {
                 //si es un campo standard y no tien el id al
                 }else if(!apiName.contains('__c') && c.Name.contains('.') ){
                     apiName += 'id';
-                }           
-                Schema.DescribeFieldResult fieldDescribe = objectFieldMap.get(apiName).getDescribe();              
+                }
+                Schema.DescribeFieldResult fieldDescribe = objectFieldMap.get(apiName).getDescribe();
                 if(objectFieldMap.containsKey(apiName)){
                   if(!fieldDescribe.isAccessible()){
                     columns.remove(i);
@@ -98,8 +98,8 @@ public with sharing class RelatedListController {
               }
             }
           } catch( JSONException e ) {
-            system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + cFieldset );        
-          }          
+            system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + cFieldset );
+          }
         } else {
           columns = new List<RelatedListController.RelatedColumn>();
         }
@@ -116,7 +116,7 @@ public with sharing class RelatedListController {
 
         for ( RelatedColumn r :columns ){
           if ( r.Name != cNameField ) {
-            fieldsetString += ', '  + r.Name;            
+            fieldsetString += ', '  + r.Name;
           }
         }
       }
@@ -129,7 +129,7 @@ public with sharing class RelatedListController {
   public Integer cRecordsInPage{get{
         if(cRecordsInPage == null && !cAsync){
           if ( !String.isBlank(cDataFilters) ) {
-            cDataFilters = cDataFilters.replace('\'', '"'); 
+            cDataFilters = cDataFilters.replace('\'', '"');
           }
 
           cRecordsInPage = getRecords(  csObjectName,  fieldsetString, 0,  orderBy,  cDataFilters,  cRecordsPerPage + 1, cWhereClause ).size();
@@ -146,18 +146,18 @@ public with sharing class RelatedListController {
       }
     }
      return cRecordObjectsInPage ;
-  } set; }   
+  } set; }
 
 /*****  Metodos Remote Delete Record  y Refresh Data *****/
   @RemoteAction
-  public static RemoteActionResult deleteRecord( Id recordId ){
+  global static RemoteActionResult deleteRecord( Id recordId ){
     RemoteActionResult result = new RemoteActionResult();
     Savepoint sp = Database.setSavepoint();
     SObject record;
 
     try{
-        if ( recordId == null ) {          
-          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR, String.format(Label.RequiredArgument, new String[]{'recordId'} ) ) );        
+        if ( recordId == null ) {
+          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.ERROR, String.format(Label.RequiredArgument, new String[]{'recordId'} ) ) );
         } else {
           record = recordId.getSobjectType().newSObject();
           record.id = recordId;
@@ -167,7 +167,7 @@ public with sharing class RelatedListController {
             throw new FieloPLT.FieloException(Label.CannotDeleteRecords);
           }
           // TODO cambiar label
-          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, label.RecordDeletedSuccessfully) );        
+          result.addMessage(new RemoteActionResult.RemoteActionMessage( ApexPages.Severity.Confirm, label.RecordDeletedSuccessfully) );
         }
     }catch(DmlException e){
         Database.rollback(sp);
@@ -184,16 +184,16 @@ public with sharing class RelatedListController {
     }
     return result;
   }
-/***** Query Datos ******/  
+/***** Query Datos ******/
   public Integer cRecordsPerPage{get;set;}
-  public String orderBy {get; set;}    
+  public String orderBy {get; set;}
   public String csObjectName{get;set;}
   public String cWhereClause{get;set;}
-  public Boolean noRecords{get { return cRecordObjects.size() == 0; } } 
-  public Boolean viewAll {get { return cRecordObjects.size() == cRecordsPerPage; } } 
+  public Boolean noRecords{get { return cRecordObjects.size() == 0; } }
+  public Boolean viewAll {get { return cRecordObjects.size() == cRecordsPerPage; } }
   public String cDataFilters {get{
     return cDataFilters;
-    } set;}  
+    } set;}
 
   public List<Object> cRecordObjects { get {
     if ( cRecordObjects == null ) {
@@ -207,23 +207,23 @@ public with sharing class RelatedListController {
       return new List<object>();
     }
      return cRecordObjects ;
-  } set; }    
+  } set; }
 
   public List<Object> cObjects {get;set;}
-  
+
   public List<sObject> cRecords { get {
     if ( cRecords == null && !cAsync) {
       if ( !String.isBlank(cDataFilters) ) {
-        cDataFilters = cDataFilters.replace('\'', '"'); 
+        cDataFilters = cDataFilters.replace('\'', '"');
       }
 
       cRecords = getRecords(  csObjectName,  fieldsetString, 0,  orderBy,  cDataFilters,  cRecordsPerPage, cWhereClause );
     }
     return cRecords;
-  } set; }    
+  } set; }
 
     @RemoteAction
-    public static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause) {
+    global static List<SObject> getRecords( String objectName, String fields, Integer offset, String orderBy, String dataFilters, Integer recordsPerPage, String whereClause) {
         List<String> listToDescribe = new List<String>{objectName};
         Schema.DescribeSObjectResult objectDescribe = Schema.describeSObjects(listToDescribe)[0];
         Map<String, Schema.SObjectField> fieldsMap = objectDescribe.fields.getMap();
@@ -247,10 +247,10 @@ public with sharing class RelatedListController {
         if (fields != '') {
             query += ', ' + String.join(fieldset, ',');
         }
-        
+
         query += ' FROM ' + objectName;
         query += getWhereCondition( dataFilters );
-        // ORDER BY       
+        // ORDER BY
         if ( orderBy == null ) {
             orderBy = 'LastModifiedDate DESC';
         }
@@ -273,38 +273,30 @@ public with sharing class RelatedListController {
         }
         return records;
     }
-  /*
-  @RemoteAction
-  public static Integer getRecordsQty( String objectName, String dataFilters) {
-      String query = 'SELECT Id ';
-      query += ' FROM ' + objectName;
-      query += getWhereCondition( dataFilters );
-      return Database.query(query).size();
-  }    */
 
     private static String getWhereCondition( String filterJson ) {
       String whereCondition = '';
-      if (filterJson != null ) { 
+      if (filterJson != null ) {
         try {
           Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped( filterJson);
           for ( String k :filter.keySet() ) {
             String value = string.valueOf(filter.get(k));
             if(value.startsWith('BOOLEAN:')){
-              whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' = ' +  String.escapeSingleQuotes(value.removeStart('BOOLEAN:'));            
+              whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' = ' +  String.escapeSingleQuotes(value.removeStart('BOOLEAN:'));
             }else{
               if ( value.startsWith('!') ) {
-                whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';            
+                whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' <> \'' +  String.escapeSingleQuotes(value.substring(1)) + '\'';
               } else {
                 whereCondition += ' AND ' + String.escapeSingleQuotes(k) + ' = \'' +  String.escapeSingleQuotes(value) + '\'';
               }
             }
           }
 
-          if ( whereCondition != '') {          
+          if ( whereCondition != '') {
             whereCondition = ' WHERE ' + whereCondition.substring(4);
           }
         } catch( JSONException e ) {
-          system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + filterJson );        
+          system.debug(LoggingLevel.ERROR, 'INVALID JSON ' + filterJson );
         }
       }
       return whereCondition;
@@ -320,7 +312,7 @@ public with sharing class RelatedListController {
         try {
           actions = (List<ButtonsController.Button>) JSON.deserialize( cActions, List<ButtonsController.Button>.class );
         } catch( JSONException e ) {
-            system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cActions );        
+            system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cActions );
         }
       }
       return actions.size() == 1 ? true : false;

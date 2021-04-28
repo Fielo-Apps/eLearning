@@ -52,7 +52,7 @@ public class ModuleResponses extends SObjectDomain {
             for(AggregateResult mr : aggResult){
                 maxNumbByKey.put((String)mr.get('FieloELR__ExternalKey__c'), (Decimal)mr.get('attemptNumber'));
             }
-            
+
             for(ModuleResponse__c moduleResp : (List<ModuleResponse__c>)records){
                 if (moduleResp.Module__c != null && moduleResp.Member__c != null) {
                     if(maxNumbByKey.containsKey(moduleResp.ExternalKey__c)){
@@ -64,7 +64,7 @@ public class ModuleResponses extends SObjectDomain {
                         maxNumbByKey.put(moduleResp.ExternalKey__c, 1);
                     }
                 }
-            }    
+            }
         }
     }
 
@@ -83,24 +83,24 @@ public class ModuleResponses extends SObjectDomain {
                 }
                 return;
             }
-            
+
         }
 
         //Creates a set to know wich are the required modules to be approved for each of the related members
-        Map<Id,Module__c> modulesMap = new Map<Id,Module__c>(new ModulesSelector(new Set<String>{'Id','Course__c','Course__r.SubscriptionMode__c','Course__r.StartDate__c','Course__r.EndDate__c'}).selectByIdHavingDependencies(moduleIds));
+        Map<Id,Module__c> modulesMap = new Map<Id,Module__c>(new ModulesSelector(new Set<String>{'Id','Course__c','Course__r.SubscriptionMode__c','Course__r.StartDatetime__c','Course__r.EndDatetime__c'}).selectByIdHavingDependencies(moduleIds));
         Set<String> mrKeysRequired = new Set<String>();
         Set<String> csKeysRequired = new Set<String>();
         Set<String> modulesProcessedIds = new Set<String>();
         for(ModuleResponse__c moduleResponse : (List<ModuleResponse__c>)records){
             if (moduleResponse.Module__c != null && moduleResponse.Member__c != null) {
-                if (modulesMap.get(moduleResponse.Module__c).Course__r.StartDate__c != null) {
-                    if (moduleResponse.Date__c < modulesMap.get(moduleResponse.Module__c).Course__r.StartDate__c) {
+                if (modulesMap.get(moduleResponse.Module__c).Course__r.StartDatetime__c != null) {
+                    if (moduleResponse.Date__c < modulesMap.get(moduleResponse.Module__c).Course__r.StartDatetime__c) {
                         moduleResponse.addError(Label.OutOfCoursePeriod);
                         return;
                     }
                 }
-                if (modulesMap.get(moduleResponse.Module__c).Course__r.EndDate__c != null) {
-                    if (moduleResponse.Date__c > modulesMap.get(moduleResponse.Module__c).Course__r.EndDate__c) {
+                if (modulesMap.get(moduleResponse.Module__c).Course__r.EndDatetime__c != null) {
+                    if (moduleResponse.Date__c > modulesMap.get(moduleResponse.Module__c).Course__r.EndDatetime__c) {
                         moduleResponse.addError(Label.OutOfCoursePeriod);
                         return;
                     }
@@ -145,7 +145,7 @@ public class ModuleResponses extends SObjectDomain {
                     moduleResponse.addError(Label.ValidateModuleResponseMemberApproved);
                     continue;
                 }
-                
+
                 Boolean errorDependency = false;
                 for(ModuleDependency__c md : modulesMap.get(moduleResponse.Module__c).PredecessorModules__r){
                     String dependentKey = String.valueOf(md.Predecessor__c) + String.valueOf(moduleResponse.Member__c);
@@ -187,12 +187,12 @@ public class ModuleResponses extends SObjectDomain {
           }
 
             SObjectUnitOfWork.DatabaseResult results = uow.getResults(CourseStatus__c.SObjectType);
-            
+
             Map<String,List<String>> errorMsgByCoursest = new Map<String,List<String>>();
             Integer i = 0;
             for (Database.SaveResult sr : results.insertResults) {
                 if (!sr.isSuccess()) {
-                    // Operation failed, so get all errors                
+                    // Operation failed, so get all errors
                     List<String> errorMsgs = new List<String>();
                     for(Database.Error err : sr.getErrors()) {
                         errorMsgs.add(err.getMessage());
@@ -252,11 +252,11 @@ public class ModuleResponses extends SObjectDomain {
                 moduleIds.add(moduleResponse.Module__c);
             }
 
-            Map<Id,Module__c> modulesMap = new Map<Id,Module__c>(new ModulesSelector(new Set<String>{'Id','Course__c','Course__r.SubscriptionMode__c','Course__r.StartDate__c','Course__r.EndDate__c'}).selectById(moduleIds));
+            Map<Id,Module__c> modulesMap = new Map<Id,Module__c>(new ModulesSelector(new Set<String>{'Id','Course__c','Course__r.SubscriptionMode__c','Course__r.StartDatetime__c','Course__r.EndDatetime__c'}).selectById(moduleIds));
 
             for(ModuleResponse__c moduleResponse : (List<ModuleResponse__c>)records) {
-                if (moduleResponse.Date__c > modulesMap.get(moduleResponse.Module__c).Course__r.EndDate__c &&
-                    moduleResponse.Date__c < modulesMap.get(moduleResponse.Module__c).Course__r.StartDate__c) {
+                if (moduleResponse.Date__c > modulesMap.get(moduleResponse.Module__c).Course__r.EndDatetime__c &&
+                    moduleResponse.Date__c < modulesMap.get(moduleResponse.Module__c).Course__r.StartDatetime__c) {
                     moduleResponse.addError(Label.OutOfCoursePeriod);
                     return;
                 }
@@ -309,14 +309,14 @@ public class ModuleResponses extends SObjectDomain {
                     QuestionResponses.validateAdminFields = true;
                     QuestionResponses.disableSubmit = false;
                     throw e;
-                }    
+                }
             }
             questionResponseUOW = null;
         }
 
         for(ModuleResponse__c record : (List<ModuleResponse__c>)records){
             recordsToProcess.add(record);
-            mapExistingRecordsToProcess.put(record.Id,(ModuleResponse__c)existingRecords.get(record.Id));                
+            mapExistingRecordsToProcess.put(record.Id,(ModuleResponse__c)existingRecords.get(record.Id));
             processedIds.add(record.Id);
             if(!approvedIds.contains(record.Id)) {
                 if(record.IsApproved__c && !((ModuleResponse__c)existingRecords.get(record.Id)).IsApproved__c){
@@ -388,7 +388,7 @@ public class ModuleResponses extends SObjectDomain {
             if(!hasError(moduleResponse.Id)){
                 moduleResponse.GradeValue__c = 0.0;
                 questionMap = new Map<Id,Question__c>(modulesMap.get(moduleResponse.Module__c).Questions__r);
-                
+
                 if (moduleResponse.CorrectQuestions__c == null) {
                     moduleResponse.CorrectQuestions__c = 0;
                 }
@@ -452,7 +452,7 @@ public class ModuleResponses extends SObjectDomain {
         Set<Id> moduleIds = new Set<Id>();
         Set<String> mrKeys = new Set<String>();
         for(ModuleResponse__c moduleResponse : (List<ModuleResponse__c>)records){
-            moduleIds.add(moduleResponse.Module__c);                
+            moduleIds.add(moduleResponse.Module__c);
             mrKeys.add(moduleResponse.ExternalKey__c);
         }
 
@@ -466,7 +466,7 @@ public class ModuleResponses extends SObjectDomain {
         for(ModuleResponse__c mr : approvedModuleResponses){
             approvedMRKeys.add(mr.ExternalKey__c);
         }
-        
+
         //store course status keys
         Set<String> csKeys = new Set<String>();
         for(ModuleResponse__c moduleResponse : (List<ModuleResponse__c>)records){
@@ -492,7 +492,7 @@ public class ModuleResponses extends SObjectDomain {
             CourseStatus__c cs;
             Module__c module = modulesMap.get(moduleResponse.Module__c);
             String csKey = String.valueOf(modulesMap.get(moduleResponse.Module__c).Course__c) + String.valueOf(moduleResponse.Member__c);
-            
+
             if(isUpdate){
                 if(module.Course__r.SubscriptionMode__c == 'Manual'){
                     if(csMap.containsKey(csKey)){
@@ -513,7 +513,7 @@ public class ModuleResponses extends SObjectDomain {
                         uow.registerNew(cs);
                     }
                 }
-                
+
                 cs.ApprovedModules__c++;
             }else{
                 if(csMap.containsKey(csKey)){
@@ -531,6 +531,6 @@ public class ModuleResponses extends SObjectDomain {
           }else{
             throw new FieloPLT.FieloException(Label.CannotInsertUpdateRecords);
           }
-        CourseStatus.validateAdminFields = validateAdminFields;        
+        CourseStatus.validateAdminFields = validateAdminFields;
     }
 }

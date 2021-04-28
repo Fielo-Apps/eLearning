@@ -3,7 +3,7 @@ public with sharing class SectionController {
   public String csObjectName{get;set;}
 
   public String cFormId{get;set;}
-  
+
   public static Boolean cRecordRedirect{get;set;}
 
   public SObject cRecord {get;set;}
@@ -67,6 +67,7 @@ public with sharing class SectionController {
     public String WhereCondition{get;set;}
     public Boolean Required{get;set;}
     public Boolean ReadOnly{get;set;}
+    public Boolean DisableTimezoneFix{get;set;}
     public String SearchField{get;set;}
     public String TargetField{get;set;}
     public String TargetObject{get;set;}
@@ -84,10 +85,16 @@ public with sharing class SectionController {
       }
       return '';
     }
-    
+    public String getDisableTimezoneFix () {
+        if ( DisableTimezoneFix != null ) {
+            return DisableTimezoneFix ? 'true' : 'false';
+        }
+        return '';
+    }
+
   }
 
-  private void loadSections () {  
+  private void loadSections () {
       if ( !String.isBlank(cFieldset)  ) {
         fields = 'Id';
         // Si empieza con [ es un valor seteado en una visual force => lo tiene que modificar para que sea json
@@ -105,10 +112,10 @@ public with sharing class SectionController {
           } else {
             sections = (List<Section>) JSON.deserialize( cFieldset, List<SectionController.Section>.class );
           }
-          // 
+          //
 
         } catch( JSONException e ) {
-          system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );        
+          system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
         }
         List<FormField> fieldsToUpdate = new List<FormField>();
         Map<String, String> parameters = ApexPages.currentPage().getParameters();
@@ -118,8 +125,8 @@ public with sharing class SectionController {
             for ( FormField f :r ) {
               if ( !String.isBlank(f.Name) ) {
                 // default value
-                if (cRecord != null){  
-                  if (queryRecordNotDone ) { 
+                if (cRecord != null){
+                  if (queryRecordNotDone ) {
                     fieldsToUpdate.add(f);
                   } else {
                     List<String> listFields = f.Name.split('\\.');
@@ -142,7 +149,7 @@ public with sharing class SectionController {
                           //si no es loookup se guarda el object y field para el describe que hace el componente que renderize el campo
                           }else{
                             f.TargetObject = csObjectName;
-                            f.TargetField = field.getDescribe().getLabel();                     
+                            f.TargetField = field.getDescribe().getLabel();
                           }
                           break;
                         }
@@ -162,7 +169,7 @@ public with sharing class SectionController {
                               if(i == (listFields.size()-1)){
                                 f.TargetObject = nextObject;
                                 f.TargetField = field.getDescribe().getName();
-                              //si no se llego a la ultima posicion y es lookup se guarda el objeto name para seguir haciendo describe del siguiente objeto  
+                              //si no se llego a la ultima posicion y es lookup se guarda el objeto name para seguir haciendo describe del siguiente objeto
                               }else if(string.ValueOf(field.getDescribe().getType()) == 'REFERENCE'){
                                 nextObject = string.ValueOf(field.getDescribe().getReferenceTo());
                                 nextObject = nextObject.remove('(').remove(')');
@@ -172,7 +179,7 @@ public with sharing class SectionController {
                           }
                         }
                       }
-                      //si es cross-field se busca el valor a mostrar a traves del getSobject hasta llegar al resultado    
+                      //si es cross-field se busca el valor a mostrar a traves del getSobject hasta llegar al resultado
                       if(listFields.size() == 2){
                         sObject auxSObject1 = recordObject.getSobject(listFields[0]);
                         if(auxSObject1 != null){
@@ -183,17 +190,17 @@ public with sharing class SectionController {
                         for(Integer i = 1;i < listFields.size();i++){
                           if(auxSObject != null){
                               if((i + 1) == listFields.size()){
-                                f.Value = (String) auxSObject.get(listFields[i]);                    
+                                f.Value = (String) auxSObject.get(listFields[i]);
                               }else{
                                  auxSObject = auxSObject.getSobject(listFields[i]);
                               }
-                           }                   
+                           }
                         }
                       }
                     //si no es cross-field se hace el get directo y no se usa el TargetObject y TargetField
                     }else{
                       f.Value = String.valueOf(recordObject.get(f.Name));
-                    }       
+                    }
                   }
                 } else if (f.Value == null) {
                   if (parameters.containsKey(cFormId + '-' + f.Name) ) {
@@ -209,7 +216,7 @@ public with sharing class SectionController {
                       fields += ', '  + f.ExternalURL;
                       setFields.add(f.ExternalURL.toLowerCase());
                     }
-                }            
+                }
               }
             }
           }
@@ -237,7 +244,7 @@ public with sharing class SectionController {
                   //si no es loookup se guarda el object y field para el describe que hace el componente que renderize el campo
                   }else{
                     f.TargetObject = csObjectName;
-                    f.TargetField = field.getDescribe().getLabel();                     
+                    f.TargetField = field.getDescribe().getLabel();
                   }
                   break;
                 }
@@ -257,7 +264,7 @@ public with sharing class SectionController {
                       if(i == (listFields.size()-1)){
                         f.TargetObject = nextObject;
                         f.TargetField = field.getDescribe().getName();
-                      //si no se llego a la ultima posicion y es lookup se guarda el objeto name para seguir haciendo describe del siguiente objeto  
+                      //si no se llego a la ultima posicion y es lookup se guarda el objeto name para seguir haciendo describe del siguiente objeto
                       }else if(string.ValueOf(field.getDescribe().getType()) == 'REFERENCE'){
                         nextObject = string.ValueOf(field.getDescribe().getReferenceTo());
                         nextObject = nextObject.remove('(').remove(')');
@@ -267,7 +274,7 @@ public with sharing class SectionController {
                   }
                 }
               }
-              //si es cross-field se busca el valor a mostrar a traves del getSobject hasta llegar al resultado    
+              //si es cross-field se busca el valor a mostrar a traves del getSobject hasta llegar al resultado
               if(listFields.size() == 2){
                 sObject auxSObject1 = recordObject.getSobject(listFields[0]);
                 if(auxSObject1 != null){
@@ -278,11 +285,11 @@ public with sharing class SectionController {
                 for(Integer i = 1;i < listFields.size();i++){
                   if(auxSObject != null){
                       if((i + 1) == listFields.size()){
-                        f.Value = (String) auxSObject.get(listFields[i]);                    
+                        f.Value = (String) auxSObject.get(listFields[i]);
                       }else{
                          auxSObject = auxSObject.getSobject(listFields[i]);
                       }
-                   }                   
+                   }
                 }
               }
             //si no es cross-field se hace el get directo y no se usa el TargetObject y TargetField
@@ -291,7 +298,7 @@ public with sharing class SectionController {
             }
           }
         }
-      }          
+      }
     } else {
       sections = new List<Section>();
     }
@@ -342,12 +349,12 @@ public with sharing class SectionController {
   } set;}
 
  private static String getDependentOptions( List<Schema.PicklistEntry> ctrl_ple, List<Schema.PicklistEntry> dep_ple ){
-    Map<String, List<String>> objResults =  new Map<String, List<String>>();      
+    Map<String, List<String>> objResults =  new Map<String, List<String>>();
     //iterate through the values and get the ones valid for the controlling field name
     SectionController.Bitset objBitSet = new SectionController.Bitset();
     //set up the results
     if(ctrl_ple != null){
-      for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){           
+      for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){
           Schema.PicklistEntry ctrl_entry = ctrl_ple[pControllingIndex];
           String pControllingLabel = ctrl_entry.getValue();
           objResults.put(pControllingLabel,new List<String>());
@@ -360,17 +367,17 @@ public with sharing class SectionController {
      objResults.put('',new List<String>());
      //objResults.put(null,new List<String>());
     //check the dependent values
-    for(Integer pDependentIndex=0; pDependentIndex<dep_ple.size(); pDependentIndex++){          
+    for(Integer pDependentIndex=0; pDependentIndex<dep_ple.size(); pDependentIndex++){
         //get the pointer to the dependent index
         Schema.PicklistEntry dep_entry = dep_ple[pDependentIndex];
         //get the valid for
         String pEntryStructure = JSON.serialize(dep_entry);
-        SectionController.TPicklistEntry objDepPLE;              
+        SectionController.TPicklistEntry objDepPLE;
         try{
           objDepPLE = (SectionController.TPicklistEntry)JSON.deserialize(pEntryStructure, SectionController.TPicklistEntry.class);
         } catch( JSONException e ) {
             system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + pEntryStructure );
-            return null;   
+            return null;
         }
         //if valid for is empty, skip
         if (objDepPLE.validFor == null || objDepPLE.validFor == ''){
@@ -378,8 +385,8 @@ public with sharing class SectionController {
         }
         //iterate through the controlling values
         if(ctrl_ple != null){
-          for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){    
-              if (objBitSet.testBit(objDepPLE.validFor,pControllingIndex)){                   
+          for(Integer pControllingIndex = 0; pControllingIndex < ctrl_ple.size(); pControllingIndex++){
+              if (objBitSet.testBit(objDepPLE.validFor,pControllingIndex)){
                   //get the value
                   String pControllingLabel = ctrl_ple[pControllingIndex].getValue();
                   objResults.get(pControllingLabel).add(objDepPLE.value);
@@ -395,9 +402,9 @@ public with sharing class SectionController {
         }
     }
     String validFor = '';
-    for(String key: objResults.keySet()){  
+    for(String key: objResults.keySet()){
       if(objResults.get(key).size() > 0){
-        validFor += ', "' +  key.replace('\'', '\\\'') + '": [ "' + String.join( objResults.get(key), '","' ).replace('\'', '\\\'')  +  '"]';          
+        validFor += ', "' +  key.replace('\'', '\\\'') + '": [ "' + String.join( objResults.get(key), '","' ).replace('\'', '\\\'')  +  '"]';
       }else{
         validFor += ', "' +  key.replace('\'', '\\\'') + '": []';
       }
@@ -424,7 +431,7 @@ public with sharing class SectionController {
               List<Schema.PicklistEntry> pickListValues = describe.getPickListValues();
               for (Schema.PicklistEntry a : pickListValues) {
                  options.add( new PicklistController.Entry(a.getValue(), a.getLabel() ));
-              }             
+              }
               if(describe.isDependentPicklist()){
                 Schema.DescribeFieldResult describeController = describe.getController().getDescribe();
                 if(describeController.getType().name() == 'PICKLIST' || describeController.getType().name() == 'MULTIPICKLIST'){
@@ -440,15 +447,15 @@ public with sharing class SectionController {
               if ( ! String.isBlank( f.WhereCondition )  ){
                 query += ' WHERE ' + f.WhereCondition.replace('/', '\'') ;
               }
-              query += ' LIMIT 500';               
+              query += ' LIMIT 500';
               for ( SObject o : Database.query(query) ) {
                 // Substring para que matche con el multipicklist (para multisegment)
                 options.add( new PicklistController.Entry( ((String)o.id),  (String)o.get('Name') ));
               }
-            }            
+            }
             mapPicklistController.put(f.Name, controllerField);
             mapPicklistValidFor.put(f.Name, validFor);
-            mapPicklistOptions.put( f.Name , options);            
+            mapPicklistOptions.put( f.Name , options);
           }
         }
       }
@@ -487,7 +494,7 @@ public with sharing class SectionController {
           AlphaNumCharCodes = new Map<String,Integer>{
               'A'=>65,'B'=>66,'C'=>67,'D'=>68,'E'=>69,'F'=>70,'G'=>71,'H'=>72,'I'=>73,'J'=>74,
               'K'=>75,'L'=>76,'M'=>77,'N'=>78,'O'=>79,'P'=>80,'Q'=>81,'R'=>82,'S'=>83,'T'=>84,
-              'U'=>85,'V'=> 86,'W'=>87,'X'=>88,'Y'=>89,'Z'=>90    
+              'U'=>85,'V'=> 86,'W'=>87,'X'=>88,'Y'=>89,'Z'=>90
           };
           Base64CharCodes = new Map<String, Integer>();
           //lower case
@@ -517,9 +524,9 @@ public with sharing class SectionController {
           if (bytesBeingUsed <= 1)
               return false;
           //calculate the target bit for comparison
-          Integer bit = 7 - (Math.mod(n,8)); 
+          Integer bit = 7 - (Math.mod(n,8));
           //calculate the octet that has in the target bit
-          Integer targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed); 
+          Integer targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
           //the number of bits to shift by until we find the bit to compare for true or false
           Integer shiftBits = (targetOctet * 8) + bit;
           //get the base64bytes
@@ -539,7 +546,7 @@ public with sharing class SectionController {
           return  tBitVal == 1;
       }
   }
-        
+
   /*
   * @Summary: Entity to represent a json version of a picklist entry
   * so that the validFor property becomes exposed
@@ -551,8 +558,8 @@ public with sharing class SectionController {
       public string value {get;set;}
       public string validFor {get;set;}
       public TPicklistEntry(){
-          
+
       }
-  } 
+  }
 
 }

@@ -61,10 +61,10 @@ global class CourseService {
 		// SR: CRUD Check
 		if (Schema.sObjectType.Course__c.isAccessible()) {
 			// SR: FLS Check
-			if (Schema.sObjectType.Course__c.fields.StartDate__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDate__c.isAccessible()) {
-				coursesMap = new Map<Id,Course__c>(new CoursesSelector(new Set<String>{'StartDate__c','EndDate__c'}).selectByIdAndStatus(courseIds, possibleStatus));
+			if (Schema.sObjectType.Course__c.fields.StartDatetime__c.isAccessible() && Schema.sObjectType.Course__c.fields.EndDatetime__c.isAccessible()) {
+				coursesMap = new Map<Id,Course__c>(new CoursesSelector(new Set<String>{'StartDatetime__c','EndDatetime__c'}).selectByIdAndStatus(courseIds, possibleStatus));
 			} else {
-				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c','StartDate__c,EndDate__c'}));
+				throw new FieloPLT.FieloException(String.format(Label.security_error_field_not_readable, new List<String>{'Course__c','StartDatetime__c,EndDatetime__c'}));
 			}
 		} else {
 			throw new FieloPLT.FieloException(String.format(Label.security_error_object_not_readable, new List<String>{'Course__c'}));
@@ -75,13 +75,13 @@ global class CourseService {
 		for(Id courseId : courseIds){
 			if(coursesMap.containsKey(courseId)){
 				Course__c course = coursesMap.get(courseId);
-				if(course.StartDate__c == null && course.EndDate__c == null){
+				if(course.StartDatetime__c == null && course.EndDatetime__c == null){
 					course.Status__c = 'Active';
 				}else{
-					if((course.StartDate__c == null || course.StartDate__c <= date.today())
-						&& (course.EndDate__c == null || course.EndDate__c >= date.today())){
+					if((course.StartDatetime__c == null || course.StartDatetime__c <= date.today())
+						&& (course.EndDatetime__c == null || course.EndDatetime__c >= date.today())){
 							course.Status__c = 'Active';
-					}else if(course.StartDate__c != null && course.StartDate__c > date.today()){
+					}else if(course.StartDatetime__c != null && course.StartDatetime__c > date.today()){
 						course.Status__c = 'Scheduled';
 					}else{
 						course.Status__c = 'Completed';

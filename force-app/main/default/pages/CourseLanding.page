@@ -70,7 +70,8 @@
     </div>
     </div>
     </div>
-    <c:BackendFooter namespace="FieloELR" helpers="'FieloForm','FieloTabs','FieloPaginator','FieloRecentRecords','FieloFilter','FieloELearning'" externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloElr_Salesforce, 'scripts/core.js')}"/>
+    <c:BackendFooter namespace="FieloELR" helpers="'FieloForm','FieloTabs','FieloPaginator','FieloRecentRecords','FieloFilter','FieloELearning'"
+    externalJS="{!URLFOR($Resource.FieloPLT__FieloPlt_Salesforce, 'scripts/core.js')}, {!URLFOR($Resource.FieloElr_Salesforce, 'scripts/core.js')}"/>
 </body>
 </html>
 </apex:page>

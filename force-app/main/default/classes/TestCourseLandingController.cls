@@ -1,7 +1,7 @@
 @isTest
 private class TestCourseLandingController
 {
-	@testSetup 
+	@testSetup
 	static void pageSettingsSetup() {
         List<FieloPLT__PageSettings__c> pageSettings = new List<FieloPLT__PageSettings__c>();
 
@@ -17,7 +17,7 @@ private class TestCourseLandingController
 		pageSettings.add( new FieloPLT__PageSettings__c(
 				Name = 'Course > New',
 				FieloPLT__Object__c = 'FieloELR__Course__c',
-				FieloPLT__Sections__c = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup","onchange":"RefreshSegments"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"picklist"},{"Name":"FieloELR__Status__c","Type":"picklist"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDate__c","Type":"input"},{"Name":"FieloELR__EndDate__c","Type":"input"}]]}',
+				FieloPLT__Sections__c = '{"Name":"Information","Rows":[[{"Name":"Name","Type":"input"}],[{"Name":"FieloELR__Program__c","Type":"lookup","onchange":"RefreshSegments"}],[{"Name":"FieloELR__Segment__c","Type":"multiselect"}],[{"Name":"FieloELR__SubscriptionMode__c","Type":"picklist"},{"Name":"FieloELR__Status__c","Type":"picklist"}],[{"Name":"FieloELR__Description__c","Type":"input"}],[{"Name":"FieloELR__StartDatetime__c","Type":"input"},{"Name":"FieloELR__EndDatetime__c","Type":"input"}]]}',
 				FieloPLT__IsActive__c = true,
 				FieloPLT__Type__c = 'New'
 			)
@@ -61,10 +61,10 @@ private class TestCourseLandingController
 		ApexPages.Standardsetcontroller standardController = new ApexPages.Standardsetcontroller(
 			new List<FieloELR__Course__c>{course}
 		);
-        
+
         CourseLandingController controller = new CourseLandingController();
 
-        List<SelectOption> views = CourseLandingController.getStatusViews();        
+        List<SelectOption> views = CourseLandingController.getStatusViews();
 	}
 
 	@isTest
@@ -110,7 +110,7 @@ private class TestCourseLandingController
 			'{"FieloELR__Program__c":"'+programs[0].Id+'"}',
 			10,
 			''
-		);    
+		);
 	}
 
 	@isTest
@@ -146,8 +146,8 @@ private class TestCourseLandingController
 		/*RemoteActionResult result = CourseLandingController.createCourseWithoutSegments(
 			course,
 			new List<String>{
-				'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'
+				'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'
 			}
 		);*/
 	}
@@ -185,8 +185,8 @@ private class TestCourseLandingController
 		RemoteActionResult result = CourseLandingController.createCourse(
 			course,
 			new List<String>{
-				'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'
+				'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'
 			},
 			null
 			,
@@ -198,8 +198,8 @@ private class TestCourseLandingController
 		/*RemoteActionResult result = CourseLandingController.createCourseWithSegments(
 			course,
 			new List<String>{
-				'FieloELR__StartDate__c',
-				'FieloELR__EndDate__c'
+				'FieloELR__StartDatetime__c',
+				'FieloELR__EndDatetime__c'
 			},
 			new List<String>{
 				segments[0].Id,
@@ -231,15 +231,15 @@ private class TestCourseLandingController
 		insert metaSegment;
 
 		segments = CourseLandingController.getSegments(programs[0].Id);
-		
+
 
 	}
 
-	// 
-	@isTest 
+	//
+	@isTest
 	static void testCurrentPageView() {
-	
-	CourseLandingController.Section section = new CourseLandingController.Section();
+
+	FormController.Section section = new FormController.Section();
 	section.Name =  'none';
 	section.CssClass = 'none';
 
@@ -247,29 +247,29 @@ private class TestCourseLandingController
 	System.assertEquals('none', section.CssClass);
 
 
-	CourseLandingController.FormField formfield = new CourseLandingController.FormField();
+	FormController.FormField formfield = new FormController.FormField();
 	formfield.Type = 'none';
 	formfield.MetaField = 'none';
 	formfield.onchange = 'none';
 	formfield.Label = 'none';
 	formfield.Value = 'none';
-	
+
 	System.assertEquals('none', formfield.Type);
 	System.assertEquals('none', formfield.MetaField);
 	System.assertEquals('none', formfield.onchange);
 	System.assertEquals('none', formfield.Value);
 	System.assertEquals(null, formfield.Required);
 	System.assertEquals('', formfield.getRequiredValue());
-	
+
 	formfield.Required = true;
 	System.assertEquals(true, formfield.Required);
 	System.assertEquals('true', formfield.getRequiredValue());
-	
-	
 
-	
+
+
+
 	//chamar a classe, chamar o metodo deixar modelid e segments null
 
 	}
-	
+
 }

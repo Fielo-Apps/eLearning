@@ -1,4 +1,4 @@
-public with sharing class BackEndProgramSelectorController {
+global with sharing class BackEndProgramSelectorController {
 
     /// Propiedad Publica del Current Program
     public FieloPLT__Program__c program{
@@ -30,7 +30,7 @@ public with sharing class BackEndProgramSelectorController {
     } set; }
 
     public String programsViewId {
-        get{            
+        get{
             if ( Schema.sObjectType.FieloPLT__Program__c.isAccessible() ) {
                 if ( Schema.sObjectType.FieloPLT__Program__c.fields.Name.isAccessible() ) {
                     ApexPages.StandardSetController menuSSC = new ApexPages.StandardSetController([SELECT Name FROM FieloPLT__Program__c LIMIT 1]);
@@ -52,7 +52,7 @@ public with sharing class BackEndProgramSelectorController {
 
 
     @RemoteAction
-    public static RemoteActionResult selectProgram(Id programId){
+    global static RemoteActionResult selectProgram(Id programId){
         RemoteActionResult result = new RemoteActionResult();
         try{
             if ( programId != ProgramService.getActiveProgram().Id ) {

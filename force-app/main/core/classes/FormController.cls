@@ -1,4 +1,4 @@
-public with sharing class FormController {
+global with sharing class FormController {
 
     /*****  Datos  *****/
     public String csObjectName{get;set;}
@@ -63,6 +63,7 @@ public with sharing class FormController {
         public String WhereCondition{get;set;}
         public Boolean Required{get;set;}
         public Boolean ReadOnly{get;set;}
+        public Boolean DisableTimezoneFix{get;set;}
         public String SearchField{get;set;}
 
         public String getRequiredValue () {
@@ -72,12 +73,24 @@ public with sharing class FormController {
         return '';
         }
         public String getReadOnly () {
-        if ( ReadOnly != null ) {
-            return ReadOnly ? 'true' : 'false';
+            if ( ReadOnly != null ) {
+                return ReadOnly ? 'true' : 'false';
+            }
+            return '';
         }
-        return '';
+        public String getDisableTimezoneFix () {
+            if ( DisableTimezoneFix != null ) {
+                return DisableTimezoneFix ? 'true' : 'false';
+            }
+            return '';
         }
-
+        public String getDataType() {
+            System.debug('getDataType: ' + Name);
+            return Name.toLowerCase() == 'fieloelr__startdatetime__c' ||
+                Name.toLowerCase() == 'fieloelr__enddatetime__c' ?
+                'date' :
+                '';
+        }
     }
 
     private void loadSections () {
@@ -88,7 +101,7 @@ public with sharing class FormController {
             cFieldset = '[' + cFieldset.replace('\'', '"') + ']';
             }
             try {
-            sections = (List<Section>) JSON.deserialize( cFieldset, List<FormController.Section>.class );
+                sections = (List<Section>) JSON.deserialize( cFieldset, List<FormController.Section>.class );
             } catch( JSONException e ) {
             system.debug(LoggingLevel.ERROR, 'INVALID JSON: ' + cFieldset );
             return;
@@ -328,7 +341,7 @@ public with sharing class FormController {
 
     /*****  Metodos Remote para Save y Retrieve *****/
     @RemoteAction
-    public static RemoteActionResult save( sObject record, List<String> nullFields ){
+    global static RemoteActionResult save( sObject record, List<String> nullFields ){
         Savepoint sp;
         RemoteActionResult result = new RemoteActionResult();
         try{
@@ -384,7 +397,7 @@ public with sharing class FormController {
     }
 
     @RemoteAction
-    public static sObject retrieve( String objectName, String recordId, String fields ){
+    global static sObject retrieve( String objectName, String recordId, String fields ){
         Map<String, Schema.SObjectField> fieldsMap = Schema.describeSObjects(new String[]{objectName})[0].fields.getMap();
         Set<String> newFields = new Set<String>();
 		for(String s : fields.split(',')){

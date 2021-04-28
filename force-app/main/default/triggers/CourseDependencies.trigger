@@ -1,3 +1,5 @@
-trigger CourseDependencies on FieloELR__CourseDependency__c (before insert, before update, after insert, after delete) {
-	SObjectDomain.triggerHandler(CourseDependencies.class);
+trigger CourseDependencies on CourseDependency__c (before insert, before update, after insert, after delete) {
+	if( SObjectDomain.isHandlerActive(FieloPLT__Triggers__c.CourseDependency__c)){
+		SObjectDomain.triggerHandler(CourseDependencies.class);
+	}
 }

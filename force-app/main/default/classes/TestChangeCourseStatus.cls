@@ -21,8 +21,8 @@ public class TestChangeCourseStatus {
         insert segments;
 
         courses = MockUpFactory.createCourses(programs.get(0).id, segments.get(0).id, 1);
-        courses.get(0).StartDate__c = System.today();
-        courses.get(0).EndDate__c = System.today().addDays(15);
+        courses.get(0).StartDatetime__c = System.today();
+        courses.get(0).EndDatetime__c = System.today().addDays(15);
         insert courses;
 
         members = MockUpFactory.createMembers(programs.get(0).id, 1);
@@ -163,8 +163,8 @@ public class TestChangeCourseStatus {
 		courses = [SELECT Id, Status__c FROM Course__c LIMIT 1];
 		modules = [SELECT Id, IsActive__c FROM Module__c];
 
-		courses.get(0).StartDate__c = null;
-		courses.get(0).EndDate__c = null;
+		courses.get(0).StartDatetime__c = null;
+		courses.get(0).EndDatetime__c = null;
 
 		update courses;
 
@@ -190,8 +190,8 @@ public class TestChangeCourseStatus {
 		courses = [SELECT Id, Status__c FROM Course__c LIMIT 1];
 		modules = [SELECT Id, IsActive__c FROM Module__c];
 
-		courses.get(0).StartDate__c = System.today().addDays(10);
-		courses.get(0).EndDate__c = System.today().addDays(100);
+		courses.get(0).StartDatetime__c = System.today().addDays(10);
+		courses.get(0).EndDatetime__c = System.today().addDays(100);
 
 		update courses;
 
@@ -217,8 +217,8 @@ public class TestChangeCourseStatus {
 		courses = [SELECT Id, Status__c FROM Course__c LIMIT 1];
 		modules = [SELECT Id, IsActive__c FROM Module__c];
 
-		courses.get(0).StartDate__c = System.today().addDays(-100);
-		courses.get(0).EndDate__c = System.today().addDays(-10);
+		courses.get(0).StartDatetime__c = System.today().addDays(-100);
+		courses.get(0).EndDatetime__c = System.today().addDays(-10);
 
 		FieloELR.Courses.validateAdminFields = false;
 		update courses;
@@ -245,8 +245,8 @@ public class TestChangeCourseStatus {
 		courses = [SELECT Id, Status__c FROM Course__c LIMIT 1];
 		modules = [SELECT Id, IsActive__c FROM Module__c];
 
-		courses.get(0).StartDate__c = System.today().addDays(10);
-		courses.get(0).EndDate__c = System.today().addDays(100);
+		courses.get(0).StartDatetime__c = System.today().addDays(10);
+		courses.get(0).EndDatetime__c = System.today().addDays(100);
 
 		update courses;
 
@@ -277,8 +277,8 @@ public class TestChangeCourseStatus {
 		courses = [SELECT Id, Status__c FROM Course__c LIMIT 1];
 		modules = [SELECT Id, IsActive__c FROM Module__c];
 
-		courses.get(0).StartDate__c = System.today().addDays(-100);
-		courses.get(0).EndDate__c = System.today().addDays(-10);
+		courses.get(0).StartDatetime__c = System.today().addDays(-100);
+		courses.get(0).EndDatetime__c = System.today().addDays(-10);
 
 		FieloELR.Courses.validateAdminFields = false;
 		update courses;
@@ -367,8 +367,8 @@ public class TestChangeCourseStatus {
 
         System.assertEquals('Inactive', courses.get(0).Status__c);
 
-		courses.get(0).StartDate__c = system.today().addDays(10);
-		courses.get(0).EndDate__c = system.today().addDays(100);
+		courses.get(0).StartDatetime__c = system.today().addDays(10);
+		courses.get(0).EndDatetime__c = system.today().addDays(100);
 
 		update courses;
 
@@ -403,8 +403,8 @@ public class TestChangeCourseStatus {
 
         System.assertEquals('Inactive', courses.get(0).Status__c);
 
-		courses.get(0).StartDate__c = system.today().addDays(-100);
-		courses.get(0).EndDate__c = system.today().addDays(-10);
+		courses.get(0).StartDatetime__c = system.today().addDays(-100);
+		courses.get(0).EndDatetime__c = system.today().addDays(-10);
 
 		FieloELR.Courses.validateAdminFields = false;
 		update courses;

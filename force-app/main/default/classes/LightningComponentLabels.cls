@@ -4,7 +4,7 @@ public with sharing class LightningComponentLabels {
     public LightningComponentLabels() {
         // necessary to add labels to the package
 
-        // There are 605 labels in FieloELR
+        // There are 606 labels in FieloELR
         ELR_LABELS = new List<String>{
             Label.Accomplishment,
             Label.AccomplishmentFormula,
@@ -525,6 +525,7 @@ public with sharing class LightningComponentLabels {
             Label.TheContactAlreadyHasAMember,
             Label.ThePointActionIsMandatory,
             Label.TheTransactionWillBeProcessedOffline,
+            Label.TimezoneMissmatch,
             Label.TitleMemberPerformanceChart,
             Label.TitleRecentMembers,
             Label.TitleRecentPromotions,

@@ -45,7 +45,6 @@
   };
 
   FieloProgramSelectorELR.prototype.onChange = function() {
-    console.log('Changing Program.');
     var filter = {};
     this.getProgramId_();
     [].forEach.call(this.programActions_, function(action) {

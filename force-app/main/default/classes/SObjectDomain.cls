@@ -63,7 +63,7 @@ public without sharing virtual class SObjectDomain {
      * Useful during unit testing to access mock support for database inserts and udpates (testing without DML)
      **/
     public static TestFactory Test  {get; private set;}
-    
+
     /**
      * Set for keeping the Ids of records with errors
      **/
@@ -73,7 +73,7 @@ public without sharing virtual class SObjectDomain {
      * Retains instances of domain classes implementing trigger stateful
      **/
     private static Map<Type, List<SObjectDomain>> TriggerStateByClass;
-    
+
     static
     {
         Errors = new ErrorFactory();
@@ -312,7 +312,7 @@ public without sharing virtual class SObjectDomain {
      **/
     public static void triggerHandler(Type domainClass)
     {
-        
+
         // Process the trigger context
         if(System.Test.isRunningTest() & Test.Database.hasRecords())
         {
@@ -321,7 +321,7 @@ public without sharing virtual class SObjectDomain {
         }
         else
         {
-                
+
             // Process the runtime Apex Trigger context
             triggerHandler(domainClass,
                 Trigger.isBefore,
@@ -333,6 +333,17 @@ public without sharing virtual class SObjectDomain {
                 Trigger.new,
                 Trigger.oldMap);
         }
+    }
+
+    public static boolean isHandlerActive(SObjectField triggerField) {
+        return (
+            FieloPLT__Triggers__c.getInstance(UserInfo.getUserId()).Id == null ||
+            Boolean.valueOf(FieloPLT__Triggers__c.getInstance(UserInfo.getUserId()).get(triggerField))
+        ) && (
+            FieloPLT__Triggers__c.getInstance(UserInfo.getUserId()).Id != null ||
+            FieloPLT__Triggers__c.getOrgDefaults().Id == null ||
+            Boolean.valueOf(FieloPLT__Triggers__c.getOrgDefaults().get(triggerField))
+        );
     }
 
     /**
@@ -400,7 +411,7 @@ public without sharing virtual class SObjectDomain {
         domain.Records = records;
         return domain;
     }
-    
+
     /**
     * Adds an error to a register and adds it to the list attribute "RecordErrors"
     **/
@@ -413,7 +424,7 @@ public without sharing virtual class SObjectDomain {
             throw new DomainException('Record without an Id.');
         }
     }
-    
+
     /**
     * Checks if a determined record has an error through its Id
     **/
@@ -425,7 +436,7 @@ public without sharing virtual class SObjectDomain {
             throw new DomainException('Id is null.');
         }
     }
-    
+
     /**
      * Fluent style Configuration system for Domain class creation
      **/
