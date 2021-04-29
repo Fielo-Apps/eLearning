@@ -2,6 +2,6 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ValidateDate</fullName>
     <active>true</active>
-    <errorConditionFormula>OR(AND(NOT(ISBLANK(Module__r.Course__r.StartDate__c)), Date__c &lt; Module__r.Course__r.StartDate__c),AND(NOT(ISBLANK(Module__r.Course__r.EndDate__c)), Date__c &gt; Module__r.Course__r.EndDate__c))</errorConditionFormula>
+    <errorConditionFormula>OR(AND(NOT(ISBLANK(Module__r.Course__r.StartDatetime__c)), DATETIMEVALUE(FieloELR__Date__c) &lt; Module__r.Course__r.StartDatetime__c),AND(NOT(ISBLANK(Module__r.Course__r.EndDatetime__c)), DATETIMEVALUE(FieloELR__Date__c) &gt; Module__r.Course__r.EndDatetime__c))</errorConditionFormula>
     <errorMessage>The course is not available in this period.</errorMessage>
 </ValidationRule>

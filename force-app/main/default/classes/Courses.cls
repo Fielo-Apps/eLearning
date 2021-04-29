@@ -35,23 +35,6 @@ public  class Courses extends SObjectDomain{
         }
     }
 
-    public override void onValidate() {
-        if(validateAdminFields){
-            for(Course__c course : (List<Course__c>)records){
-                if (course.StartDatetime__c != null) {
-                    if (course.StartDatetime__c < System.now().dateGmt()) {
-                        course.addError(Label.CourseFutureDatesNotAllowed);
-                    }
-                }
-                if (course.EndDatetime__c != null) {
-                    if (course.EndDatetime__c < System.now().dateGmt()) {
-                        course.addError(Label.CourseFutureDatesNotAllowed);
-                    }
-                }
-            }
-        }
-    }
-
     public override void onValidate(Map<Id,SObject> existingRecords) {
         if(validateAdminFields){
             //before update
@@ -79,18 +62,6 @@ public  class Courses extends SObjectDomain{
                     (course.FieloELR__HasDependencies__c != oldCourse.FieloELR__HasDependencies__c) ||
                     (course.FieloELR__KeyDependencies__c != oldCourse.FieloELR__KeyDependencies__c)){
                     addError(course,'This field can\'t be edited');
-                }
-
-                // Date validation
-                if (course.StartDatetime__c != null) {
-                    if (course.StartDatetime__c < System.today()) {
-                        addError(course, Label.CourseFutureDatesNotAllowed);
-                    }
-                }
-                if (course.EndDatetime__c != null) {
-                    if (course.EndDatetime__c < System.today()) {
-                        addError(course, Label.CourseFutureDatesNotAllowed);
-                    }
                 }
             }
         }

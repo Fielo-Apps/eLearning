@@ -71,7 +71,6 @@ global with sharing class PhotoUploadController {
         String imageCaption = null;
         try {
             Set<String> objectFields = record.getSobjectType().getDescribe().fields.getMap().keySet();
-
             Set<String> fieldSet = new Set<String>{'Id', 'Name'};
 
             imageCaptionField = '';
@@ -79,6 +78,8 @@ global with sharing class PhotoUploadController {
             if( objectFields.contains('fieloplt__imagecaption__c') ) imageCaptionField = 'fieloplt__imagecaption__c';
             if( objectFields.contains('fieloelr__imagecaption__c') ) imageCaptionField = 'fieloelr__imagecaption__c';
             if( objectFields.contains('imagecaption__c') ) imageCaptionField = 'imagecaption__c';
+
+            if (objectName == 'FieloELR__Course__c') imageCaptionField = 'Name';
 
             if (String.isNotBlank(imageCaptionField)) {
                 Id recordId = record.Id;
