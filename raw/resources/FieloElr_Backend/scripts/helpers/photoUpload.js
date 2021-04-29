@@ -479,8 +479,7 @@
   };
 
   FieloPhotoUpload.prototype.getImageCaptionHandler_ = function(result) {
-    var this_ = this;
-    if (result) {
+    if (result && this.imageCaption_) {
       this.imageCaption_.value = result;
     }
   };
