@@ -326,7 +326,7 @@
         var _this = document.getElementsByClassName(
           'fielosf-elearning')[0];
         _this.FieloELearning.disableProgramChange_();
-        _this.FieloELearning.checkTimezone();
+        // _this.FieloELearning.checkTimezone();
       });
 
       $('#FieloELR__Module__cFormNew').on('shown.aljs.modal', function() {
